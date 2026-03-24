@@ -551,7 +551,7 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
-    ${ctaBox("If you've read this far, you probably share our obsession with building things that matter. We'd love to hear from you.", "Write to us", "https://t.me/Oresty")}
+    ${ctaBox("If you've read this far without closing the tab, your prefrontal cortex has overruled your limbic system. That's exactly the kind of person we're looking for.", "Write to us", "https://t.me/Oresty")}
 
   </article>
   <script src="typograf.min.js"></script>
