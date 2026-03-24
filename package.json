@@ -1,0 +1,14 @@
+{
+  "name": "100.engineer",
+  "private": true,
+  "scripts": {
+    "build": "node build.js && npx @tailwindcss/cli -i input.css -o dist/output.css --minify",
+    "dev": "node build.js && npx @tailwindcss/cli -i input.css -o dist/output.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4"
+  },
+  "dependencies": {
+    "typograf": "^7.6.0"
+  }
+}

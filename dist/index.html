@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100.engineer — Closing the&nbsp;gap between destruction and&nbsp;cooperation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="output.css">
+  <style>
+    /* ─── Reset ─── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ─── Base ─── */
+    html { font-size: 24px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Playfair', serif;
+      color: #000;
+      background: #fff;
+      line-height: 1.618033988749895;
+    }
+
+    /* ─── Typography ─── */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+    }
+    h1 {
+      font-size: 2.618033988749895rem;
+      line-height: 1.1;
+      margin-bottom: 1.618033988749895rem;
+    }
+    h2 {
+      font-size: 1.618033988749895rem;
+      margin-bottom: 1.618033988749895rem;
+    }
+    h3 {
+      font-size: 1.272019649514069rem;
+      margin-top: 2.618033988749895rem;
+      margin-bottom: 0.6180339887498948rem;
+    }
+    h4 {
+      margin-top: 0.6180339887498948rem;
+      margin-bottom: 0.3819660112501051rem;
+    }
+    .subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.618033988749895rem;
+      line-height: 1.2;
+      margin-bottom: 1.618033988749895rem;
+    }
+    .callout {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.272019649514069rem;
+      margin-bottom: 1.618033988749895rem;
+    }
+    .text-sm {
+      font-size: 0.7861513777574233rem;
+    }
+    .tooltip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted currentColor;
+      display: inline-block;
+    }
+    .tooltip::after {
+      content: attr(data-tip);
+      position: absolute;
+      left: 0;
+      top: 100%;
+      margin-top: 0.4em;
+      background: #000;
+      color: #fff;
+      font-size: 0.6180339887498948rem;
+      line-height: 1.4;
+      padding: 0.4em 0.7em;
+      border-radius: 0.25em;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+    }
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+
+    /* ─── Links ─── */
+    article a:not(.btn-scroll) {
+      color: #000;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-thickness 0.2s ease, text-underline-offset 0.2s ease;
+    }
+    article a:not(.btn-scroll):hover {
+      opacity: 0.7;
+    }
+    article a:not(.btn-scroll):focus-visible {
+      outline: 1px solid #000;
+      outline-offset: 0.15em;
+    }
+
+    /* ─── Layout ─── */
+    article {
+      max-width: 38em;
+      margin: 0 auto;
+      padding: 2.618033988749895rem 1.618033988749895rem;
+    }
+    header {
+      margin-bottom: 4.23606797749979rem;
+    }
+    section {
+      margin-top: 4.23606797749979rem;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 1.618033988749895rem;
+      align-items: stretch;
+    }
+
+    /* ─── Spacing (phi-derived) ─── */
+    .mb-phi { margin-bottom: 1.618033988749895rem; }
+    .mb-sm { margin-bottom: 0.6180339887498948rem; }
+    .mb-micro { margin-bottom: 0.3819660112501051rem; }
+    .mt-phi { margin-top: 1.618033988749895rem; }
+    .mt-sm { margin-top: 0.6180339887498948rem; }
+    .mt-lg { margin-top: 2.618033988749895rem; }
+    .mb-lg { margin-bottom: 2.618033988749895rem; }
+
+    /* ─── Components ─── */
+    .card {
+      border: 1px solid #000;
+      padding: 1.618033988749895rem;
+      transition: opacity 0.3s;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.272019649514069rem;
+      margin-bottom: 1.618033988749895rem;
+    }
+    .box {
+      border: 1px solid #000;
+      padding: 1.618033988749895rem;
+    }
+    .cta-box {
+      margin-top: 4.23606797749979rem;
+      padding: 1.618033988749895rem;
+      border: 1px solid #000;
+    }
+    .plane-2d {
+      display: flex;
+      align-items: stretch;
+      margin: 1.618033988749895rem 0;
+      gap: 0.3819660112501051rem;
+      max-width: 100%;
+    }
+    .plane-y-label {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-size: 0.7861513777574233rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .plane-canvas-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3819660112501051rem;
+    }
+    .plane-canvas {
+      position: relative;
+      width: 100%;
+      max-width: 20rem;
+      aspect-ratio: 1;
+      border: 1px solid #000;
+      cursor: crosshair;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      overflow: hidden;
+    }
+    .plane-line-h, .plane-line-v {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(0,0,0,0.15);
+    }
+    .plane-line-h {
+      left: 0;
+      right: 0;
+      height: 1px;
+    }
+    .plane-line-v {
+      top: 0;
+      bottom: 0;
+      width: 1px;
+    }
+    .plane-point {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #000;
+      transform: translate(-50%, 50%);
+      cursor: grab;
+      touch-action: none;
+      z-index: 1;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .plane-point:active, .plane-point.dragging {
+      cursor: grabbing;
+      transform: translate(-50%, 50%) scale(1.4);
+      animation: none;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.4); }
+      50% { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
+    }
+    .plane-x-label {
+      font-size: 0.7861513777574233rem;
+      text-align: center;
+    }
+    .plane-hint {
+      position: absolute;
+      left: 30%;
+      bottom: 15%;
+      transform: translate(1rem, -0.5rem);
+      font-size: 0.7861513777574233rem;
+      color: #000;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.3s;
+    }
+    .plane-hint.hidden {
+      opacity: 0;
+    }
+
+    /* ─── Timeline ─── */
+    .dot, .milestone {
+      font-size: 0.3819660112501051rem;
+      line-height: 1.1;
+      margin: 0;
+      padding: 0;
+    }
+    .dot-year {
+      font-size: 0.6180339887498948rem;
+      opacity: 0.30;
+    }
+    .milestone {
+      font-size: 0.7861513777574233rem;
+      line-height: 1.618033988749895;
+      padding: 0.23606797749978967rem 0;
+    }
+
+    /* ─── Controls ─── */
+    .btn-scroll {
+      display: block;
+      margin-top: 1.618033988749895rem;
+      padding: 0.6180339887498948rem 1.618033988749895rem;
+      border: 1px solid #000;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      font-size: 1.618033988749895rem;
+      line-height: 1.2;
+      background: #fff;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-scroll:hover {
+      background: #000;
+      color: #fff;
+    }
+    .btn-scroll:focus-visible {
+      outline: 1px solid #000;
+      outline-offset: 0.3819660112501051rem;
+    }
+    .btn-scroll:active {
+      opacity: 0.8;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      html { font-size: 18px; }
+      h1 { font-size: 1.618033988749895rem; }
+    }
+    @media (max-width: 380px) {
+      html { font-size: 16px; }
+    }
+
+    /* ─── Overrides ─── */
+    #future {
+      scroll-margin-top: 0.3819660112501051rem;
+      padding-top: 4.23606797749979rem;
+      margin-top: 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <article>
+
+    <header>
+      <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe, but we working on it.">Moscow, Earth.</span></p>
+      <h1>Weekly fixes for&nbsp;humanity</h1>
+      <p class="mt-sm">We&nbsp;build products that make cooperation easy and&nbsp;deception expensive. New updates — every week.</p>
+      <p class="mt-sm">A&nbsp;community of&nbsp;individuals who absorb the&nbsp;coordination cost no&nbsp;one else will — driven by&nbsp;the&nbsp;first-principles understanding that win-win isn't idealism, it's a&nbsp;superior strategy.</p>
+    </header>
+
+    
+  <section id="timeline">
+    <h2>Not&nbsp;that long ago, right?</h2>
+    
+      <p class="mb-phi">In&nbsp;1543&nbsp;we&nbsp;realized Earth isn't the&nbsp;center of&nbsp;the&nbsp;Solar system. We&nbsp;took it&nbsp;personally.</p>
+      <p class="milestone">. 1543 — Heliocentric Model ☀️</p>
+<p class="dot">. <span class="dot-year">1544</span></p>
+<p class="dot">. <span class="dot-year">1545</span></p>
+<p class="dot">. <span class="dot-year">1546</span></p>
+<p class="dot">. <span class="dot-year">1547</span></p>
+<p class="dot">. <span class="dot-year">1548</span></p>
+<p class="dot">. <span class="dot-year">1549</span></p>
+<p class="dot">. <span class="dot-year">1550</span></p>
+<p class="dot">. <span class="dot-year">1551</span></p>
+<p class="dot">. <span class="dot-year">1552</span></p>
+<p class="dot">. <span class="dot-year">1553</span></p>
+<p class="dot">. <span class="dot-year">1554</span></p>
+<p class="dot">. <span class="dot-year">1555</span></p>
+<p class="dot">. <span class="dot-year">1556</span></p>
+<p class="dot">. <span class="dot-year">1557</span></p>
+<p class="dot">. <span class="dot-year">1558</span></p>
+<p class="dot">. <span class="dot-year">1559</span></p>
+<p class="dot">. <span class="dot-year">1560</span></p>
+<p class="dot">. <span class="dot-year">1561</span></p>
+<p class="dot">. <span class="dot-year">1562</span></p>
+<p class="dot">. <span class="dot-year">1563</span></p>
+<p class="dot">. <span class="dot-year">1564</span></p>
+<p class="dot">. <span class="dot-year">1565</span></p>
+<p class="dot">. <span class="dot-year">1566</span></p>
+<p class="dot">. <span class="dot-year">1567</span></p>
+<p class="dot">. <span class="dot-year">1568</span></p>
+<p class="dot">. <span class="dot-year">1569</span></p>
+<p class="dot">. <span class="dot-year">1570</span></p>
+<p class="dot">. <span class="dot-year">1571</span></p>
+<p class="dot">. <span class="dot-year">1572</span></p>
+<p class="dot">. <span class="dot-year">1573</span></p>
+<p class="dot">. <span class="dot-year">1574</span></p>
+<p class="dot">. <span class="dot-year">1575</span></p>
+<p class="dot">. <span class="dot-year">1576</span></p>
+<p class="dot">. <span class="dot-year">1577</span></p>
+<p class="dot">. <span class="dot-year">1578</span></p>
+<p class="dot">. <span class="dot-year">1579</span></p>
+<p class="dot">. <span class="dot-year">1580</span></p>
+<p class="dot">. <span class="dot-year">1581</span></p>
+<p class="dot">. <span class="dot-year">1582</span></p>
+<p class="dot">. <span class="dot-year">1583</span></p>
+<p class="dot">. <span class="dot-year">1584</span></p>
+<p class="dot">. <span class="dot-year">1585</span></p>
+<p class="dot">. <span class="dot-year">1586</span></p>
+<p class="dot">. <span class="dot-year">1587</span></p>
+<p class="dot">. <span class="dot-year">1588</span></p>
+<p class="dot">. <span class="dot-year">1589</span></p>
+<p class="dot">. <span class="dot-year">1590</span></p>
+<p class="dot">. <span class="dot-year">1591</span></p>
+<p class="dot">. <span class="dot-year">1592</span></p>
+<p class="dot">. <span class="dot-year">1593</span></p>
+<p class="dot">. <span class="dot-year">1594</span></p>
+<p class="dot">. <span class="dot-year">1595</span></p>
+<p class="dot">. <span class="dot-year">1596</span></p>
+<p class="dot">. <span class="dot-year">1597</span></p>
+<p class="dot">. <span class="dot-year">1598</span></p>
+<p class="dot">. <span class="dot-year">1599</span></p>
+<p class="dot">. <span class="dot-year">1600</span></p>
+<p class="dot">. <span class="dot-year">1601</span></p>
+<p class="dot">. <span class="dot-year">1602</span></p>
+<p class="dot">. <span class="dot-year">1603</span></p>
+<p class="dot">. <span class="dot-year">1604</span></p>
+<p class="dot">. <span class="dot-year">1605</span></p>
+<p class="dot">. <span class="dot-year">1606</span></p>
+<p class="dot">. <span class="dot-year">1607</span></p>
+<p class="dot">. <span class="dot-year">1608</span></p>
+<p class="dot">. <span class="dot-year">1609</span></p>
+<p class="dot">. <span class="dot-year">1610</span></p>
+<p class="dot">. <span class="dot-year">1611</span></p>
+<p class="dot">. <span class="dot-year">1612</span></p>
+<p class="dot">. <span class="dot-year">1613</span></p>
+<p class="dot">. <span class="dot-year">1614</span></p>
+<p class="dot">. <span class="dot-year">1615</span></p>
+<p class="dot">. <span class="dot-year">1616</span></p>
+<p class="dot">. <span class="dot-year">1617</span></p>
+<p class="dot">. <span class="dot-year">1618</span></p>
+<p class="dot">. <span class="dot-year">1619</span></p>
+<p class="dot">. <span class="dot-year">1620</span></p>
+<p class="dot">. <span class="dot-year">1621</span></p>
+<p class="dot">. <span class="dot-year">1622</span></p>
+<p class="dot">. <span class="dot-year">1623</span></p>
+<p class="dot">. <span class="dot-year">1624</span></p>
+<p class="dot">. <span class="dot-year">1625</span></p>
+<p class="dot">. <span class="dot-year">1626</span></p>
+<p class="dot">. <span class="dot-year">1627</span></p>
+<p class="dot">. <span class="dot-year">1628</span></p>
+<p class="dot">. <span class="dot-year">1629</span></p>
+<p class="dot">. <span class="dot-year">1630</span></p>
+<p class="dot">. <span class="dot-year">1631</span></p>
+<p class="dot">. <span class="dot-year">1632</span></p>
+<p class="dot">. <span class="dot-year">1633</span></p>
+<p class="dot">. <span class="dot-year">1634</span></p>
+<p class="dot">. <span class="dot-year">1635</span></p>
+<p class="dot">. <span class="dot-year">1636</span></p>
+<p class="dot">. <span class="dot-year">1637</span></p>
+<p class="dot">. <span class="dot-year">1638</span></p>
+<p class="dot">. <span class="dot-year">1639</span></p>
+<p class="dot">. <span class="dot-year">1640</span></p>
+<p class="dot">. <span class="dot-year">1641</span></p>
+<p class="dot">. <span class="dot-year">1642</span></p>
+<p class="dot">. <span class="dot-year">1643</span></p>
+<p class="dot">. <span class="dot-year">1644</span></p>
+<p class="dot">. <span class="dot-year">1645</span></p>
+<p class="dot">. <span class="dot-year">1646</span></p>
+<p class="dot">. <span class="dot-year">1647</span></p>
+<p class="dot">. <span class="dot-year">1648</span></p>
+<p class="dot">. <span class="dot-year">1649</span></p>
+<p class="dot">. <span class="dot-year">1650</span></p>
+<p class="dot">. <span class="dot-year">1651</span></p>
+<p class="dot">. <span class="dot-year">1652</span></p>
+<p class="dot">. <span class="dot-year">1653</span></p>
+<p class="dot">. <span class="dot-year">1654</span></p>
+<p class="dot">. <span class="dot-year">1655</span></p>
+<p class="dot">. <span class="dot-year">1656</span></p>
+<p class="dot">. <span class="dot-year">1657</span></p>
+<p class="dot">. <span class="dot-year">1658</span></p>
+<p class="dot">. <span class="dot-year">1659</span></p>
+<p class="dot">. <span class="dot-year">1660</span></p>
+<p class="dot">. <span class="dot-year">1661</span></p>
+<p class="dot">. <span class="dot-year">1662</span></p>
+<p class="dot">. <span class="dot-year">1663</span></p>
+<p class="dot">. <span class="dot-year">1664</span></p>
+<p class="dot">. <span class="dot-year">1665</span></p>
+<p class="dot">. <span class="dot-year">1666</span></p>
+<p class="dot">. <span class="dot-year">1667</span></p>
+<p class="dot">. <span class="dot-year">1668</span></p>
+<p class="dot">. <span class="dot-year">1669</span></p>
+<p class="dot">. <span class="dot-year">1670</span></p>
+<p class="dot">. <span class="dot-year">1671</span></p>
+<p class="dot">. <span class="dot-year">1672</span></p>
+<p class="dot">. <span class="dot-year">1673</span></p>
+<p class="dot">. <span class="dot-year">1674</span></p>
+<p class="dot">. <span class="dot-year">1675</span></p>
+<p class="dot">. <span class="dot-year">1676</span></p>
+<p class="dot">. <span class="dot-year">1677</span></p>
+<p class="dot">. <span class="dot-year">1678</span></p>
+<p class="dot">. <span class="dot-year">1679</span></p>
+<p class="dot">. <span class="dot-year">1680</span></p>
+<p class="dot">. <span class="dot-year">1681</span></p>
+<p class="dot">. <span class="dot-year">1682</span></p>
+<p class="dot">. <span class="dot-year">1683</span></p>
+<p class="dot">. <span class="dot-year">1684</span></p>
+<p class="dot">. <span class="dot-year">1685</span></p>
+<p class="dot">. <span class="dot-year">1686</span></p>
+<p class="dot">. <span class="dot-year">1687</span></p>
+<p class="dot">. <span class="dot-year">1688</span></p>
+<p class="dot">. <span class="dot-year">1689</span></p>
+<p class="dot">. <span class="dot-year">1690</span></p>
+<p class="dot">. <span class="dot-year">1691</span></p>
+<p class="dot">. <span class="dot-year">1692</span></p>
+<p class="dot">. <span class="dot-year">1693</span></p>
+<p class="dot">. <span class="dot-year">1694</span></p>
+<p class="dot">. <span class="dot-year">1695</span></p>
+<p class="dot">. <span class="dot-year">1696</span></p>
+<p class="dot">. <span class="dot-year">1697</span></p>
+<p class="dot">. <span class="dot-year">1698</span></p>
+<p class="dot">. <span class="dot-year">1699</span></p>
+<p class="dot">. <span class="dot-year">1700</span></p>
+<p class="dot">. <span class="dot-year">1701</span></p>
+<p class="dot">. <span class="dot-year">1702</span></p>
+<p class="dot">. <span class="dot-year">1703</span></p>
+<p class="dot">. <span class="dot-year">1704</span></p>
+<p class="dot">. <span class="dot-year">1705</span></p>
+<p class="dot">. <span class="dot-year">1706</span></p>
+<p class="dot">. <span class="dot-year">1707</span></p>
+<p class="dot">. <span class="dot-year">1708</span></p>
+<p class="dot">. <span class="dot-year">1709</span></p>
+<p class="dot">. <span class="dot-year">1710</span></p>
+<p class="dot">. <span class="dot-year">1711</span></p>
+<p class="milestone">. 1712 — Atmospheric Steam Engine 🔥</p>
+<p class="dot">. <span class="dot-year">1713</span></p>
+<p class="dot">. <span class="dot-year">1714</span></p>
+<p class="dot">. <span class="dot-year">1715</span></p>
+<p class="dot">. <span class="dot-year">1716</span></p>
+<p class="dot">. <span class="dot-year">1717</span></p>
+<p class="dot">. <span class="dot-year">1718</span></p>
+<p class="dot">. <span class="dot-year">1719</span></p>
+<p class="dot">. <span class="dot-year">1720</span></p>
+<p class="dot">. <span class="dot-year">1721</span></p>
+<p class="dot">. <span class="dot-year">1722</span></p>
+<p class="dot">. <span class="dot-year">1723</span></p>
+<p class="dot">. <span class="dot-year">1724</span></p>
+<p class="dot">. <span class="dot-year">1725</span></p>
+<p class="dot">. <span class="dot-year">1726</span></p>
+<p class="dot">. <span class="dot-year">1727</span></p>
+<p class="dot">. <span class="dot-year">1728</span></p>
+<p class="dot">. <span class="dot-year">1729</span></p>
+<p class="dot">. <span class="dot-year">1730</span></p>
+<p class="dot">. <span class="dot-year">1731</span></p>
+<p class="dot">. <span class="dot-year">1732</span></p>
+<p class="dot">. <span class="dot-year">1733</span></p>
+<p class="dot">. <span class="dot-year">1734</span></p>
+<p class="dot">. <span class="dot-year">1735</span></p>
+<p class="dot">. <span class="dot-year">1736</span></p>
+<p class="dot">. <span class="dot-year">1737</span></p>
+<p class="dot">. <span class="dot-year">1738</span></p>
+<p class="dot">. <span class="dot-year">1739</span></p>
+<p class="dot">. <span class="dot-year">1740</span></p>
+<p class="dot">. <span class="dot-year">1741</span></p>
+<p class="dot">. <span class="dot-year">1742</span></p>
+<p class="dot">. <span class="dot-year">1743</span></p>
+<p class="dot">. <span class="dot-year">1744</span></p>
+<p class="dot">. <span class="dot-year">1745</span></p>
+<p class="dot">. <span class="dot-year">1746</span></p>
+<p class="dot">. <span class="dot-year">1747</span></p>
+<p class="dot">. <span class="dot-year">1748</span></p>
+<p class="dot">. <span class="dot-year">1749</span></p>
+<p class="dot">. <span class="dot-year">1750</span></p>
+<p class="dot">. <span class="dot-year">1751</span></p>
+<p class="dot">. <span class="dot-year">1752</span></p>
+<p class="dot">. <span class="dot-year">1753</span></p>
+<p class="dot">. <span class="dot-year">1754</span></p>
+<p class="dot">. <span class="dot-year">1755</span></p>
+<p class="dot">. <span class="dot-year">1756</span></p>
+<p class="dot">. <span class="dot-year">1757</span></p>
+<p class="dot">. <span class="dot-year">1758</span></p>
+<p class="dot">. <span class="dot-year">1759</span></p>
+<p class="dot">. <span class="dot-year">1760</span></p>
+<p class="dot">. <span class="dot-year">1761</span></p>
+<p class="dot">. <span class="dot-year">1762</span></p>
+<p class="dot">. <span class="dot-year">1763</span></p>
+<p class="dot">. <span class="dot-year">1764</span></p>
+<p class="dot">. <span class="dot-year">1765</span></p>
+<p class="dot">. <span class="dot-year">1766</span></p>
+<p class="dot">. <span class="dot-year">1767</span></p>
+<p class="dot">. <span class="dot-year">1768</span></p>
+<p class="dot">. <span class="dot-year">1769</span></p>
+<p class="dot">. <span class="dot-year">1770</span></p>
+<p class="dot">. <span class="dot-year">1771</span></p>
+<p class="dot">. <span class="dot-year">1772</span></p>
+<p class="dot">. <span class="dot-year">1773</span></p>
+<p class="dot">. <span class="dot-year">1774</span></p>
+<p class="dot">. <span class="dot-year">1775</span></p>
+<p class="milestone">. 1776 — Declaration of&nbsp;Independence 📜</p>
+<p class="dot">. <span class="dot-year">1777</span></p>
+<p class="dot">. <span class="dot-year">1778</span></p>
+<p class="dot">. <span class="dot-year">1779</span></p>
+<p class="dot">. <span class="dot-year">1780</span></p>
+<p class="dot">. <span class="dot-year">1781</span></p>
+<p class="dot">. <span class="dot-year">1782</span></p>
+<p class="dot">. <span class="dot-year">1783</span></p>
+<p class="dot">. <span class="dot-year">1784</span></p>
+<p class="dot">. <span class="dot-year">1785</span></p>
+<p class="dot">. <span class="dot-year">1786</span></p>
+<p class="dot">. <span class="dot-year">1787</span></p>
+<p class="dot">. <span class="dot-year">1788</span></p>
+<p class="dot">. <span class="dot-year">1789</span></p>
+<p class="dot">. <span class="dot-year">1790</span></p>
+<p class="dot">. <span class="dot-year">1791</span></p>
+<p class="dot">. <span class="dot-year">1792</span></p>
+<p class="dot">. <span class="dot-year">1793</span></p>
+<p class="dot">. <span class="dot-year">1794</span></p>
+<p class="dot">. <span class="dot-year">1795</span></p>
+<p class="dot">. <span class="dot-year">1796</span></p>
+<p class="dot">. <span class="dot-year">1797</span></p>
+<p class="dot">. <span class="dot-year">1798</span></p>
+<p class="dot">. <span class="dot-year">1799</span></p>
+<p class="dot">. <span class="dot-year">1800</span></p>
+<p class="dot">. <span class="dot-year">1801</span></p>
+<p class="dot">. <span class="dot-year">1802</span></p>
+<p class="dot">. <span class="dot-year">1803</span></p>
+<p class="dot">. <span class="dot-year">1804</span></p>
+<p class="dot">. <span class="dot-year">1805</span></p>
+<p class="dot">. <span class="dot-year">1806</span></p>
+<p class="dot">. <span class="dot-year">1807</span></p>
+<p class="dot">. <span class="dot-year">1808</span></p>
+<p class="dot">. <span class="dot-year">1809</span></p>
+<p class="dot">. <span class="dot-year">1810</span></p>
+<p class="dot">. <span class="dot-year">1811</span></p>
+<p class="dot">. <span class="dot-year">1812</span></p>
+<p class="dot">. <span class="dot-year">1813</span></p>
+<p class="dot">. <span class="dot-year">1814</span></p>
+<p class="dot">. <span class="dot-year">1815</span></p>
+<p class="dot">. <span class="dot-year">1816</span></p>
+<p class="dot">. <span class="dot-year">1817</span></p>
+<p class="dot">. <span class="dot-year">1818</span></p>
+<p class="dot">. <span class="dot-year">1819</span></p>
+<p class="dot">. <span class="dot-year">1820</span></p>
+<p class="dot">. <span class="dot-year">1821</span></p>
+<p class="dot">. <span class="dot-year">1822</span></p>
+<p class="dot">. <span class="dot-year">1823</span></p>
+<p class="dot">. <span class="dot-year">1824</span></p>
+<p class="dot">. <span class="dot-year">1825</span></p>
+<p class="dot">. <span class="dot-year">1826</span></p>
+<p class="dot">. <span class="dot-year">1827</span></p>
+<p class="dot">. <span class="dot-year">1828</span></p>
+<p class="dot">. <span class="dot-year">1829</span></p>
+<p class="dot">. <span class="dot-year">1830</span></p>
+<p class="dot">. <span class="dot-year">1831</span></p>
+<p class="dot">. <span class="dot-year">1832</span></p>
+<p class="dot">. <span class="dot-year">1833</span></p>
+<p class="dot">. <span class="dot-year">1834</span></p>
+<p class="dot">. <span class="dot-year">1835</span></p>
+<p class="dot">. <span class="dot-year">1836</span></p>
+<p class="dot">. <span class="dot-year">1837</span></p>
+<p class="dot">. <span class="dot-year">1838</span></p>
+<p class="dot">. <span class="dot-year">1839</span></p>
+<p class="dot">. <span class="dot-year">1840</span></p>
+<p class="dot">. <span class="dot-year">1841</span></p>
+<p class="dot">. <span class="dot-year">1842</span></p>
+<p class="dot">. <span class="dot-year">1843</span></p>
+<p class="dot">. <span class="dot-year">1844</span></p>
+<p class="dot">. <span class="dot-year">1845</span></p>
+<p class="dot">. <span class="dot-year">1846</span></p>
+<p class="dot">. <span class="dot-year">1847</span></p>
+<p class="dot">. <span class="dot-year">1848</span></p>
+<p class="dot">. <span class="dot-year">1849</span></p>
+<p class="dot">. <span class="dot-year">1850</span></p>
+<p class="dot">. <span class="dot-year">1851</span></p>
+<p class="dot">. <span class="dot-year">1852</span></p>
+<p class="dot">. <span class="dot-year">1853</span></p>
+<p class="dot">. <span class="dot-year">1854</span></p>
+<p class="dot">. <span class="dot-year">1855</span></p>
+<p class="dot">. <span class="dot-year">1856</span></p>
+<p class="dot">. <span class="dot-year">1857</span></p>
+<p class="dot">. <span class="dot-year">1858</span></p>
+<p class="dot">. <span class="dot-year">1859</span></p>
+<p class="dot">. <span class="dot-year">1860</span></p>
+<p class="dot">. <span class="dot-year">1861</span></p>
+<p class="dot">. <span class="dot-year">1862</span></p>
+<p class="dot">. <span class="dot-year">1863</span></p>
+<p class="dot">. <span class="dot-year">1864</span></p>
+<p class="dot">. <span class="dot-year">1865</span></p>
+<p class="dot">. <span class="dot-year">1866</span></p>
+<p class="dot">. <span class="dot-year">1867</span></p>
+<p class="dot">. <span class="dot-year">1868</span></p>
+<p class="dot">. <span class="dot-year">1869</span></p>
+<p class="dot">. <span class="dot-year">1870</span></p>
+<p class="dot">. <span class="dot-year">1871</span></p>
+<p class="dot">. <span class="dot-year">1872</span></p>
+<p class="dot">. <span class="dot-year">1873</span></p>
+<p class="dot">. <span class="dot-year">1874</span></p>
+<p class="dot">. <span class="dot-year">1875</span></p>
+<p class="milestone">. 1876 — Telephone 📞</p>
+<p class="dot">. <span class="dot-year">1877</span></p>
+<p class="dot">. <span class="dot-year">1878</span></p>
+<p class="dot">. <span class="dot-year">1879</span></p>
+<p class="dot">. <span class="dot-year">1880</span></p>
+<p class="dot">. <span class="dot-year">1881</span></p>
+<p class="dot">. <span class="dot-year">1882</span></p>
+<p class="dot">. <span class="dot-year">1883</span></p>
+<p class="dot">. <span class="dot-year">1884</span></p>
+<p class="dot">. <span class="dot-year">1885</span></p>
+<p class="dot">. <span class="dot-year">1886</span></p>
+<p class="dot">. <span class="dot-year">1887</span></p>
+<p class="dot">. <span class="dot-year">1888</span></p>
+<p class="dot">. <span class="dot-year">1889</span></p>
+<p class="dot">. <span class="dot-year">1890</span></p>
+<p class="dot">. <span class="dot-year">1891</span></p>
+<p class="dot">. <span class="dot-year">1892</span></p>
+<p class="dot">. <span class="dot-year">1893</span></p>
+<p class="dot">. <span class="dot-year">1894</span></p>
+<p class="dot">. <span class="dot-year">1895</span></p>
+<p class="dot">. <span class="dot-year">1896</span></p>
+<p class="dot">. <span class="dot-year">1897</span></p>
+<p class="dot">. <span class="dot-year">1898</span></p>
+<p class="dot">. <span class="dot-year">1899</span></p>
+<p class="dot">. <span class="dot-year">1900</span></p>
+<p class="dot">. <span class="dot-year">1901</span></p>
+<p class="dot">. <span class="dot-year">1902</span></p>
+<p class="dot">. <span class="dot-year">1903</span></p>
+<p class="dot">. <span class="dot-year">1904</span></p>
+<p class="dot">. <span class="dot-year">1905</span></p>
+<p class="dot">. <span class="dot-year">1906</span></p>
+<p class="dot">. <span class="dot-year">1907</span></p>
+<p class="dot">. <span class="dot-year">1908</span></p>
+<p class="dot">. <span class="dot-year">1909</span></p>
+<p class="dot">. <span class="dot-year">1910</span></p>
+<p class="dot">. <span class="dot-year">1911</span></p>
+<p class="dot">. <span class="dot-year">1912</span></p>
+<p class="dot">. <span class="dot-year">1913</span></p>
+<p class="milestone">. 1914 — World War I&nbsp;⚔️</p>
+<p class="dot">. <span class="dot-year">1915</span></p>
+<p class="dot">. <span class="dot-year">1916</span></p>
+<p class="dot">. <span class="dot-year">1917</span></p>
+<p class="dot">. <span class="dot-year">1918</span></p>
+<p class="dot">. <span class="dot-year">1919</span></p>
+<p class="dot">. <span class="dot-year">1920</span></p>
+<p class="dot">. <span class="dot-year">1921</span></p>
+<p class="dot">. <span class="dot-year">1922</span></p>
+<p class="dot">. <span class="dot-year">1923</span></p>
+<p class="dot">. <span class="dot-year">1924</span></p>
+<p class="dot">. <span class="dot-year">1925</span></p>
+<p class="dot">. <span class="dot-year">1926</span></p>
+<p class="dot">. <span class="dot-year">1927</span></p>
+<p class="dot">. <span class="dot-year">1928</span></p>
+<p class="dot">. <span class="dot-year">1929</span></p>
+<p class="dot">. <span class="dot-year">1930</span></p>
+<p class="dot">. <span class="dot-year">1931</span></p>
+<p class="dot">. <span class="dot-year">1932</span></p>
+<p class="dot">. <span class="dot-year">1933</span></p>
+<p class="dot">. <span class="dot-year">1934</span></p>
+<p class="dot">. <span class="dot-year">1935</span></p>
+<p class="dot">. <span class="dot-year">1936</span></p>
+<p class="dot">. <span class="dot-year">1937</span></p>
+<p class="dot">. <span class="dot-year">1938</span></p>
+<p class="milestone">. 1939 — World War II&nbsp;⚔️</p>
+<p class="dot">. <span class="dot-year">1940</span></p>
+<p class="dot">. <span class="dot-year">1941</span></p>
+<p class="dot">. <span class="dot-year">1942</span></p>
+<p class="dot">. <span class="dot-year">1943</span></p>
+<p class="dot">. <span class="dot-year">1944</span></p>
+<p class="milestone">. 1945 — Nuclear Fission Weapon ☢️</p>
+<p class="dot">. <span class="dot-year">1946</span></p>
+<p class="dot">. <span class="dot-year">1947</span></p>
+<p class="dot">. <span class="dot-year">1948</span></p>
+<p class="dot">. <span class="dot-year">1949</span></p>
+<p class="dot">. <span class="dot-year">1950</span></p>
+<p class="dot">. <span class="dot-year">1951</span></p>
+<p class="dot">. <span class="dot-year">1952</span></p>
+<p class="milestone">. 1953 — Double Helix Structure of&nbsp;DNA 🧬</p>
+<p class="dot">. <span class="dot-year">1954</span></p>
+<p class="dot">. <span class="dot-year">1955</span></p>
+<p class="dot">. <span class="dot-year">1956</span></p>
+<p class="milestone">. 1957 — Sputnik 1&nbsp;Launch 🛰️</p>
+<p class="dot">. <span class="dot-year">1958</span></p>
+<p class="dot">. <span class="dot-year">1959</span></p>
+<p class="dot">. <span class="dot-year">1960</span></p>
+<p class="milestone">. 1961 — First human in&nbsp;space 🧑‍🚀</p>
+<p class="dot">. <span class="dot-year">1962</span></p>
+<p class="dot">. <span class="dot-year">1963</span></p>
+<p class="dot">. <span class="dot-year">1964</span></p>
+<p class="milestone">. 1965 — First spacewalk 🧑‍🚀</p>
+<p class="dot">. <span class="dot-year">1966</span></p>
+<p class="dot">. <span class="dot-year">1967</span></p>
+<p class="dot">. <span class="dot-year">1968</span></p>
+<p class="milestone">. 1969 — First human on&nbsp;Moon 🌕</p>
+<p class="dot">. <span class="dot-year">1970</span></p>
+<p class="dot">. <span class="dot-year">1971</span></p>
+<p class="dot">. <span class="dot-year">1972</span></p>
+<p class="milestone">. 1973 — Recombinant DNA Technology 🔬</p>
+<p class="dot">. <span class="dot-year">1974</span></p>
+<p class="dot">. <span class="dot-year">1975</span></p>
+<p class="dot">. <span class="dot-year">1976</span></p>
+<p class="dot">. <span class="dot-year">1977</span></p>
+<p class="milestone">. 1978 — First IVF Baby 👶</p>
+<p class="dot">. <span class="dot-year">1979</span></p>
+<p class="milestone">. 1980 — Discovery of&nbsp;Cosmic Inflation 🌌</p>
+<p class="dot">. <span class="dot-year">1981</span></p>
+<p class="dot">. <span class="dot-year">1982</span></p>
+<p class="milestone">. 1983 — GNU Project 💿</p>
+<p class="dot">. <span class="dot-year">1984</span></p>
+<p class="dot">. <span class="dot-year">1985</span></p>
+<p class="dot">. <span class="dot-year">1986</span></p>
+<p class="milestone">. 1987 — Black Monday crash 📉</p>
+<p class="dot">. <span class="dot-year">1988</span></p>
+<p class="milestone">. 1989 — World Wide Web 🌐</p>
+<p class="dot">. <span class="dot-year">1990</span></p>
+<p class="milestone">. 1991 — Linux kernel released 🐧</p>
+<p class="dot">. <span class="dot-year">1992</span></p>
+<p class="dot">. <span class="dot-year">1993</span></p>
+<p class="dot">. <span class="dot-year">1994</span></p>
+<p class="milestone">. 1995 — First exoplanet confirmed 🪐</p>
+<p class="dot">. <span class="dot-year">1996</span></p>
+<p class="milestone">. 1997 — Deep Blue&nbsp;vs. Kasparov ♟️</p>
+<p class="dot">. <span class="dot-year">1998</span></p>
+<p class="dot">. <span class="dot-year">1999</span></p>
+<p class="dot">. <span class="dot-year">2000</span></p>
+<p class="milestone">. 2001 — Human Genome Sequence 🧪</p>
+<p class="dot">. <span class="dot-year">2002</span></p>
+<p class="dot">. <span class="dot-year">2003</span></p>
+<p class="milestone">. 2004 — Mars Rovers land 🤖</p>
+<p class="dot">. <span class="dot-year">2005</span></p>
+<p class="dot">. <span class="dot-year">2006</span></p>
+<p class="milestone">. 2007 — iPhone 📱</p>
+<p class="milestone">. 2008 — Bitcoin 🪙</p>
+<p class="dot">. <span class="dot-year">2009</span></p>
+<p class="milestone">. 2010 — First synthetic cell created 🧫</p>
+<p class="dot">. <span class="dot-year">2011</span></p>
+<p class="milestone">. 2012 — CRISPR/Cas9 ✂️</p>
+<p class="milestone">. 2013 — NSA revelations 👀</p>
+<p class="dot">. <span class="dot-year">2014</span></p>
+<p class="milestone">. 2015 — SpaceX Falcon 9&nbsp;landing 🚀</p>
+<p class="milestone">. 2016 — AlphaGo&nbsp;vs. Lee Sedol 🎲</p>
+<p class="milestone">. 2017 — Transformer Architecture 🤖</p>
+<p class="milestone">. 2018 — CRISPR Human Embryo Editing 🧬</p>
+<p class="milestone">. 2019 — COVID-19 🦠</p>
+<p class="milestone">. 2020 — AlphaFold 🧪</p>
+<p class="milestone">. 2021 — James Webb Space Telescope 🔭</p>
+<p class="milestone">. 2022 — ChatGPT 💬</p>
+<p class="milestone">. 2023 — Repeated Fusion Ignition ☀️</p>
+<p class="milestone">. 2024 — First BCI implanted in&nbsp;a&nbsp;human 🧠</p>
+<p class="milestone">. 2025 — Humanoid Robots at&nbsp;Scale 🦿</p>
+      <p class="milestone">. 2026 — What will you do?</p>
+    
+  </section>
+
+    
+  <section id="future">
+    <h2>Can we&nbsp;handle what's coming?</h2>
+    
+      <p class="text-sm mt-phi mb-micro">The&nbsp;problem is&nbsp;not&nbsp;in&nbsp;human nature. It's in&nbsp;the&nbsp;system — it&nbsp;still makes harm cheaper than cooperation.</p>
+      <p class="text-sm mt-micro mb-micro">And&nbsp;only from today we&nbsp;have enough technology to&nbsp;change the&nbsp;whole system of&nbsp;interactions, connections, and&nbsp;cooperation.</p>
+
+      
+  <div id="plane" class="plane-2d">
+    <div class="plane-y-label">Costs of&nbsp;deception — <span class="plane-pct" id="pct-y">15%</span></div>
+    <div class="plane-canvas-wrap">
+      <div class="plane-canvas">
+        <div class="plane-line-h" style="bottom:15%"></div>
+        <div class="plane-line-v" style="left:30%"></div>
+        <div class="plane-point" style="left:30%;bottom:15%"></div>
+        <p class="plane-hint">Drag responsibly</p>
+      </div>
+      <div class="plane-x-label">Easy to&nbsp;cooperate — <span class="plane-pct" id="pct-x">30%</span></div>
+    </div>
+  </div>
+
+      <div id="future-timeline" class="mt-lg"></div>
+
+      <div class="two-col mt-lg">
+        <div id="card-wisdom" class="card">
+    <p class="card-title">Gods with wisdom ✨</p>
+    <p>We&nbsp;build, we&nbsp;grow, we&nbsp;transcend.</p>
+  </div>
+        <div id="card-death" class="card">
+    <p class="card-title">Humanity is&nbsp;gone 💀</p>
+    <p>Destruction outpaced cooperation.</p>
+  </div>
+      </div>
+
+      <div class="box mt-lg">
+        <p id="system-message" class="mb-phi"></p>
+        <a href="#future" class="btn-scroll" onclick="this.blur()">Go&nbsp;back to&nbsp;the&nbsp;plane</a>
+      </div>
+    
+  </section>
+
+    
+  <section id="mission">
+    <h2>Mission</h2>
+    
+      <p class="mb-phi">For&nbsp;300,000 years, a&nbsp;single human could kill one person with a&nbsp;rock. Today, a&nbsp;single human can kill millions. But&nbsp;our systems still reward harm and&nbsp;cooperation at&nbsp;roughly the&nbsp;same rate.</p>
+      <p class="mb-phi">The&nbsp;fix isn't better humans. It's a&nbsp;better system — one where growing through benefit is&nbsp;faster, cheaper, and&nbsp;more powerful than growing through harm.</p>
+      <p class="callout"><strong>Elevate the&nbsp;system for&nbsp;humanity: make it&nbsp;easier to&nbsp;grow through benefit, harder to&nbsp;grow through harm.</strong></p>
+      <p class="mb-micro">Create a&nbsp;way of&nbsp;living by&nbsp;win-win that outcompetes egoism — not&nbsp;through morality, but&nbsp;through superior results.</p>
+      <p>Radical openness and&nbsp;win-win as&nbsp;the&nbsp;de&nbsp;facto standard for&nbsp;humanity.</p>
+    
+  </section>
+
+    
+  <section id="values">
+    <h2>Values</h2>
+    
+      <p class="mb-micro"><strong>1. Win-win or&nbsp;no&nbsp;deal.</strong> Every interaction either creates mutual value or&nbsp;doesn't happen.</p>
+      <p class="mb-micro"><strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.</p>
+      <p class="mb-micro"><strong>3. Rationality.</strong> Evidence and&nbsp;logic over consensus and&nbsp;emotion — including the&nbsp;obligation to&nbsp;update when proven wrong.</p>
+      <p class="mb-micro"><strong>4. Transparency.</strong> Default to&nbsp;open. Eliminate information asymmetry starting with yourself.</p>
+      <p class="mb-micro"><strong>5. Antifragility.</strong> Build mechanisms that get stronger when attacked.</p>
+      <p class="mb-micro"><strong>6. Leverage.</strong> Minimum force at&nbsp;the&nbsp;point of&nbsp;maximum systemic effect.</p>
+      <p class="mb-micro"><strong>7. Courage.</strong> Act on&nbsp;the&nbsp;Mission despite resistance from those who profit from the&nbsp;status quo.</p>
+      <p class="mb-micro"><strong>8. Skin in&nbsp;the&nbsp;Game.</strong> Live the&nbsp;system yourself. The&nbsp;founder is&nbsp;the&nbsp;first evidence.</p>
+      <p><strong>9. Patience.</strong> Compound interest mindset — urgency in&nbsp;action, patience in&nbsp;expectation.</p>
+    
+  </section>
+
+    
+  <section id="participants">
+    <h2>Participants</h2>
+    
+      <p class="mb-phi"><strong>100.engineer</strong> — an&nbsp;individual who absorbs the&nbsp;coordination cost no&nbsp;one else will, driven by&nbsp;first-principles understanding that win-win isn't idealism but&nbsp;a&nbsp;superior strategy — in&nbsp;the&nbsp;interests of&nbsp;all humanity.</p>
+      <p>For&nbsp;now we&nbsp;are building the&nbsp;core of&nbsp;the&nbsp;community from scratch and&nbsp;actively recruiting new members. Read on&nbsp;to&nbsp;learn how it&nbsp;works and&nbsp;how to&nbsp;get involved.</p>
+    
+  </section>
+
+    
+  <section id="internal">
+    <h2>Internal products</h2>
+    
+      <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Systematically raise your operating efficiency through shared infrastructure.</p>
+
+      <h3>Rhythm</h3>
+      <p class="mb-phi">Weekly: Set goals → execute → demo results.</p>
+
+      <p class="mb-micro"><strong>Joint projects.</strong> In&nbsp;teams of&nbsp;2‑4. Each must make cooperation easier or&nbsp;deception harder.</p>
+      <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
+      <p class="mb-micro"><strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.</p>
+      <p class="mb-micro"><strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and&nbsp;iteration.</p>
+      <p class="mb-micro"><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
+
+      <h3>Infrastructure</h3>
+      <p class="mb-micro"><strong>Shared expertise map.</strong> Member's skills, contacts, and&nbsp;knowledge — mapped and&nbsp;accessible.</p>
+      <p class="mb-micro"><strong>Systematic mutual help.</strong> Structured system where helping is&nbsp;tracked, visible, and&nbsp;reciprocated.</p>
+      <p><strong>Club chat.</strong> Async coordination — decisions, questions, quick feedback.</p>
+
+      <h3>Closest event</h3>
+      <p class="mb-phi"><strong>Strategy alignment.</strong> A&nbsp;community-wide session to&nbsp;review our goals, recalibrate the&nbsp;roadmap, and&nbsp;make sure everyone is&nbsp;pulling in&nbsp;the&nbsp;same direction. Goals review, open discussion, and&nbsp;clear next steps — so&nbsp;every member knows where we're headed and&nbsp;why.</p>
+    
+  </section>
+
+    
+  <section id="external">
+    <h2>External products</h2>
+    
+      <p class="mb-phi">We&nbsp;build and&nbsp;ship our own products — tools that make cooperation easier and&nbsp;deception harder. Weekly updates, small steps compound.</p>
+
+      <p class="mb-micro">1. IT&nbsp;products for&nbsp;cooperation</p>
+      <p class="mb-micro">2. Methods to&nbsp;simplify win-win</p>
+      <p class="mb-phi">3. Methods to&nbsp;raise costs of&nbsp;deception</p>
+
+      <h3>Current product</h3>
+      <p class="mb-phi">The&nbsp;<a href="https://np2.ru/">np2.ru</a> – is&nbsp;a&nbsp;community app platform we&nbsp;built ourselves — profiles with skills and&nbsp;requests, AI-powered member search, event ticketing with payments.</p>
+
+      <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the&nbsp;right person instantly, organizers make decisions from real data instead of&nbsp;gut feelings.</p>
+      <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764&nbsp;users, 20&nbsp;events, 355&nbsp;transactions, 1.5M ₽ revenue processed.</p>
+
+      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly&nbsp;fix. Target: 100&nbsp;clubs → 42M ₽/year.</p>
+    
+  </section>
+
+    
+  <section id="join">
+    <h2>Join</h2>
+    
+      <div class="two-col">
+        <div id="card-join-yes" class="card">
+    <p class="card-title">Who fits</p>
+    
+          <p class="mb-micro">Ambitious goals</p>
+          <p class="mb-micro">Explorer of&nbsp;the&nbsp;world</p>
+          <p class="mb-micro">Impact on&nbsp;society/humanity</p>
+          <p>Growth through win-win</p>
+        
+  </div>
+        <div id="card-join-no" class="card">
+    <p class="card-title">Who doesn't fit</p>
+    
+          <p class="mb-micro">Not&nbsp;ready to&nbsp;devote their life to&nbsp;serving humanity</p>
+          <p>Satisfied with how the&nbsp;world is</p>
+        
+  </div>
+      </div>
+    
+  </section>
+
+    
+  <div class="cta-box">
+    <p class="mb-phi">If&nbsp;you've read this far, you probably share our obsession with building things that matter. We'd love to&nbsp;hear from you.</p>
+    <a href="https://t.me/Oresty" class="btn-scroll">Write to&nbsp;us</a>
+  </div>
+
+  </article>
+  <script src="typograf.min.js"></script>
+  <script>
+    (function() {
+      // ── Event Definitions ──
+      // Each event has separate coopWeight/decepWeight controlling how each
+      // slider influences its timing, plus separate minCoop/minDecep/maxCoop/maxDecep
+      // thresholds controlling whether it appears at all.
+      var futureEvents = [
+        // ── TECHNOLOGY: driven by momentum, coop accelerates (shared research) ──
+        { label: 'BCI at Scale \u{1F9E0}', category: 'tech',
+          yearRange: [2027, 2030], cW: 0.2, dW: 0.1 },
+        { label: 'AGI-Level Systems \u26A1', category: 'tech',
+          yearRange: [2027, 2033], cW: 0.4, dW: 0.1 },
+        { label: 'Quantum-AI Drug Discovery \u{1F48A}', category: 'tech',
+          yearRange: [2029, 2038], cW: 0.5, dW: 0.1 },
+        { label: 'AI-Driven Scientific Revolution \u{1F52C}', category: 'tech',
+          yearRange: [2030, 2045], cW: 0.6, dW: 0.1 },
+        { label: 'The Singularity \u{1F573}\uFE0F', category: 'tech',
+          yearRange: [2040, 2070], cW: 0.4, dW: 0.2 },
+
+        // ── BENEFICIAL: need cooperation and/or accountability to materialize ──
+        // minCoop: event won't happen without enough cooperation
+        // minDecep: event won't happen without enough accountability
+        { label: 'Longevity Escape Velocity \u267E\uFE0F', category: 'beneficial',
+          yearRange: [2035, 2080], cW: 0.7, dW: 0.2, minCoop: 0.25 },
+        { label: 'Aligned Superintelligence \u{1F310}', category: 'beneficial',
+          yearRange: [2040, 2075], cW: 0.5, dW: 0.4, minCoop: 0.40, minDecep: 0.30 },
+        { label: 'Biological Age Reversal \u{1F9EC}', category: 'beneficial',
+          yearRange: [2045, 2090], cW: 0.6, dW: 0.2, minCoop: 0.35 },
+        { label: 'Brain-Cloud Interface \u2601\uFE0F', category: 'beneficial',
+          yearRange: [2050, 2100], cW: 0.4, dW: 0.5, minCoop: 0.40, minDecep: 0.35 },
+        { label: 'Post-Scarcity Economics \u{1F3DB}\uFE0F', category: 'beneficial',
+          yearRange: [2060, 2150], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.45 },
+        { label: 'A-Mortality (Death Optional) \u{1F52E}', category: 'beneficial',
+          yearRange: [2070, 2200], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.50 },
+        { label: 'Homo Deus: Transcendence \u{1F30C}', category: 'beneficial',
+          yearRange: [2100, 2300], cW: 0.5, dW: 0.5, minCoop: 0.65, minDecep: 0.60 },
+
+        // ── DYSTOPIAN: appear when specific slider is too low ──
+        // maxCoop: disappears when cooperation is high enough (sharing prevents it)
+        // maxDecep: disappears when deception costs are high enough (accountability prevents it)
+        { label: 'The Useless Class \u{1F4C9}', category: 'dystopian',
+          yearRange: [2028, 2045], cW: 0.6, dW: 0.2, maxCoop: 0.55 },
+        { label: 'Total Surveillance State \u{1F441}\uFE0F', category: 'dystopian',
+          yearRange: [2028, 2050], cW: 0.2, dW: 0.8, maxDecep: 0.50 },
+        { label: 'Biological Castes \u{1F9EA}', category: 'dystopian',
+          yearRange: [2035, 2070], cW: 0.6, dW: 0.3, maxCoop: 0.50 },
+        { label: 'Species Divergence \u{1F9EC}', category: 'dystopian',
+          yearRange: [2045, 2090], cW: 0.5, dW: 0.4, maxCoop: 0.45 },
+      ];
+
+      // ── Typography (runtime) ──
+      var tp = new Typograf({locale: ['en-US']});
+      Typograf.getRules().forEach(function(r) { tp.disableRule(r.name); });
+      Typograf.getRules().filter(function(r) { return r.name.indexOf('common/nbsp/') === 0; })
+        .forEach(function(r) { tp.enableRule(r.name); });
+
+      function typografRuntime(text) {
+        return tp.execute(text);
+      }
+
+      // ── DOM ──
+      var planeCanvas = document.querySelector('#plane .plane-canvas');
+      var planePoint = document.querySelector('#plane .plane-point');
+      var planeHint = document.querySelector('#plane .plane-hint');
+      var lineH = document.querySelector('#plane .plane-line-h');
+      var lineV = document.querySelector('#plane .plane-line-v');
+      var pctX = document.getElementById('pct-x');
+      var pctY = document.getElementById('pct-y');
+      var container = document.getElementById('future-timeline');
+      var systemMsg = document.getElementById('system-message');
+      var cardWisdom = document.getElementById('card-wisdom');
+      var cardDeath = document.getElementById('card-death');
+
+      // ── 2D Plane State ──
+      var coopValue = 30;
+      var decepValue = 15;
+
+      function updatePointPosition() {
+        planePoint.style.left = coopValue + '%';
+        planePoint.style.bottom = decepValue + '%';
+        lineH.style.bottom = decepValue + '%';
+        lineV.style.left = coopValue + '%';
+        pctX.textContent = coopValue + '%';
+        pctY.textContent = decepValue + '%';
+      }
+
+      function handlePlaneInteraction(e) {
+        planeHint.classList.add('hidden');
+        var rect = planeCanvas.getBoundingClientRect();
+        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        var x = (clientX - rect.left) / rect.width;
+        var y = 1 - (clientY - rect.top) / rect.height;
+        coopValue = Math.round(Math.max(0, Math.min(100, x * 100)));
+        decepValue = Math.round(Math.max(0, Math.min(100, y * 100)));
+        updatePointPosition();
+        render();
+      }
+
+      var dragging = false;
+      planeCanvas.addEventListener('mousedown', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); });
+      document.addEventListener('mousemove', function(e) { if (dragging) { e.preventDefault(); handlePlaneInteraction(e); } });
+      document.addEventListener('mouseup', function() { dragging = false; planePoint.classList.remove('dragging'); });
+      planeCanvas.addEventListener('touchstart', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); e.preventDefault(); }, { passive: false });
+      document.addEventListener('touchmove', function(e) { if (dragging) { handlePlaneInteraction(e); e.preventDefault(); } }, { passive: false });
+      document.addEventListener('touchend', function() { dragging = false; planePoint.classList.remove('dragging'); });
+
+      // ── Safety Score for Extinction ──
+      // Cooperation (40%): enables collective governance against existential risk
+      // Deception costs (30%): deters bad actors from catastrophic actions
+      // Synergy (30%): you need BOTH for robust safety (sqrt penalizes imbalance)
+      function safetyScore(coop, decep) {
+        return 0.4 * coop + 0.3 * decep + 0.3 * Math.sqrt(coop * decep);
+      }
+
+      // ── Hazard Rate Model ──
+      // Based on Toby Ord (~1/6 per century at current trajectory ~safety 0.35).
+      // Base hazard grows over time as tech capability increases.
+      function computeExtinctionYear(coop, decep) {
+        var safety = safetyScore(coop, decep);
+        var k = 10;
+        var normSafety = 0.35;
+        var normalization = Math.exp(k * (1 - normSafety));
+        var govMultiplier = Math.exp(k * (1 - safety)) / normalization;
+
+        var cumulativeSurvival = 1.0;
+        for (var y = 2026; y <= 2300; y++) {
+          var yearsOut = y - 2026;
+          var baseHazard = 0.001 + 0.009 * (1 - Math.exp(-yearsOut / 25));
+          var annualHazard = Math.min(baseHazard * govMultiplier, 0.20);
+          cumulativeSurvival *= (1 - annualHazard);
+          if (cumulativeSurvival < 0.5) return y;
+        }
+        return null;
+      }
+
+      // ── Event Year Calculation ──
+      // Each event has its own coop/decep sensitivity (cW, dW).
+      // Tech/beneficial: higher slider value → earlier year
+      // Dystopian: higher slider value → later year (delayed/mitigated)
+      function computeEventYear(event, coop, decep) {
+        var fast = event.yearRange[0];
+        var slow = event.yearRange[1];
+        var range = slow - fast;
+        var totalW = event.cW + event.dW;
+        var factor = totalW > 0 ? (event.cW * coop + event.dW * decep) / totalW : 0;
+
+        if (event.category === 'dystopian') {
+          // Higher sliders → later (delayed). factor=0 → fast year, factor=1 → slow year
+          return Math.round(fast + range * factor);
+        }
+        // Tech & beneficial: higher sliders → earlier. factor=0 → slow year, factor=1 → fast year
+        return Math.round(slow - range * factor);
+      }
+
+      // ── Timeline Computation ──
+      function computeTimeline(coopRaw, decepRaw) {
+        var coop = coopRaw / 100;
+        var decep = decepRaw / 100;
+        var extinctionYear = computeExtinctionYear(coop, decep);
+        var visibleEvents = [];
+
+        for (var i = 0; i < futureEvents.length; i++) {
+          var ev = futureEvents[i];
+
+          // Beneficial: need minimum cooperation and/or deception cost
+          if (ev.minCoop !== undefined && coop < ev.minCoop) continue;
+          if (ev.minDecep !== undefined && decep < ev.minDecep) continue;
+
+          // Dystopian: filtered out when slider is high enough
+          if (ev.maxCoop !== undefined && coop >= ev.maxCoop) continue;
+          if (ev.maxDecep !== undefined && decep >= ev.maxDecep) continue;
+
+          var year = computeEventYear(ev, coop, decep);
+
+          // Cut off at extinction — nothing happens after humanity dies
+          if (extinctionYear !== null && year >= extinctionYear) continue;
+
+          visibleEvents.push({ label: ev.label, category: ev.category, year: year });
+        }
+
+        // Determine ending
+        var safety = safetyScore(coop, decep);
+        if (extinctionYear !== null && extinctionYear <= 2200) {
+          visibleEvents.push({ label: 'Human Extinction \u{1F480}', category: 'extinction', year: extinctionYear });
+        } else if (coop >= 0.65 && decep >= 0.60) {
+          var lastYear = 2060;
+          for (var j = 0; j < visibleEvents.length; j++) {
+            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
+          }
+          visibleEvents.push({ label: 'Humanity \u2014 gods with wisdom \u2728', category: 'transcendence', year: lastYear + 10 });
+        } else if (safety >= 0.45) {
+          var lastYear = 2060;
+          for (var j = 0; j < visibleEvents.length; j++) {
+            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
+          }
+          visibleEvents.push({ label: 'Intelligent life survives \u{1F331}', category: 'survival', year: lastYear + 5 });
+        }
+
+        visibleEvents.sort(function(a, b) { return a.year - b.year; });
+        return { events: visibleEvents, coop: coop, decep: decep, safety: safety, extinctionYear: extinctionYear };
+      }
+
+      // ── System Message ──
+      // References specific slider deficiencies so user knows what to change
+      function getMessage(coop, decep, extinctionYear, events) {
+        var hasExtinction = extinctionYear !== null && extinctionYear <= 2200;
+        var hasDystopian = events.some(function(e) { return e.category === 'dystopian'; });
+        var hasBeneficial = events.some(function(e) { return e.category === 'beneficial'; });
+        var imbalance = Math.abs(coop - decep);
+
+        // Extinction
+        if (hasExtinction && extinctionYear <= 2035) {
+          return 'Extinction by ' + extinctionYear + '. Cooperation and accountability collapsed. At these settings, the odds are far worse than Toby Ord\'s 1-in-6.';
+        }
+        if (hasExtinction && extinctionYear <= 2060) {
+          return 'Extinction by ' + extinctionYear + '. Technology without wisdom.' + (hasDystopian ? ' Biological castes accelerated collapse.' : '') + ' The gap closed \u2014 the wrong way.';
+        }
+        if (hasExtinction) {
+          return 'Extinction by ' + extinctionYear + '. The system never changed enough. The math caught up.';
+        }
+
+        // Slider-specific feedback
+        if (coop > 0.6 && decep < 0.25) {
+          return 'Cooperation is strong but deception is free. Bad actors exploit every open system. Raise deception costs.';
+        }
+        if (decep > 0.6 && coop < 0.25) {
+          return 'Deception is costly but cooperation is blocked. Technology stalls. Make cooperation easier.';
+        }
+        if (imbalance > 0.35 && coop > decep) {
+          return 'Cooperation outpaces accountability. No consequences for bad actors.' + (hasDystopian ? ' Exploitation persists.' : '') + ' Push deception costs higher.';
+        }
+        if (imbalance > 0.35 && decep > coop) {
+          return 'Accountability outpaces cooperation. The system punishes harm but doesn\'t enable good.' + (!hasBeneficial ? ' No breakthroughs appear.' : '') + ' Make cooperation easier.';
+        }
+
+        // Progress
+        var safety = safetyScore(coop, decep);
+        if (safety < 0.30) {
+          return 'Current trajectory. The system rewards harm over cooperation. This is the default future without intervention.';
+        }
+        if (safety < 0.50) {
+          return 'Partial progress. The gap narrows but hasn\'t closed.' + (hasDystopian ? ' Dystopian outcomes still loom.' : '');
+        }
+        if (safety < 0.70) {
+          return 'Genuine progress. Cooperation and accountability are catching up.' + (hasBeneficial ? ' Life extension, aligned AI become real possibilities.' : '') + ' Trust starts to outcompete exploitation.';
+        }
+
+        return 'The system works. Cooperation is easy, deception is expensive. Humanity unlocks its full potential.';
+      }
+
+      // ── Render ──
+      function render() {
+        var result = computeTimeline(coopValue, decepValue);
+        var events = result.events;
+
+        systemMsg.textContent = typografRuntime(getMessage(result.coop, result.decep, result.extinctionYear, events));
+
+        var hasWisdom = events.some(function(e) { return e.category === 'transcendence'; });
+        var hasExtinction = events.some(function(e) { return e.category === 'extinction'; });
+        cardWisdom.style.opacity = hasWisdom ? '1' : '0.3';
+        cardDeath.style.opacity = hasExtinction ? '1' : '0.3';
+
+        // Build milestone map (handle same-year events)
+        var milestones = {};
+        for (var i = 0; i < events.length; i++) {
+          var e = events[i];
+          if (milestones[e.year]) {
+            milestones[e.year] += ' / ' + e.label;
+          } else {
+            milestones[e.year] = e.label;
+          }
+        }
+
+        // Determine timeline range
+        var lastEventYear = 2035;
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].year > lastEventYear) lastEventYear = events[i].year;
+        }
+        var endYear = lastEventYear + 3;
+
+        var startYear = 2027;
+        var html = '';
+        for (var y = startYear; y <= endYear; y++) {
+          if (milestones[y]) {
+            html += '<p class="milestone">. ' + y + ' \u2014 ' + milestones[y] + '</p>';
+          } else {
+            html += '<p class="dot">. <span class="dot-year">' + y + '</span></p>';
+          }
+          // Stop after extinction
+          if (milestones[y] && milestones[y].indexOf('Extinction') !== -1) break;
+        }
+        container.innerHTML = html;
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>
