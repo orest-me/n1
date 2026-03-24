@@ -329,7 +329,7 @@ const html = `<!DOCTYPE html>
       align-items: stretch;
       margin: ${r(phi)}rem 0;
       gap: ${r(1/phi/phi)}rem;
-      max-width: 100%;
+      max-width: 65vw;
     }
     .plane-y-label {
       writing-mode: vertical-lr;
