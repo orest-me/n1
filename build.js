@@ -443,7 +443,7 @@ const html = `<!DOCTYPE html>
   <article>
 
     <header>
-      <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe, we checked.">Moscow, Earth.</span></p>
+      <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
       <h1>Weekly fixes for humanity</h1>
       <p class="mt-sm">We build products that make cooperation easy and deception expensive. New updates — every week.</p>
       <p class="mt-sm">A community of individuals who absorb the coordination cost no one else will — driven by the first-principles understanding that win-win isn't idealism, it's a superior strategy.</p>
