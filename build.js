@@ -2,9 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const Typograf = require('typograf');
 
+
 // ─── Golden Ratio Constants ───
 const phi = 1.618033988749895;
 const sqrtPhi = Math.sqrt(phi);    // 1.272
+const r = (n) => Math.round(n * 1000) / 1000; // round to 3 decimals
 
 // Type scale (all derived from phi):
 //   phi²    = 2.618rem — h1/hero
@@ -143,10 +145,36 @@ const html = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>n1.community — Closing the gap between destruction and cooperation</title>
+  <meta name="description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta name="keywords" content="n1, community, cooperation, win-win, coordination, humanity, mission-driven">
+  <meta name="author" content="n1.community">
+  <link rel="canonical" href="https://n1.community/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://n1.community/">
+  <meta property="og:title" content="n1.community — Weekly fixes for humanity">
+  <meta property="og:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta property="og:image" content="https://n1.community/web-app-manifest-512x512.png">
+  <meta property="og:site_name" content="n1.community">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="n1.community — Weekly fixes for humanity">
+  <meta name="twitter:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta name="twitter:image" content="https://n1.community/web-app-manifest-512x512.png">
+
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="n1" />
+  <link rel="manifest" href="/site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="output.css">
+  <link rel="stylesheet" href="/static/style.css">
   <style>
     /* ─── Reset ─── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -157,7 +185,7 @@ const html = `<!DOCTYPE html>
       font-family: 'Playfair', serif;
       color: #000;
       background: #fff;
-      line-height: ${phi};
+      line-height: ${r(phi)};
     }
 
     /* ─── Typography ─── */
@@ -166,36 +194,36 @@ const html = `<!DOCTYPE html>
       line-height: 1.2;
     }
     h1 {
-      font-size: ${phi * phi}rem;
+      font-size: ${r(phi * phi)}rem;
       line-height: 1.1;
-      margin-bottom: ${phi}rem;
+      margin-bottom: ${r(phi)}rem;
     }
     h2 {
-      font-size: ${phi}rem;
-      margin-bottom: ${phi}rem;
+      font-size: ${r(phi)}rem;
+      margin-bottom: ${r(phi)}rem;
     }
     h3 {
-      font-size: ${sqrtPhi}rem;
-      margin-top: ${phi * phi}rem;
-      margin-bottom: ${1/phi}rem;
+      font-size: ${r(sqrtPhi)}rem;
+      margin-top: ${r(phi * phi)}rem;
+      margin-bottom: ${r(1/phi)}rem;
     }
     h4 {
-      margin-top: ${1/phi}rem;
-      margin-bottom: ${1/phi/phi}rem;
+      margin-top: ${r(1/phi)}rem;
+      margin-bottom: ${r(1/phi/phi)}rem;
     }
     .subtitle {
       font-family: 'Playfair Display', serif;
-      font-size: ${phi}rem;
+      font-size: ${r(phi)}rem;
       line-height: 1.2;
-      margin-bottom: ${phi}rem;
+      margin-bottom: ${r(phi)}rem;
     }
     .callout {
       font-family: 'Playfair Display', serif;
-      font-size: ${sqrtPhi}rem;
-      margin-bottom: ${phi}rem;
+      font-size: ${r(sqrtPhi)}rem;
+      margin-bottom: ${r(phi)}rem;
     }
     .text-sm {
-      font-size: ${1/sqrtPhi}rem;
+      font-size: ${r(1/sqrtPhi)}rem;
     }
     .tooltip {
       position: relative;
@@ -211,7 +239,7 @@ const html = `<!DOCTYPE html>
       margin-top: 0.4em;
       background: #000;
       color: #fff;
-      font-size: ${1/phi}rem;
+      font-size: ${r(1/phi)}rem;
       line-height: 1.4;
       padding: 0.4em 0.7em;
       border-radius: 0.25em;
@@ -246,61 +274,67 @@ const html = `<!DOCTYPE html>
     article {
       max-width: 38em;
       margin: 0 auto;
-      padding: ${phi * phi}rem ${phi}rem;
+      padding: ${r(phi * phi)}rem ${r(phi)}rem;
+    }
+    .hero-logotype {
+      height: ${r(phi * phi * phi)}rem;
+      width: auto;
+      margin-top: ${r(phi * phi)}rem;
+      margin-bottom: ${r(phi * phi)}rem;
     }
     header {
-      margin-bottom: ${phi * phi * phi}rem;
+      margin-bottom: ${r(phi * phi * phi)}rem;
     }
     section {
-      margin-top: ${phi * phi * phi}rem;
+      margin-top: ${r(phi * phi * phi)}rem;
     }
     .two-col {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-      gap: ${phi}rem;
+      gap: ${r(phi)}rem;
       align-items: stretch;
     }
 
     /* ─── Spacing (phi-derived) ─── */
-    .mb-phi { margin-bottom: ${phi}rem; }
-    .mb-sm { margin-bottom: ${1/phi}rem; }
-    .mb-micro { margin-bottom: ${1/phi/phi}rem; }
-    .mt-phi { margin-top: ${phi}rem; }
-    .mt-sm { margin-top: ${1/phi}rem; }
-    .mt-lg { margin-top: ${phi * phi}rem; }
-    .mb-lg { margin-bottom: ${phi * phi}rem; }
+    .mb-phi { margin-bottom: ${r(phi)}rem; }
+    .mb-sm { margin-bottom: ${r(1/phi)}rem; }
+    .mb-micro { margin-bottom: ${r(1/phi/phi)}rem; }
+    .mt-phi { margin-top: ${r(phi)}rem; }
+    .mt-sm { margin-top: ${r(1/phi)}rem; }
+    .mt-lg { margin-top: ${r(phi * phi)}rem; }
+    .mb-lg { margin-bottom: ${r(phi * phi)}rem; }
 
     /* ─── Components ─── */
     .card {
       border: 1px solid #000;
-      padding: ${phi}rem;
+      padding: ${r(phi)}rem;
       transition: opacity 0.3s;
     }
     .card-title {
       font-family: 'Playfair Display', serif;
-      font-size: ${sqrtPhi}rem;
-      margin-bottom: ${phi}rem;
+      font-size: ${r(sqrtPhi)}rem;
+      margin-bottom: ${r(phi)}rem;
     }
     .box {
       border: 1px solid #000;
-      padding: ${phi}rem;
+      padding: ${r(phi)}rem;
     }
     .cta-box {
-      margin-top: ${phi * phi * phi}rem;
-      padding: ${phi}rem;
+      margin-top: ${r(phi * phi * phi)}rem;
+      padding: ${r(phi)}rem;
       border: 1px solid #000;
     }
     .plane-2d {
       display: flex;
       align-items: stretch;
-      margin: ${phi}rem 0;
-      gap: ${1/phi/phi}rem;
+      margin: ${r(phi)}rem 0;
+      gap: ${r(1/phi/phi)}rem;
       max-width: 100%;
     }
     .plane-y-label {
       writing-mode: vertical-lr;
       transform: rotate(180deg);
-      font-size: ${1/sqrtPhi}rem;
+      font-size: ${r(1/sqrtPhi)}rem;
       text-align: center;
       white-space: nowrap;
     }
@@ -308,7 +342,7 @@ const html = `<!DOCTYPE html>
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: ${1/phi/phi}rem;
+      gap: ${r(1/phi/phi)}rem;
     }
     .plane-canvas {
       position: relative;
@@ -360,7 +394,7 @@ const html = `<!DOCTYPE html>
       50% { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
     }
     .plane-x-label {
-      font-size: ${1/sqrtPhi}rem;
+      font-size: ${r(1/sqrtPhi)}rem;
       text-align: center;
     }
     .plane-hint {
@@ -368,7 +402,7 @@ const html = `<!DOCTYPE html>
       left: 30%;
       bottom: 15%;
       transform: translate(1rem, -0.5rem);
-      font-size: ${1/sqrtPhi}rem;
+      font-size: ${r(1/sqrtPhi)}rem;
       color: #000;
       white-space: nowrap;
       pointer-events: none;
@@ -381,31 +415,31 @@ const html = `<!DOCTYPE html>
 
     /* ─── Timeline ─── */
     .dot, .milestone {
-      font-size: ${1/phi/phi}rem;
+      font-size: ${r(1/phi/phi)}rem;
       line-height: 1.1;
       margin: 0;
       padding: 0;
     }
     .dot-year {
-      font-size: ${1/phi}rem;
+      font-size: ${r(1/phi)}rem;
       opacity: 0.30;
     }
     .milestone {
-      font-size: ${1/sqrtPhi}rem;
-      line-height: ${phi};
-      padding: ${1/phi/phi/phi}rem 0;
+      font-size: ${r(1/sqrtPhi)}rem;
+      line-height: ${r(phi)};
+      padding: ${r(1/phi/phi/phi)}rem 0;
     }
 
     /* ─── Controls ─── */
     .btn-scroll {
       display: block;
-      margin-top: ${phi}rem;
-      padding: ${1/phi}rem ${phi}rem;
+      margin-top: ${r(phi)}rem;
+      padding: ${r(1/phi)}rem ${r(phi)}rem;
       border: 1px solid #000;
       text-align: center;
       text-decoration: none;
       color: #000;
-      font-size: ${phi}rem;
+      font-size: ${r(phi)}rem;
       line-height: 1.2;
       background: #fff;
       transition: background 0.2s, color 0.2s;
@@ -416,7 +450,7 @@ const html = `<!DOCTYPE html>
     }
     .btn-scroll:focus-visible {
       outline: 1px solid #000;
-      outline-offset: ${1/phi/phi}rem;
+      outline-offset: ${r(1/phi/phi)}rem;
     }
     .btn-scroll:active {
       opacity: 0.8;
@@ -425,7 +459,7 @@ const html = `<!DOCTYPE html>
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
       html { font-size: 18px; }
-      h1 { font-size: ${phi}rem; }
+      h1 { font-size: ${r(phi)}rem; }
     }
     @media (max-width: 380px) {
       html { font-size: 16px; }
@@ -433,17 +467,51 @@ const html = `<!DOCTYPE html>
 
     /* ─── Overrides ─── */
     #future {
-      scroll-margin-top: ${1 / phi / phi}rem;
-      padding-top: ${phi * phi * phi}rem;
+      scroll-margin-top: ${r(1/phi/phi)}rem;
+      padding-top: ${r(phi * phi * phi)}rem;
       margin-top: 0 !important;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "n1.community",
+    "url": "https://n1.community",
+    "logo": "https://n1.community/web-app-manifest-512x512.png",
+    "description": "We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.",
+    "sameAs": ["https://t.me/Oresty"]
+  }
+  </script>
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108223787', 'ym');
+
+      ym(108223787, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/108223787" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FM6ZVZ3Y22"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FM6ZVZ3Y22');
+  </script>
 </head>
 <body>
   <article>
 
     <header>
       <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
+      <img class="hero-logotype" src="/static/n1-logotype.svg" alt="n1.community">
       <h1>Weekly fixes for humanity</h1>
       <p class="mt-sm">We build products that make cooperation easy and deception expensive. New updates — every week.</p>
       <p class="mt-sm">A community of individuals who absorb the coordination cost no one else will — driven by the first-principles understanding that win-win isn't idealism, it's a superior strategy.</p>
@@ -479,7 +547,11 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi">The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.</p>
       <p class="callout"><strong>Elevate the system for humanity: make it easier to grow through benefit, harder to grow through harm.</strong></p>
       <p class="mb-micro">Create a way of living by win-win that outcompetes egoism — not through morality, but through superior results.</p>
-      <p>Radical openness and win-win as the de facto standard for humanity.</p>
+      <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
+
+      <h3>Why "N1"</h3>
+      <p class="mb-phi">Named after the Soviet N-1 rocket. In the 1960s, engineers designed a brilliant architecture — 30 engines working in sync — but lacked the computing power to coordinate them. It failed not because the idea was wrong, but because the technology wasn't ready. Sixty years later, SpaceX flew Starship with 33 engines — the same approach, now proven by modern computing.</p>
+      <p>Same story with cooperation. For centuries, philosophers, writers, and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technologies didn't exist. Now they do: internet, Big Data, AI, cryptography, smart contracts, and global real-time communication make large-scale cooperation possible for the first time.</p>
     `)}
 
     ${section('values', 'Values', `
@@ -496,14 +568,14 @@ const html = `<!DOCTYPE html>
 
     ${section('participants', 'Participants', `
       <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
-      <p>For now we are building the core of the community from scratch and actively recruiting new members. Read on to learn how it works and how to get involved.</p>
+      <p>For now we are building the core of the community from scratch and actively recruiting new members.</p>
     `)}
 
     ${section('internal', 'Internal products', `
       <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Systematically raise your operating efficiency through shared infrastructure.</p>
 
       <h3>Activities</h3>
-      <p class="mb-phi">Weekly: Set goals → execute → demo results.</p>
+      <p class="mb-phi">Weekly: Set goals, execute, demo results.</p>
 
       <p class="mb-micro"><strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.</p>
       <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
@@ -554,7 +626,7 @@ const html = `<!DOCTYPE html>
     ${ctaBox("If you've read this far without closing the tab, your prefrontal cortex has overruled your limbic system. That's exactly the kind of person we're looking for.", "Write to us", "https://t.me/Oresty")}
 
   </article>
-  <script src="typograf.min.js"></script>
+  <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
       // ── Event Definitions ──
@@ -859,10 +931,20 @@ const html = `<!DOCTYPE html>
 // ─── Write Output ───
 
 const dist = path.join(__dirname, 'dist');
+const staticDir = path.join(dist, 'static');
 if (!fs.existsSync(dist)) fs.mkdirSync(dist);
+if (!fs.existsSync(staticDir)) fs.mkdirSync(staticDir);
 fs.copyFileSync(
   path.join(__dirname, 'node_modules/typograf/dist/typograf.min.js'),
-  path.join(dist, 'typograf.min.js')
+  path.join(staticDir, 'typograf.min.js')
 );
+const pub = path.join(__dirname, 'public');
+if (fs.existsSync(pub)) {
+  for (const file of fs.readdirSync(pub)) {
+    if (file === 'n1-logotype.svg') continue; // only used from /static/
+    fs.copyFileSync(path.join(pub, file), path.join(dist, file));
+  }
+  fs.copyFileSync(path.join(pub, 'n1-logotype.svg'), path.join(staticDir, 'n1-logotype.svg'));
+}
 fs.writeFileSync(path.join(dist, 'index.html'), typographNbsp(html));
 console.log('Built dist/index.html');

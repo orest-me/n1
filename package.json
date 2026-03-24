@@ -2,8 +2,8 @@
   "name": "n1.community",
   "private": true,
   "scripts": {
-    "build": "node build.js && npx @tailwindcss/cli -i input.css -o dist/output.css --minify",
-    "dev": "node build.js && npx @tailwindcss/cli -i input.css -o dist/output.css --watch"
+    "build": "node build.js && npx @tailwindcss/cli -i input.css -o dist/static/style.css --minify",
+    "dev": "node build.js && npx @tailwindcss/cli -i input.css -o dist/static/style.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4"
