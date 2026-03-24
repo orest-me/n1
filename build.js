@@ -112,12 +112,12 @@ const pastMilestones = {
   1987: 'Black Monday crash 📉',
   1989: 'World Wide Web 🌐',
   1991: 'Linux kernel released 🐧',
-  1995: 'First exoplanet confirmed 🪐',
+  1995: 'First exoplanet around a sun-like star 🪐',
   1997: 'Deep Blue vs. Kasparov ♟️',
   2001: 'Human Genome Sequence 🧪',
   2004: 'Mars Rovers land 🤖',
   2007: 'iPhone 📱',
-  2008: 'Bitcoin 🪙',
+  2009: 'Bitcoin 🪙',
   2010: 'First synthetic cell created 🧫',
   2012: 'CRISPR/Cas9 ✂️',
   2013: 'NSA revelations 👀',
@@ -130,7 +130,7 @@ const pastMilestones = {
   2021: 'James Webb Space Telescope 🔭',
   2022: 'ChatGPT 💬',
   2023: 'Repeated Fusion Ignition ☀️',
-  2024: 'First BCI implanted in a human 🧠',
+  2024: 'First complete brain connectome 🪰',
   2025: 'Humanoid Robots at Scale 🦿',
 };
 
@@ -443,21 +443,21 @@ const html = `<!DOCTYPE html>
   <article>
 
     <header>
-      <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe, but we working on it.">Moscow, Earth.</span></p>
+      <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe, we checked.">Moscow, Earth.</span></p>
       <h1>Weekly fixes for humanity</h1>
       <p class="mt-sm">We build products that make cooperation easy and deception expensive. New updates — every week.</p>
       <p class="mt-sm">A community of individuals who absorb the coordination cost no one else will — driven by the first-principles understanding that win-win isn't idealism, it's a superior strategy.</p>
     </header>
 
     ${section('timeline', 'Not that long ago, right?', `
-      <p class="mb-phi">In 1543 we realized Earth isn't the center of the Solar system. We took it personally.</p>
+      <p class="mb-phi">In 1543 we realized Earth isn't the center of the universe. We took it personally.</p>
       ${dots(1543, 2025, pastMilestones)}
       <p class="milestone">. 2026 — What will you do?</p>
     `)}
 
     ${section('future', 'Can we handle what\'s coming?', `
       <p class="text-sm mt-phi mb-micro">The problem is not in human nature. It's in the system — it still makes harm cheaper than cooperation.</p>
-      <p class="text-sm mt-micro mb-micro">And only from today we have enough technology to change the whole system of interactions, connections, and cooperation.</p>
+      <p class="text-sm mt-micro mb-micro">Only now do we have enough technology to change the whole system of interactions, connections, and cooperation.</p>
 
       ${plane2D('plane', 'Easy to cooperate', 'Costs of deception', 30, 15)}
 
@@ -512,11 +512,11 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro"><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
 
       <h3>Infrastructure</h3>
-      <p class="mb-micro"><strong>Shared expertise map.</strong> Member's skills, contacts, and knowledge — mapped and accessible.</p>
+      <p class="mb-micro"><strong>Shared expertise map.</strong> Members' skills, contacts, and knowledge — mapped and accessible.</p>
       <p class="mb-micro"><strong>Systematic mutual help.</strong> Structured system where helping is tracked, visible, and reciprocated.</p>
       <p><strong>Club chat.</strong> Async coordination — decisions, questions, quick feedback.</p>
 
-      <h3>Closest event</h3>
+      <h3>Upcoming event</h3>
       <p class="mb-phi"><strong>Strategy alignment.</strong> Our first community-wide session to review our goals, recalibrate the roadmap, and make sure everyone is pulling in the same direction. Goals review, open discussion, and clear next steps — so every member knows where we're headed and why.</p>
     `)}
 
@@ -528,12 +528,12 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi">3. Methods to raise costs of deception</p>
 
       <h3>Current product</h3>
-      <p class="mb-phi">The <a href="https://np2.ru/">np2.ru</a> – is a community app platform we built ourselves — profiles with skills and requests, AI-powered member search, event ticketing with payments.</p>
+      <p class="mb-phi"><a href="https://np2.ru/">np2.ru</a> is a community app platform we built ourselves — profiles with skills and requests, AI-powered member search, event ticketing with payments.</p>
 
       <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, 1.5M ₽ revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fix. Target: 100 clubs → 42M ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → 42M ₽/year.</p>
     `)}
 
     ${section('join', 'Join', `
