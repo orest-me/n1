@@ -142,7 +142,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>100.engineer — Closing the gap between destruction and cooperation</title>
+  <title>n1.community — Closing the gap between destruction and cooperation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
@@ -495,7 +495,7 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${section('participants', 'Participants', `
-      <p class="mb-phi"><strong>100.engineer</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
+      <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
       <p>For now we are building the core of the community from scratch and actively recruiting new members. Read on to learn how it works and how to get involved.</p>
     `)}
 

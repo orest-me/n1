@@ -1,5 +1,5 @@
 {
-  "name": "100.engineer",
+  "name": "n1.community",
   "private": true,
   "scripts": {
     "build": "node build.js && npx @tailwindcss/cli -i input.css -o dist/output.css --minify",
