@@ -746,7 +746,7 @@ const html = `<!DOCTYPE html>
 
     ${section('participants', 'Participants', `
       <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by a first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
-      <p class="mb-phi"><strong>Current status:</strong> early stage — we are assembling the founding core from scratch. The group is small, tight-knit, and hands-on.</p>
+      <p class="mb-phi"><strong>Current status:</strong> early stage — we are assembling the founding core from scratch.</p>
       <p><strong>Language:</strong> day-to-day communication is mostly in Russian for now.</p>
     `)}
 
@@ -791,15 +791,15 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
     `)}
 
-    ${section('join', 'Join', `
+    ${section('join', 'Who this is for', `
       <div class="two-col">
-        ${card('card-join-yes', 'Who fits', items([
+        ${card('card-join-yes', 'Fits', items([
           'Ambitious goals',
           'Explorer of the world',
           'Impact on society/humanity',
           'Growth through win-win',
         ]))}
-        ${card('card-join-no', 'Who doesn\'t fit', items([
+        ${card('card-join-no', 'Doesn\'t fit', items([
           'Not ready to devote their life to serving humanity',
           'Satisfied with how the world is',
         ]))}
