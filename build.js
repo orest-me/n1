@@ -45,15 +45,17 @@ function section(id, title, content) {
 function plane2D(id, xLabel, yLabel, initialX, initialY) {
   return `
   <div id="${id}" class="plane-2d">
-    <div class="plane-y-label">${yLabel} — <span class="plane-pct" id="pct-y">${initialY}%</span></div>
+    <div class="plane-y-label" aria-hidden="true">${yLabel} — <span class="plane-pct" id="pct-y">${initialY}%</span></div>
     <div class="plane-canvas-wrap">
-      <div class="plane-canvas">
-        <div class="plane-line-h" style="bottom:${initialY}%"></div>
-        <div class="plane-line-v" style="left:${initialX}%"></div>
-        <div class="plane-point" style="left:${initialX}%;bottom:${initialY}%"></div>
-        <p class="plane-hint">Drag responsibly</p>
+      <div class="plane-canvas" role="application" tabindex="0"
+           aria-label="${xLabel} and ${yLabel} interactive plane. Use arrow keys: left/right for ${xLabel}, up/down for ${yLabel}.">
+        <div class="plane-line-h" style="bottom:${initialY}%" aria-hidden="true"></div>
+        <div class="plane-line-v" style="left:${initialX}%" aria-hidden="true"></div>
+        <div class="plane-point" style="left:${initialX}%;bottom:${initialY}%" aria-hidden="true"></div>
+        <p class="plane-hint" aria-hidden="true">Drag responsibly</p>
+        <div id="${id}-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
       </div>
-      <div class="plane-x-label">${xLabel} — <span class="plane-pct" id="pct-x">${initialX}%</span></div>
+      <div class="plane-x-label" aria-hidden="true">${xLabel} — <span class="plane-pct" id="pct-x">${initialX}%</span></div>
     </div>
   </div>`;
 }
@@ -236,6 +238,7 @@ const html = `<!DOCTYPE html>
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="n1" />
+  <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="stylesheet" href="/static/style.css">
   <style>
@@ -348,7 +351,8 @@ const html = `<!DOCTYPE html>
       transition: opacity 0.2s ease;
       z-index: 10;
     }
-    .tooltip:hover::after {
+    .tooltip:hover::after,
+    .tooltip:focus::after {
       opacity: 1;
     }
 
@@ -518,8 +522,7 @@ const html = `<!DOCTYPE html>
     }
     .plane-canvas {
       position: relative;
-      width: 100%;
-      max-width: 20rem;
+      width: min(20rem, 100%);
       aspect-ratio: 1;
       border: 1px solid #000;
       cursor: crosshair;
@@ -642,6 +645,31 @@ const html = `<!DOCTYPE html>
       padding-top: ${P3}rem;
       margin-top: 0 !important;
     }
+
+    /* ─── Accessibility ─── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      padding: 0.4em 0.8em;
+      background: #000;
+      color: #fff;
+      z-index: 9999;
+      font-size: ${iSP}rem;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -680,6 +708,8 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <!-- You're reading the source. That's either professional curiosity or existential procrastination. Either way, welcome. -->
+  <a href="#content" class="skip-link">Skip to main content</a>
+  <main id="content">
   <article>
 
     <header>
@@ -692,7 +722,7 @@ const html = `<!DOCTYPE html>
     ${section('timeline', 'Not that long ago, right?', `
       <p class="mb-phi">In 1543, we realized Earth isn't the center of the universe. We took it personally:</p>
       ${dots(1543, 2025, pastMilestones)}
-      <p class="milestone">. 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
+      <p class="milestone">· 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
     `)}
 
     ${section('future', 'Can we handle what\'s coming?', `
@@ -809,6 +839,7 @@ const html = `<!DOCTYPE html>
     ${ctaBox("Statistically, you shouldn't still be here. And yet.", "Write to us", "https://t.me/Oresty")}
 
   </article>
+  </main>
   <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
@@ -826,6 +857,21 @@ const html = `<!DOCTYPE html>
             el.style.setProperty('--tt-left', (-overflow) + 'px');
           }
         });
+      });
+
+      // ── Tooltip accessibility ──
+      var ttCount = 0;
+      document.querySelectorAll('.tooltip').forEach(function(el) {
+        var tip = el.getAttribute('data-tip');
+        if (!tip) return;
+        el.setAttribute('tabindex', '0');
+        var ttId = 'tt-' + (++ttCount);
+        var span = document.createElement('span');
+        span.id = ttId;
+        span.className = 'sr-only';
+        span.textContent = tip;
+        el.appendChild(span);
+        el.setAttribute('aria-describedby', ttId);
       });
 
       // ── Event Definitions ──
@@ -928,18 +974,32 @@ const html = `<!DOCTYPE html>
       var dragging = false;
       planeCanvas.addEventListener('mousedown', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); });
       document.addEventListener('mousemove', function(e) { if (dragging) { e.preventDefault(); handlePlaneInteraction(e); } });
-      document.addEventListener('mouseup', function() { dragging = false; planePoint.classList.remove('dragging'); });
+      document.addEventListener('mouseup', function() { dragging = false; planePoint.classList.remove('dragging'); render(); });
       planeCanvas.addEventListener('touchstart', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); e.preventDefault(); }, { passive: false });
       document.addEventListener('touchmove', function(e) { if (dragging) { handlePlaneInteraction(e); e.preventDefault(); } }, { passive: false });
-      document.addEventListener('touchend', function() { dragging = false; planePoint.classList.remove('dragging'); });
+      document.addEventListener('touchend', function() { dragging = false; planePoint.classList.remove('dragging'); render(); });
+      planeCanvas.addEventListener('keydown', function(e) {
+        var step = 5;
+        if (e.key === 'ArrowRight') { coopValue = Math.min(100, coopValue + step); }
+        else if (e.key === 'ArrowLeft') { coopValue = Math.max(0, coopValue - step); }
+        else if (e.key === 'ArrowUp') { decepValue = Math.min(100, decepValue + step); }
+        else if (e.key === 'ArrowDown') { decepValue = Math.max(0, decepValue - step); }
+        else return;
+        e.preventDefault();
+        planeHint.classList.add('hidden');
+        updatePointPosition();
+        render();
+        var announceEl = document.getElementById('plane-announce');
+        if (announceEl) announceEl.textContent = 'Easy to cooperate: ' + coopValue + '%, Costs of deception: ' + decepValue + '%';
+      });
 
       // ── Safety Score for Extinction ──
-      // Cooperation (40%): enables collective governance against existential risk
-      // Deception costs (30%): deters bad actors from catastrophic actions
+      // Cooperation (40%): only helps if deception is costly — free defection exploits it
+      // Deception costs (30%): reduces harm even without cooperation
       // Synergy (30%): you need BOTH for robust safety (sqrt penalizes imbalance)
-      // The geometric mean: Pythagoras's favorite way to say "you need both"
+      // When decep=0: bad actors exploit freely, safety collapses to 0 regardless of coop.
       function safetyScore(coop, decep) {
-        return 0.4 * coop + 0.3 * decep + 0.3 * Math.sqrt(coop * decep);
+        return 0.4 * coop * decep + 0.3 * decep + 0.3 * Math.sqrt(coop * decep);
       }
 
       // ── Hazard Rate Model ──
@@ -1116,9 +1176,9 @@ const html = `<!DOCTYPE html>
         var html = '';
         for (var y = startYear; y <= endYear; y++) {
           if (milestones[y]) {
-            html += '<p class="milestone">. ' + y + ' \\u2014 ' + milestones[y] + '</p>';
+            html += '<p class="milestone">· ' + y + ' \u2014 ' + milestones[y] + '</p>';
           } else {
-            html += '<p class="dot">. <span class="dot-year">' + y + '</span></p>';
+            html += '<p class="dot">· <span class="dot-year">' + y + '</span></p>';
           }
           // Stop after extinction
           if (milestones[y] && milestones[y].indexOf('Extinction') !== -1) break;
