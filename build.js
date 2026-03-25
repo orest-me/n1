@@ -826,7 +826,7 @@ const html = `<!DOCTYPE html>
           'Growth through win-win',
         ]))}
         ${card('card-join-no', 'Doesn\'t fit', items([
-          'Not ready to devote their life to serving humanity',
+          'Not ready to devote their life to serving society',
           'Satisfied with how the world is',
         ]))}
       </div>
