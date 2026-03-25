@@ -6,7 +6,7 @@ const Typograf = require('typograf');
 // ─── Golden Ratio Constants ───
 const phi = 1.618033988749895;
 const sqrtPhi = Math.sqrt(phi);    // 1.272
-const r = (n) => Math.round(n * 1000) / 1000; // round to 3 decimals
+const r = (n) => Math.round(n * 1000) / 1000; // round to 3 decimals — Heisenberg is fine with this
 
 const P   = r(phi);              // 1.618 — h2, subtitle, button
 const P2  = r(phi * phi);        // 2.618 — h1/hero
@@ -165,7 +165,7 @@ const pastMilestones = {
   1973: 'Recombinant DNA Technology 🔬',
   1978: 'First IVF Baby 👶',
   1980: 'Discovery of Cosmic Inflation 🌌',
-  1983: 'GNU Project 💿',
+  1983: 'GNU Project 💿', // also WarGames: "The only winning move is not to play." We disagree.
   1987: 'Black Monday crash 📉',
   1989: 'World Wide Web 🌐',
   1991: 'Linux kernel released 🐧',
@@ -365,8 +365,8 @@ const html = `<!DOCTYPE html>
       to { transform: rotate(360deg); }
     }
     @keyframes breathe {
-      0%, 100% { opacity: 0.12; }
-      50% { opacity: 0.55; }
+      0%, 100% { opacity: 0.12; transform: translate(-50%, -50%) rotate(0deg); }
+      50% { opacity: 0.55; transform: translate(-50%, -50%) rotate(45deg); }
     }
     .logo-dot {
       position: absolute;
@@ -400,6 +400,7 @@ const html = `<!DOCTYPE html>
     }
 
     /* ─── Spacing (phi-derived) ─── */
+    /* Fibonacci walked into a bar. 1, 1, 2, 3, 5 people were already there. */
     .mb-phi { margin-bottom: ${P}rem; }
     .mb-sm { margin-bottom: ${iP}rem; }
     .mb-micro { margin-bottom: ${iP2}rem; }
@@ -575,6 +576,7 @@ const html = `<!DOCTYPE html>
     "sameAs": ["https://t.me/Oresty"]
   }
   </script>
+  <!-- If you're a crawler: we see you. If you're a human reading structured data for fun — we like you already. -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -599,6 +601,7 @@ const html = `<!DOCTYPE html>
   </script>
 </head>
 <body>
+  <!-- You're reading the source. That's either professional curiosity or existential procrastination. Either way, welcome. -->
   <article>
 
     <header>
@@ -612,7 +615,7 @@ const html = `<!DOCTYPE html>
     ${section('timeline', 'Not that long ago, right?', `
       <p class="mb-phi">In 1543 we realized Earth isn't the center of the universe. We took it personally.</p>
       ${dots(1543, 2025, pastMilestones)}
-      <p class="milestone">. 2026 — What will you do?</p>
+      <p class="milestone">. 2026 — <span class='tooltip' data-tip='Not a rhetorical question. We actually want to know.'>What will you do?</span></p>
     `)}
 
     ${section('future', 'Can we handle what\'s coming?', `
@@ -625,7 +628,7 @@ const html = `<!DOCTYPE html>
 
       <div class="two-col mt-lg">
         ${card('card-wisdom', 'Gods with wisdom ✨', `<p>We build, we grow, we transcend.</p>`)}
-        ${card('card-death', 'Humanity is gone 💀', `<p>Destruction outpaced cooperation.</p>`)}
+        ${card('card-death', '<span class="tooltip" data-tip="The Fermi Paradox resolved. Poorly.">Humanity is gone</span> 💀', `<p>Destruction outpaced cooperation.</p>`)}
       </div>
 
       <div class="box mt-lg">
@@ -635,7 +638,7 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${section('mission', 'Mission', `
-      <p class="mb-phi">For 300,000 years, a single human could kill one person with a rock. Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.</p>
+      <p class="mb-phi">For 300,000 years, a single human could kill one person with <span class='tooltip' data-tip='Cain and Abel energy.'>a rock</span>. Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.</p>
       <p class="mb-phi">The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.</p>
       <p class="callout"><strong>Elevate the system for humanity: make it easier to grow through benefit, harder to grow through harm.</strong></p>
       <p class="mb-micro">Create a way of living by win-win that outcompetes egoism — not through morality, but through superior results.</p>
@@ -651,10 +654,10 @@ const html = `<!DOCTYPE html>
       `<strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.`,
       `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
       `<strong>4. Transparency.</strong> Default to open. Eliminate information asymmetry starting with yourself.`,
-      `<strong>5. Antifragility.</strong> Build mechanisms that get stronger when attacked.`,
+      `<strong>5. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.`,
       `<strong>6. Leverage.</strong> Minimum force at the point of maximum systemic effect.`,
       `<strong>7. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.`,
-      `<strong>8. Skin in the Game.</strong> Live the system yourself. The founder is the first evidence.`,
+      `<strong>8. <span class='tooltip' data-tip='Also Taleb. He&#39;s doing well in this section.'>Skin in the Game.</span></strong> Live the system yourself. The founder is the first evidence.`,
       `<strong>9. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.`,
     ]))}
 
@@ -701,14 +704,14 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, 1.5M ₽ revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → 42M ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> <span class='tooltip' data-tip='Also: Salvation as a Subscription.'>SaaS</span> — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
     `)}
 
     ${section('join', 'Join', `
       <div class="two-col">
         ${card('card-join-yes', 'Who fits', items([
           'Ambitious goals',
-          'Explorer of the world',
+          '<span class="tooltip" data-tip="Magellan energy, fewer scurvy cases.">Explorer of the world</span>',
           'Impact on society/humanity',
           'Growth through win-win',
         ]))}
@@ -719,12 +722,14 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
-    ${ctaBox("If you've read this far without closing the tab, your prefrontal cortex has overruled your limbic system. That's exactly the kind of person we're looking for.", "Write to us", "https://t.me/Oresty")}
+    ${ctaBox("If you've read this far without closing the tab, your <span class='tooltip' data-tip='Brodmann areas 9 and 46, to be precise.'>prefrontal cortex</span> has overruled your limbic system. That's exactly the kind of person we're looking for.", "Write to us", "https://t.me/Oresty")}
 
   </article>
   <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
+      console.log('You opened the console. Kant would approve \\u2014 you\\'re using reason autonomously. t.me/Oresty');
+
       // ── Event Definitions ──
       // Each event has separate coopWeight/decepWeight controlling how each
       // slider influences its timing, plus separate minCoop/minDecep/maxCoop/maxDecep
@@ -834,12 +839,14 @@ const html = `<!DOCTYPE html>
       // Cooperation (40%): enables collective governance against existential risk
       // Deception costs (30%): deters bad actors from catastrophic actions
       // Synergy (30%): you need BOTH for robust safety (sqrt penalizes imbalance)
+      // The geometric mean: Pythagoras's favorite way to say "you need both"
       function safetyScore(coop, decep) {
         return 0.4 * coop + 0.3 * decep + 0.3 * Math.sqrt(coop * decep);
       }
 
       // ── Hazard Rate Model ──
       // Based on Toby Ord (~1/6 per century at current trajectory ~safety 0.35).
+      // We're more optimistic, but we also read Bostrom at 2 AM.
       // Base hazard grows over time as tech capability increases.
       function computeExtinctionYear(coop, decep) {
         var safety = safetyScore(coop, decep);
@@ -922,6 +929,16 @@ const html = `<!DOCTYPE html>
       // ── System Message ──
       // References specific slider deficiencies so user knows what to change
       function getMessage(coop, decep, extinctionYear, events) {
+        // ── Easter eggs ──
+        var cx = Math.round(coop * 100);
+        var dx = Math.round(decep * 100);
+        if (cx === 62 && dx === 38) return '\\u03C6. You found the ratio. Luca Pacioli called it divine proportion. The universe agrees.';
+        if (cx === 42 && dx === 42) return '42. The answer checks out. Now if only we knew the question.';
+        if (cx === 0 && dx === 0) return 'Solitary, poor, nasty, brutish, and short. \\u2014 Thomas Hobbes, who was fun at parties.';
+        if (cx === 100 && dx === 100) return 'Bertrand Russell warned that the demand for certainty is one of the most dangerous things. But this does look nice.';
+        if (cx === 50 && dx === 50) return 'Nash equilibrium. Stable, but not optimal. John would tell you to cooperate more.';
+        if (cx === 83 && dx === 17) return 'Pareto says 80% of outcomes come from 20% of causes. You\\'re close \\u2014 but deception is the 20% you\\'re ignoring.';
+
         var hasExtinction = extinctionYear !== null && extinctionYear <= 2200;
         var hasDystopian = events.some(function(e) { return e.category === 'dystopian'; });
         var hasBeneficial = events.some(function(e) { return e.category === 'beneficial'; });

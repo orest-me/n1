@@ -169,8 +169,8 @@
       to { transform: rotate(360deg); }
     }
     @keyframes breathe {
-      0%, 100% { opacity: 0.12; }
-      50% { opacity: 0.55; }
+      0%, 100% { opacity: 0.12; transform: translate(-50%, -50%) rotate(0deg); }
+      50% { opacity: 0.55; transform: translate(-50%, -50%) rotate(45deg); }
     }
     .logo-dot {
       position: absolute;
@@ -204,6 +204,7 @@
     }
 
     /* ─── Spacing (phi-derived) ─── */
+    /* Fibonacci walked into a bar. 1, 1, 2, 3, 5 people were already there. */
     .mb-phi { margin-bottom: 1.618rem; }
     .mb-sm { margin-bottom: 0.618rem; }
     .mb-micro { margin-bottom: 0.382rem; }
@@ -379,6 +380,7 @@
     "sameAs": ["https://t.me/Oresty"]
   }
   </script>
+  <!-- If you're a crawler: we see you. If you're a human reading structured data for fun — we like you already. -->
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -403,6 +405,7 @@
   </script>
 </head>
 <body>
+  <!-- You're reading the source. That's either professional curiosity or existential procrastination. Either way, welcome. -->
   <article>
 
     <header>
@@ -942,7 +945,7 @@
 <p class="milestone">. 2023 — Repeated Fusion Ignition ☀️</p>
 <p class="milestone">. 2024 — First complete brain connectome 🪰</p>
 <p class="milestone">. 2025 — Humanoid Robots at&nbsp;Scale 🦿</p>
-      <p class="milestone">. 2026 — What will you do?</p>
+      <p class="milestone">. 2026 — <span class='tooltip' data-tip='Not a rhetorical question. We actually want to know.'>What will you do?</span></p>
     
   </section>
 
@@ -975,7 +978,7 @@
     <p>We&nbsp;build, we&nbsp;grow, we&nbsp;transcend.</p>
   </div>
         <div id="card-death" class="card">
-    <p class="card-title">Humanity is&nbsp;gone 💀</p>
+    <p class="card-title"><span class="tooltip" data-tip="The Fermi Paradox resolved. Poorly.">Humanity is&nbsp;gone</span> 💀</p>
     <p>Destruction outpaced cooperation.</p>
   </div>
       </div>
@@ -991,7 +994,7 @@
   <section id="mission">
     <h2>Mission</h2>
     
-      <p class="mb-phi">For&nbsp;300,000 years, a&nbsp;single human could kill one person with a&nbsp;rock. Today, a&nbsp;single human can kill millions. But&nbsp;our systems still reward harm and&nbsp;cooperation at&nbsp;roughly the&nbsp;same rate.</p>
+      <p class="mb-phi">For&nbsp;300,000 years, a&nbsp;single human could kill one person with <span class='tooltip' data-tip='Cain and Abel energy.'>a&nbsp;rock</span>. Today, a&nbsp;single human can kill millions. But&nbsp;our systems still reward harm and&nbsp;cooperation at&nbsp;roughly the&nbsp;same rate.</p>
       <p class="mb-phi">The&nbsp;fix isn't better humans. It's a&nbsp;better system — one where growing through benefit is&nbsp;faster, cheaper, and&nbsp;more powerful than growing through harm.</p>
       <p class="callout"><strong>Elevate the&nbsp;system for&nbsp;humanity: make it&nbsp;easier to&nbsp;grow through benefit, harder to&nbsp;grow through harm.</strong></p>
       <p class="mb-micro">Create a&nbsp;way of&nbsp;living by&nbsp;win-win that outcompetes egoism — not&nbsp;through morality, but&nbsp;through superior results.</p>
@@ -1010,10 +1013,10 @@
       <p class="mb-micro"><strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.</p>
       <p class="mb-micro"><strong>3. Rationality.</strong> Evidence and&nbsp;logic over consensus and&nbsp;emotion — including the&nbsp;obligation to&nbsp;update when proven wrong.</p>
       <p class="mb-micro"><strong>4. Transparency.</strong> Default to&nbsp;open. Eliminate information asymmetry starting with yourself.</p>
-      <p class="mb-micro"><strong>5. Antifragility.</strong> Build mechanisms that get stronger when attacked.</p>
+      <p class="mb-micro"><strong>5. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.</p>
       <p class="mb-micro"><strong>6. Leverage.</strong> Minimum force at&nbsp;the&nbsp;point of&nbsp;maximum systemic effect.</p>
       <p class="mb-micro"><strong>7. Courage.</strong> Act on&nbsp;the&nbsp;Mission despite resistance from those who profit from the&nbsp;status quo.</p>
-      <p class="mb-micro"><strong>8. Skin in&nbsp;the&nbsp;Game.</strong> Live the&nbsp;system yourself. The&nbsp;founder is&nbsp;the&nbsp;first evidence.</p>
+      <p class="mb-micro"><strong>8. <span class='tooltip' data-tip='Also Taleb. He&#39;s doing well in this section.'>Skin in&nbsp;the&nbsp;Game.</span></strong> Live the&nbsp;system yourself. The&nbsp;founder is&nbsp;the&nbsp;first evidence.</p>
       <p><strong>9. Patience.</strong> Compound interest mindset — urgency in&nbsp;action, patience in&nbsp;expectation.</p>
   </section>
 
@@ -1067,7 +1070,7 @@
       <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the&nbsp;right person instantly, organizers make decisions from real data instead of&nbsp;gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764&nbsp;users, 20&nbsp;events, 355&nbsp;transactions, 1.5M ₽ revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly&nbsp;fee. Target: 100&nbsp;clubs → 42M ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> <span class='tooltip' data-tip='Also: Salvation as a Subscription.'>SaaS</span> — monthly&nbsp;fee. Target: 100&nbsp;clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
     
   </section>
 
@@ -1079,7 +1082,7 @@
         <div id="card-join-yes" class="card">
     <p class="card-title">Who fits</p>
     <p class="mb-micro">Ambitious goals</p>
-      <p class="mb-micro">Explorer of&nbsp;the&nbsp;world</p>
+      <p class="mb-micro"><span class="tooltip" data-tip="Magellan energy, fewer scurvy cases.">Explorer of&nbsp;the&nbsp;world</span></p>
       <p class="mb-micro">Impact on&nbsp;society/humanity</p>
       <p>Growth through win-win</p>
   </div>
@@ -1094,7 +1097,7 @@
 
     
   <div class="cta-box">
-    <p class="mb-phi">If&nbsp;you've read this far without closing the&nbsp;tab, your prefrontal cortex has overruled your limbic system. That's exactly the&nbsp;kind of&nbsp;person we're looking for.</p>
+    <p class="mb-phi">If&nbsp;you've read this far without closing the&nbsp;tab, your <span class='tooltip' data-tip='Brodmann areas 9 and 46, to be precise.'>prefrontal cortex</span> has overruled your limbic system. That's exactly the&nbsp;kind of&nbsp;person we're looking for.</p>
     <a href="https://t.me/Oresty" class="btn-scroll">Write to&nbsp;us</a>
   </div>
 
@@ -1102,6 +1105,8 @@
   <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
+      console.log('You opened the console. Kant would approve \u2014 you\'re using reason autonomously. t.me/Oresty');
+
       // ── Event Definitions ──
       // Each event has separate coopWeight/decepWeight controlling how each
       // slider influences its timing, plus separate minCoop/minDecep/maxCoop/maxDecep
@@ -1211,12 +1216,14 @@
       // Cooperation (40%): enables collective governance against existential risk
       // Deception costs (30%): deters bad actors from catastrophic actions
       // Synergy (30%): you need BOTH for robust safety (sqrt penalizes imbalance)
+      // The geometric mean: Pythagoras's favorite way to say "you need both"
       function safetyScore(coop, decep) {
         return 0.4 * coop + 0.3 * decep + 0.3 * Math.sqrt(coop * decep);
       }
 
       // ── Hazard Rate Model ──
       // Based on Toby Ord (~1/6 per century at current trajectory ~safety 0.35).
+      // We're more optimistic, but we also read Bostrom at 2 AM.
       // Base hazard grows over time as tech capability increases.
       function computeExtinctionYear(coop, decep) {
         var safety = safetyScore(coop, decep);
@@ -1299,6 +1306,16 @@
       // ── System Message ──
       // References specific slider deficiencies so user knows what to change
       function getMessage(coop, decep, extinctionYear, events) {
+        // ── Easter eggs ──
+        var cx = Math.round(coop * 100);
+        var dx = Math.round(decep * 100);
+        if (cx === 62 && dx === 38) return '\u03C6. You found the ratio. Luca Pacioli called it divine proportion. The universe agrees.';
+        if (cx === 42 && dx === 42) return '42. The answer checks out. Now if only we knew the question.';
+        if (cx === 0 && dx === 0) return 'Solitary, poor, nasty, brutish, and short. \u2014 Thomas Hobbes, who was fun at parties.';
+        if (cx === 100 && dx === 100) return 'Bertrand Russell warned that the demand for certainty is one of the most dangerous things. But this does look nice.';
+        if (cx === 50 && dx === 50) return 'Nash equilibrium. Stable, but not optimal. John would tell you to cooperate more.';
+        if (cx === 83 && dx === 17) return 'Pareto says 80% of outcomes come from 20% of causes. You\'re close \u2014 but deception is the 20% you\'re ignoring.';
+
         var hasExtinction = extinctionYear !== null && extinctionYear <= 2200;
         var hasDystopian = events.some(function(e) { return e.category === 'dystopian'; });
         var hasBeneficial = events.some(function(e) { return e.category === 'beneficial'; });
