@@ -90,7 +90,7 @@
     .tooltip::after {
       content: attr(data-tip);
       position: absolute;
-      left: 0;
+      left: var(--tt-left, 0px);
       top: 100%;
       margin-top: 0.4em;
       background: #000;
@@ -99,7 +99,9 @@
       line-height: 1.4;
       padding: 0.4em 0.7em;
       border-radius: 0.25em;
-      white-space: nowrap;
+      width: max-content;
+      max-width: 200px;
+      white-space: normal;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -388,7 +390,6 @@
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
       html { font-size: 20px; }
-      h1 { font-size: 1.618rem; }
     }
     @media (max-width: 380px) {
       html { font-size: 18px; }
@@ -485,8 +486,7 @@
       <span class="logo-community">community</span>
     </div>
       <h1>Weekly fixes for&nbsp;humanity</h1>
-      <p class="mt-sm">We&nbsp;build products that make cooperation easy and&nbsp;deception expensive. New updates — every week.</p>
-      <p class="mt-sm">A&nbsp;community of&nbsp;individuals who absorb the&nbsp;coordination cost no&nbsp;one else will — driven by&nbsp;the&nbsp;first-principles understanding that win-win isn't idealism, it's a&nbsp;superior strategy.</p>
+      <p class="mt-sm">We&nbsp;build products that make cooperation easy and&nbsp;deception expensive.</p>
     </header>
 
     
@@ -1125,10 +1125,10 @@
       <p class="mb-phi">Weekly rhythm, online and&nbsp;offline.</p>
 
       <p class="mb-micro"><strong>Joint projects.</strong> In&nbsp;teams of&nbsp;2‑4. Each must make cooperation easier or&nbsp;deception harder.</p>
-      <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
       <p class="mb-micro"><strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.</p>
       <p class="mb-micro"><strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and&nbsp;iteration.</p>
-      <p><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
+      <p class="mb-micro"><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
+      <p><strong>Strategy alignment.</strong> Goals review, roadmap recalibration.</p>
 
       <h3>Infrastructure</h3>
       <p class="mb-micro"><strong>Shared expertise map.</strong> Members' skills, contacts, and&nbsp;knowledge — mapped and&nbsp;accessible.</p>
@@ -1183,7 +1183,7 @@
 
     
   <div class="cta-box">
-    <p class="mb-phi">If&nbsp;you've read this far without closing the&nbsp;tab, your <span class='tooltip' data-tip='Brodmann areas 9 and 46, to be precise.'>prefrontal cortex</span> has overruled your limbic system. That's exactly the&nbsp;kind of&nbsp;person we're looking for.</p>
+    <p class="mb-phi">Statistically, you shouldn't still be&nbsp;here. And&nbsp;yet.</p>
     <a href="https://t.me/Oresty" class="btn-scroll">Write to&nbsp;us</a>
   </div>
 
@@ -1192,6 +1192,20 @@
   <script>
     (function() {
       console.log('You opened the console. Kant would approve \u2014 you\'re using reason autonomously. t.me/Oresty');
+
+      // ── Tooltip edge protection ──
+      document.querySelectorAll('.tooltip').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+          el.style.removeProperty('--tt-left');
+          var rect = el.getBoundingClientRect();
+          var margin = 12;
+          var maxW = 280;
+          var overflow = rect.left + maxW - (window.innerWidth - margin);
+          if (overflow > 0) {
+            el.style.setProperty('--tt-left', (-overflow) + 'px');
+          }
+        });
+      });
 
       // ── Event Definitions ──
       // Each event has separate coopWeight/decepWeight controlling how each

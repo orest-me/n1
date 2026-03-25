@@ -297,7 +297,7 @@ const html = `<!DOCTYPE html>
     .tooltip::after {
       content: attr(data-tip);
       position: absolute;
-      left: 0;
+      left: var(--tt-left, 0px);
       top: 100%;
       margin-top: 0.4em;
       background: #000;
@@ -306,7 +306,9 @@ const html = `<!DOCTYPE html>
       line-height: 1.4;
       padding: 0.4em 0.7em;
       border-radius: 0.25em;
-      white-space: nowrap;
+      width: max-content;
+      max-width: 200px;
+      white-space: normal;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -595,7 +597,6 @@ const html = `<!DOCTYPE html>
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
       html { font-size: 20px; }
-      h1 { font-size: ${P}rem; }
     }
     @media (max-width: 380px) {
       html { font-size: 18px; }
@@ -651,8 +652,7 @@ const html = `<!DOCTYPE html>
       <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
       ${logotype()}
       <h1>Weekly fixes for humanity</h1>
-      <p class="mt-sm">We build products that make cooperation easy and deception expensive. New updates — every week.</p>
-      <p class="mt-sm">A community of individuals who absorb the coordination cost no one else will — driven by the first-principles understanding that win-win isn't idealism, it's a superior strategy.</p>
+      <p class="mt-sm">We build products that make cooperation easy and deception expensive.</p>
     </header>
 
     ${section('timeline', 'Not that long ago, right?', `
@@ -724,10 +724,10 @@ const html = `<!DOCTYPE html>
 
       ${items([
         `<strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.`,
-        `<strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.`,
         `<strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.`,
         `<strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and iteration.`,
         `<strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.`,
+        `<strong>Strategy alignment.</strong> Goals review, roadmap recalibration.`,
       ])}
 
       <h3>Infrastructure</h3>
@@ -772,13 +772,27 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
-    ${ctaBox("If you've read this far without closing the tab, your <span class='tooltip' data-tip='Brodmann areas 9 and 46, to be precise.'>prefrontal cortex</span> has overruled your limbic system. That's exactly the kind of person we're looking for.", "Write to us", "https://t.me/Oresty")}
+    ${ctaBox("Statistically, you shouldn't still be here. And yet.", "Write to us", "https://t.me/Oresty")}
 
   </article>
   <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
       console.log('You opened the console. Kant would approve \\u2014 you\\'re using reason autonomously. t.me/Oresty');
+
+      // ── Tooltip edge protection ──
+      document.querySelectorAll('.tooltip').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+          el.style.removeProperty('--tt-left');
+          var rect = el.getBoundingClientRect();
+          var margin = 12;
+          var maxW = 280;
+          var overflow = rect.left + maxW - (window.innerWidth - margin);
+          if (overflow > 0) {
+            el.style.setProperty('--tt-left', (-overflow) + 'px');
+          }
+        });
+      });
 
       // ── Event Definitions ──
       // Each event has separate coopWeight/decepWeight controlling how each
