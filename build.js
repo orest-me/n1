@@ -73,6 +73,17 @@ function card(id, title, body) {
   </div>`;
 }
 
+function fig(src, alt, caption) {
+  return `<figure class="fig">
+          <img src="${src}" alt="${alt}" loading="lazy" />
+          <figcaption>${caption}</figcaption>
+        </figure>`;
+}
+
+function figGrid(figures) {
+  return `<div class="fig-grid">\n        ${figures.join('\n        ')}\n      </div>`;
+}
+
 function meta(key, val) {
   const attr = key.startsWith('og:') ? 'property' : 'name';
   return `<meta ${attr}="${key}" content="${val}">`;
@@ -84,7 +95,7 @@ function items(arr, cls = 'mb-micro') {
   ).join('\n      ');
 }
 
-function logotype() {
+function logotype(className = 'hero-logotype') {
   const outerCount = 24;
   const innerCount = 6;
   const outerR = 44;
@@ -109,7 +120,7 @@ function logotype() {
     innerDots.push(`<span class="logo-dot" style="left:${x}%;top:${y}%;animation-delay:${delay}s"></span>`);
   }
 
-  return `<div class="hero-logotype">
+  return `<div class="${className}">
       <div class="logo-top">
         <span class="logo-n1">n1.</span>
         <div class="logo-circle">
@@ -333,6 +344,11 @@ const html = `<!DOCTYPE html>
       margin-bottom: ${P3}rem;
       display: inline-block;
     }
+    .section-logotype {
+      margin-top: ${P3}rem;
+      margin-bottom: 0;
+      display: inline-block;
+    }
     .logo-top {
       display: flex;
       align-items: flex-end;
@@ -408,6 +424,33 @@ const html = `<!DOCTYPE html>
     .mt-sm { margin-top: ${iP}rem; }
     .mt-lg { margin-top: ${P2}rem; }
     .mb-lg { margin-bottom: ${P2}rem; }
+
+    /* ─── Figures ─── */
+    .fig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: ${P}rem;
+      margin: ${P}rem 0;
+    }
+    .fig {
+      margin: 0;
+    }
+    .fig img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #000;
+    }
+    .fig figcaption {
+      font-size: ${iSP}rem;
+      margin-top: ${iP3}rem;
+      line-height: ${P};
+    }
+    @media (max-width: 28em) {
+      .fig-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* ─── Components ─── */
     .card, .box, .cta-box { border: 1px solid #000; padding: ${P}rem; }
@@ -551,11 +594,11 @@ const html = `<!DOCTYPE html>
 
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
-      html { font-size: 18px; }
+      html { font-size: 20px; }
       h1 { font-size: ${P}rem; }
     }
     @media (max-width: 380px) {
-      html { font-size: 16px; }
+      html { font-size: 18px; }
     }
 
     /* ─── Overrides ─── */
@@ -613,9 +656,9 @@ const html = `<!DOCTYPE html>
     </header>
 
     ${section('timeline', 'Not that long ago, right?', `
-      <p class="mb-phi">In 1543 we realized Earth isn't the center of the universe. We took it personally.</p>
+      <p class="mb-phi">In 1543 we realized Earth isn't the center of the universe. We took it personally:</p>
       ${dots(1543, 2025, pastMilestones)}
-      <p class="milestone">. 2026 — <span class='tooltip' data-tip='Not a rhetorical question. We actually want to know.'>What will you do?</span></p>
+      <p class="milestone">. 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
     `)}
 
     ${section('future', 'Can we handle what\'s coming?', `
@@ -628,7 +671,7 @@ const html = `<!DOCTYPE html>
 
       <div class="two-col mt-lg">
         ${card('card-wisdom', 'Gods with wisdom ✨', `<p>We build, we grow, we transcend.</p>`)}
-        ${card('card-death', '<span class="tooltip" data-tip="The Fermi Paradox resolved. Poorly.">Humanity is gone</span> 💀', `<p>Destruction outpaced cooperation.</p>`)}
+        ${card('card-death', 'Humanity is gone 💀', `<p>Destruction outpaced cooperation.</p>`)}
       </div>
 
       <div class="box mt-lg">
@@ -637,6 +680,8 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
+    ${logotype('section-logotype')}
+
     ${section('mission', 'Mission', `
       <p class="mb-phi">For 300,000 years, a single human could kill one person with <span class='tooltip' data-tip='Cain and Abel energy.'>a rock</span>. Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.</p>
       <p class="mb-phi">The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.</p>
@@ -644,8 +689,12 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro">Create a way of living by win-win that outcompetes egoism — not through morality, but through superior results.</p>
       <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
 
-      <h3>Why "N1"</h3>
+      <h3>Why "n1"</h3>
       <p class="mb-phi">Named after the Soviet N-1 rocket. In the 1960s, engineers designed a brilliant architecture — 30 engines working in sync — but lacked the computing power to coordinate them. It failed not because the idea was wrong, but because the technology wasn't ready. Sixty years later, SpaceX flew Starship with 33 engines — the same approach, now proven by modern computing.</p>
+      ${figGrid([
+        fig('/static/img/n1-rocket.jpg', 'Soviet N-1 rocket — 30 engines', 'N-1 rocket — 30 engines, failed by coordination limits.'),
+        fig('/static/img/spacex-starship.jpg', 'SpaceX Starship — 33 engines', 'Starship — 33 engines, proven by modern computing.'),
+      ])}
       <p>Same story with cooperation. For centuries, philosophers, writers, and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technologies didn't exist. Now they do: internet, Big Data, AI, cryptography, smart contracts, and global real-time communication make large-scale cooperation possible for the first time.</p>
     `)}
 
@@ -663,14 +712,15 @@ const html = `<!DOCTYPE html>
 
     ${section('participants', 'Participants', `
       <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
-      <p>For now we are building the core of the community from scratch and actively recruiting new members.</p>
+      <p class="mb-phi"><strong>Current status:</strong> early stage — we are assembling the founding core from scratch. The group is small, tight-knit, and hands-on.</p>
+      <p><strong>Language:</strong> day-to-day communication is mostly in Russian for now.</p>
     `)}
 
     ${section('internal', 'Internal products', `
       <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Systematically raise your operating efficiency through shared infrastructure.</p>
 
       <h3>Activities</h3>
-      <p class="mb-phi">Weekly: Set goals, execute, demo results.</p>
+      <p class="mb-phi">Weekly rhytm: online and offline.</p>
 
       ${items([
         `<strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.`,
@@ -704,14 +754,14 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, 1.5M ₽ revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> <span class='tooltip' data-tip='Also: Salvation as a Subscription.'>SaaS</span> — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
     `)}
 
     ${section('join', 'Join', `
       <div class="two-col">
         ${card('card-join-yes', 'Who fits', items([
           'Ambitious goals',
-          '<span class="tooltip" data-tip="Magellan energy, fewer scurvy cases.">Explorer of the world</span>',
+          'Explorer of the world',
           'Impact on society/humanity',
           'Growth through win-win',
         ]))}
@@ -1046,9 +1096,18 @@ fs.copyFileSync(
 );
 const pub = path.join(__dirname, 'public');
 if (fs.existsSync(pub)) {
-  for (const file of fs.readdirSync(pub)) {
-    fs.copyFileSync(path.join(pub, file), path.join(dist, file));
-  }
+  (function copyDir(src, dest) {
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        if (!fs.existsSync(destPath)) fs.mkdirSync(destPath, { recursive: true });
+        copyDir(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  })(pub, dist);
 }
 fs.writeFileSync(path.join(dist, 'index.html'), typographNbsp(html));
 console.log('Built dist/index.html');

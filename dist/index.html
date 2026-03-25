@@ -137,6 +137,11 @@
       margin-bottom: 4.236rem;
       display: inline-block;
     }
+    .section-logotype {
+      margin-top: 4.236rem;
+      margin-bottom: 0;
+      display: inline-block;
+    }
     .logo-top {
       display: flex;
       align-items: flex-end;
@@ -212,6 +217,33 @@
     .mt-sm { margin-top: 0.618rem; }
     .mt-lg { margin-top: 2.618rem; }
     .mb-lg { margin-bottom: 2.618rem; }
+
+    /* ─── Figures ─── */
+    .fig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.618rem;
+      margin: 1.618rem 0;
+    }
+    .fig {
+      margin: 0;
+    }
+    .fig img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #000;
+    }
+    .fig figcaption {
+      font-size: 0.786rem;
+      margin-top: 0.236rem;
+      line-height: 1.618;
+    }
+    @media (max-width: 28em) {
+      .fig-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* ─── Components ─── */
     .card, .box, .cta-box { border: 1px solid #000; padding: 1.618rem; }
@@ -355,11 +387,11 @@
 
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
-      html { font-size: 18px; }
+      html { font-size: 20px; }
       h1 { font-size: 1.618rem; }
     }
     @media (max-width: 380px) {
-      html { font-size: 16px; }
+      html { font-size: 18px; }
     }
 
     /* ─── Overrides ─── */
@@ -461,7 +493,7 @@
   <section id="timeline">
     <h2>Not&nbsp;that long ago, right?</h2>
     
-      <p class="mb-phi">In&nbsp;1543&nbsp;we&nbsp;realized Earth isn't the&nbsp;center of&nbsp;the&nbsp;universe. We&nbsp;took it&nbsp;personally.</p>
+      <p class="mb-phi">In&nbsp;1543&nbsp;we&nbsp;realized Earth isn't the&nbsp;center of&nbsp;the&nbsp;universe. We&nbsp;took it&nbsp;personally:</p>
       <p class="milestone">. 1543 — Heliocentric Model ☀️</p>
 <p class="dot">. <span class="dot-year">1544</span></p>
 <p class="dot">. <span class="dot-year">1545</span></p>
@@ -945,7 +977,7 @@
 <p class="milestone">. 2023 — Repeated Fusion Ignition ☀️</p>
 <p class="milestone">. 2024 — First complete brain connectome 🪰</p>
 <p class="milestone">. 2025 — Humanoid Robots at&nbsp;Scale 🦿</p>
-      <p class="milestone">. 2026 — <span class='tooltip' data-tip='Not a rhetorical question. We actually want to know.'>What will you do?</span></p>
+      <p class="milestone">. 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
     
   </section>
 
@@ -978,7 +1010,7 @@
     <p>We&nbsp;build, we&nbsp;grow, we&nbsp;transcend.</p>
   </div>
         <div id="card-death" class="card">
-    <p class="card-title"><span class="tooltip" data-tip="The Fermi Paradox resolved. Poorly.">Humanity is&nbsp;gone</span> 💀</p>
+    <p class="card-title">Humanity is&nbsp;gone 💀</p>
     <p>Destruction outpaced cooperation.</p>
   </div>
       </div>
@@ -990,6 +1022,49 @@
     
   </section>
 
+    <div class="section-logotype">
+      <div class="logo-top">
+        <span class="logo-n1">n1.</span>
+        <div class="logo-circle">
+          <div class="logo-ring logo-ring-outer">
+            <span class="logo-dot" style="left:50%;top:6%;animation-delay:0s"></span>
+            <span class="logo-dot" style="left:61.388%;top:7.499%;animation-delay:0.177s"></span>
+            <span class="logo-dot" style="left:72%;top:11.895%;animation-delay:0.353s"></span>
+            <span class="logo-dot" style="left:81.113%;top:18.887%;animation-delay:0.53s"></span>
+            <span class="logo-dot" style="left:88.105%;top:28%;animation-delay:0.706s"></span>
+            <span class="logo-dot" style="left:92.501%;top:38.612%;animation-delay:0.883s"></span>
+            <span class="logo-dot" style="left:94%;top:50%;animation-delay:1.059s"></span>
+            <span class="logo-dot" style="left:92.501%;top:61.388%;animation-delay:1.236s"></span>
+            <span class="logo-dot" style="left:88.105%;top:72%;animation-delay:1.412s"></span>
+            <span class="logo-dot" style="left:81.113%;top:81.113%;animation-delay:1.588s"></span>
+            <span class="logo-dot" style="left:72%;top:88.105%;animation-delay:1.765s"></span>
+            <span class="logo-dot" style="left:61.388%;top:92.501%;animation-delay:1.941s"></span>
+            <span class="logo-dot" style="left:50%;top:94%;animation-delay:2.118s"></span>
+            <span class="logo-dot" style="left:38.612%;top:92.501%;animation-delay:2.294s"></span>
+            <span class="logo-dot" style="left:28%;top:88.105%;animation-delay:2.471s"></span>
+            <span class="logo-dot" style="left:18.887%;top:81.113%;animation-delay:2.648s"></span>
+            <span class="logo-dot" style="left:11.895%;top:72%;animation-delay:2.824s"></span>
+            <span class="logo-dot" style="left:7.499%;top:61.388%;animation-delay:3.001s"></span>
+            <span class="logo-dot" style="left:6%;top:50%;animation-delay:3.177s"></span>
+            <span class="logo-dot" style="left:7.499%;top:38.612%;animation-delay:3.353s"></span>
+            <span class="logo-dot" style="left:11.895%;top:28%;animation-delay:3.53s"></span>
+            <span class="logo-dot" style="left:18.887%;top:18.887%;animation-delay:3.706s"></span>
+            <span class="logo-dot" style="left:28%;top:11.895%;animation-delay:3.883s"></span>
+            <span class="logo-dot" style="left:38.612%;top:7.499%;animation-delay:4.06s"></span>
+          </div>
+          <div class="logo-ring logo-ring-inner">
+            <span class="logo-dot" style="left:50%;top:34.6%;animation-delay:0s"></span>
+            <span class="logo-dot" style="left:63.337%;top:42.3%;animation-delay:0.706s"></span>
+            <span class="logo-dot" style="left:63.337%;top:57.7%;animation-delay:1.412s"></span>
+            <span class="logo-dot" style="left:50%;top:65.4%;animation-delay:2.118s"></span>
+            <span class="logo-dot" style="left:36.663%;top:57.7%;animation-delay:2.824s"></span>
+            <span class="logo-dot" style="left:36.663%;top:42.3%;animation-delay:3.53s"></span>
+          </div>
+        </div>
+      </div>
+      <span class="logo-community">community</span>
+    </div>
+
     
   <section id="mission">
     <h2>Mission</h2>
@@ -1000,8 +1075,18 @@
       <p class="mb-micro">Create a&nbsp;way of&nbsp;living by&nbsp;win-win that outcompetes egoism — not&nbsp;through morality, but&nbsp;through superior results.</p>
       <p class="mb-phi">Radical openness and&nbsp;win-win as&nbsp;the&nbsp;de&nbsp;facto standard for&nbsp;humanity.</p>
 
-      <h3>Why "N1"</h3>
+      <h3>Why "n1"</h3>
       <p class="mb-phi">Named after the&nbsp;Soviet N-1 rocket. In&nbsp;the&nbsp;1960s, engineers designed a&nbsp;brilliant architecture — 30&nbsp;engines working in&nbsp;sync — but&nbsp;lacked the&nbsp;computing power to&nbsp;coordinate them. It&nbsp;failed not&nbsp;because the&nbsp;idea was wrong, but&nbsp;because the&nbsp;technology wasn't ready. Sixty years later, SpaceX flew Starship with 33&nbsp;engines — the&nbsp;same approach, now proven by&nbsp;modern computing.</p>
+      <div class="fig-grid">
+        <figure class="fig">
+          <img src="/static/img/n1-rocket.jpg" alt="Soviet N-1 rocket — 30 engines" loading="lazy" />
+          <figcaption>N-1 rocket — 30&nbsp;engines, failed by&nbsp;coordination limits.</figcaption>
+        </figure>
+        <figure class="fig">
+          <img src="/static/img/spacex-starship.jpg" alt="SpaceX Starship — 33 engines" loading="lazy" />
+          <figcaption>Starship — 33&nbsp;engines, proven by&nbsp;modern computing.</figcaption>
+        </figure>
+      </div>
       <p>Same story with cooperation. For&nbsp;centuries, philosophers, writers, and&nbsp;reformers tried to&nbsp;build a&nbsp;society on&nbsp;mutual benefit — and&nbsp;every time it&nbsp;fell apart. Not&nbsp;because the&nbsp;idea was wrong, but&nbsp;because the&nbsp;technologies didn't exist. Now they do: internet, Big Data, AI, cryptography, smart contracts, and&nbsp;global real-time communication make large-scale cooperation possible for&nbsp;the&nbsp;first time.</p>
     
   </section>
@@ -1025,7 +1110,8 @@
     <h2>Participants</h2>
     
       <p class="mb-phi"><strong>n1.member</strong> — an&nbsp;individual who absorbs the&nbsp;coordination cost no&nbsp;one else will, driven by&nbsp;first-principles understanding that win-win isn't idealism but&nbsp;a&nbsp;superior strategy — in&nbsp;the&nbsp;interests of&nbsp;all humanity.</p>
-      <p>For&nbsp;now we&nbsp;are building the&nbsp;core of&nbsp;the&nbsp;community from scratch and&nbsp;actively recruiting new members.</p>
+      <p class="mb-phi"><strong>Current status:</strong> early stage — we&nbsp;are assembling the&nbsp;founding core from scratch. The&nbsp;group is&nbsp;small, tight-knit, and&nbsp;hands-on.</p>
+      <p><strong>Language:</strong> day-to-day communication is&nbsp;mostly in&nbsp;Russian for&nbsp;now.</p>
     
   </section>
 
@@ -1036,7 +1122,7 @@
       <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Systematically raise your operating efficiency through shared infrastructure.</p>
 
       <h3>Activities</h3>
-      <p class="mb-phi">Weekly: Set goals, execute, demo results.</p>
+      <p class="mb-phi">Weekly rhytm: online and&nbsp;offline.</p>
 
       <p class="mb-micro"><strong>Joint projects.</strong> In&nbsp;teams of&nbsp;2‑4. Each must make cooperation easier or&nbsp;deception harder.</p>
       <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
@@ -1070,7 +1156,7 @@
       <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the&nbsp;right person instantly, organizers make decisions from real data instead of&nbsp;gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764&nbsp;users, 20&nbsp;events, 355&nbsp;transactions, 1.5M ₽ revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> <span class='tooltip' data-tip='Also: Salvation as a Subscription.'>SaaS</span> — monthly&nbsp;fee. Target: 100&nbsp;clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly&nbsp;fee. Target: 100&nbsp;clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
     
   </section>
 
@@ -1082,7 +1168,7 @@
         <div id="card-join-yes" class="card">
     <p class="card-title">Who fits</p>
     <p class="mb-micro">Ambitious goals</p>
-      <p class="mb-micro"><span class="tooltip" data-tip="Magellan energy, fewer scurvy cases.">Explorer of&nbsp;the&nbsp;world</span></p>
+      <p class="mb-micro">Explorer of&nbsp;the&nbsp;world</p>
       <p class="mb-micro">Impact on&nbsp;society/humanity</p>
       <p>Growth through win-win</p>
   </div>
