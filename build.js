@@ -781,10 +781,10 @@ const html = `<!DOCTYPE html>
 
       ${items([
         `<strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.`,
-        `<strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.`,
         `<strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and iteration.`,
         `<strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.`,
         `<strong>Strategy alignment.</strong> Goals review, roadmap recalibration.`,
+        `<strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.`,
       ])}
 
       <h3>Infrastructure</h3>
@@ -795,7 +795,7 @@ const html = `<!DOCTYPE html>
       ])}
 
       <h3>Upcoming event</h3>
-      <p class="mb-phi"><strong>Strategy alignment.</strong> Our first community-wide session to review our goals, recalibrate the roadmap, and make sure everyone is pulling in the same direction. Goals review, open discussion, and clear next steps — so every member knows where we're headed and why.</p>
+      <p class="mb-phi"><strong>Strategy alignment.</strong> Our first community-wide session to review our goals, recalibrate the roadmap, and make sure everyone is pulling in the same direction.</p>
     `)}
 
     ${section('external', 'External products', `
