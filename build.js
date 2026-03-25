@@ -17,7 +17,7 @@ const iP2 = r(1 / phi / phi);    // 0.382 — dots, micro text
 const iSP = r(1 / sqrtPhi);      // 0.786 — small body, milestones, labels
 const iP3 = r(1 / phi / phi / phi); // 0.236
 
-const DESC = "We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
+const DESC = "We build products that make trust cheaper and fraud more expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
 const OG_TITLE = 'n1.community — Weekly fixes for humanity';
 
 // ─── DRY Functions ───
@@ -662,8 +662,8 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${section('future', 'Can we handle what\'s coming?', `
-      <p class="text-sm mt-phi mb-micro">The problem is not in human nature. It's in the system — it still makes harm cheaper than cooperation.</p>
-      <p class="text-sm mt-micro mb-micro">Only now do we have enough technology to change the whole system of interactions, connections, and cooperation.</p>
+      <p class="text-sm mt-phi mb-micro">The problem is not in human nature. It is in the system — harm is still cheaper than cooperation.</p>
+      <p class="text-sm mt-micro mb-micro">Only now do we have enough technology to change how people interact, connect, and cooperate.</p>
 
       ${plane2D('plane', 'Easy to cooperate', 'Costs of deception', 30, 15)}
 
@@ -686,23 +686,23 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi">For 300,000 years, a single human could kill one person with <span class='tooltip' data-tip='Cain and Abel energy.'>a rock</span>. Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.</p>
       <p class="mb-phi">The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.</p>
       <p class="callout"><strong>Elevate the system for humanity: make it easier to grow through benefit, harder to grow through harm.</strong></p>
-      <p class="mb-micro">Create a way of living by win-win that outcompetes egoism — not through morality, but through superior results.</p>
+      <p class="mb-micro">Create a way of living by win-win that beats selfishness — not through morality, but through better results.</p>
       <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
 
       <h3>Why "n1"</h3>
-      <p class="mb-phi">Named after the Soviet N-1 rocket. In the 1960s, engineers designed a brilliant architecture — 30 engines working in sync — but lacked the computing power to coordinate them. It failed not because the idea was wrong, but because the technology wasn't ready. Sixty years later, SpaceX flew Starship with 33 engines — the same approach, now proven by modern computing.</p>
+      <p class="mb-phi">Named after the Soviet N-1 rocket. In the 1960s, engineers built it with 30 engines working together — but computers were too weak to coordinate them. It failed not because the idea was wrong, but because the technology wasn't ready. Sixty years later, SpaceX flew Starship with 33 engines. Same approach — now proven by modern computing.</p>
       ${figGrid([
         fig('/static/img/n1-rocket.jpg', 'Soviet N-1 rocket — 30 engines', 'N-1 rocket — 30 engines, failed by coordination limits.'),
         fig('/static/img/spacex-starship.jpg', 'SpaceX Starship — 33 engines', 'Starship — 33 engines, proven by modern computing.'),
       ])}
-      <p>Same story with cooperation. For centuries, philosophers, writers, and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technologies didn't exist. Now they do: internet, Big Data, AI, cryptography, smart contracts, and global real-time communication make large-scale cooperation possible for the first time.</p>
+      <p>Same story with cooperation. For centuries, thinkers and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technology didn't exist. Now it does. Internet, Big Data, AI, cryptography, smart contracts, real-time communication — for the first time, large-scale cooperation is possible.</p>
     `)}
 
     ${section('values', 'Values', items([
       `<strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.`,
       `<strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.`,
       `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
-      `<strong>4. Transparency.</strong> Default to open. Eliminate information asymmetry starting with yourself.`,
+      `<strong>4. Transparency.</strong> Default to open. Remove information gaps, starting with your own.`,
       `<strong>5. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.`,
       `<strong>6. Leverage.</strong> Minimum force at the point of maximum systemic effect.`,
       `<strong>7. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.`,
@@ -717,10 +717,10 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${section('internal', 'Internal products', `
-      <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Systematically raise your operating efficiency through shared infrastructure.</p>
+      <p class="mb-phi">Solve each other's problems. Access people who raise your ceiling. Raise your efficiency through shared tools and systems.</p>
 
       <h3>Activities</h3>
-      <p class="mb-phi">Weekly rhytm: online and offline.</p>
+      <p class="mb-phi">Weekly rhythm, online and offline.</p>
 
       ${items([
         `<strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.`,
