@@ -26,9 +26,9 @@ function dots(from, to, milestones = {}) {
   const lines = [];
   for (let year = from; year <= to; year++) {
     if (milestones[year]) {
-      lines.push(`<p class="milestone">. ${year} — ${milestones[year]}</p>`);
+      lines.push(`<p class="milestone">· ${year} — ${milestones[year]}</p>`);
     } else {
-      lines.push(`<p class="dot">. <span class="dot-year">${year}</span></p>`);
+      lines.push(`<p class="dot">· <span class="dot-year">${year}</span></p>`);
     }
   }
   return lines.join('\n');
@@ -210,7 +210,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>n1.community — Closing the gap between destruction and cooperation</title>
+  <title>n1.community — Weekly fixes for humanity</title>
   ${meta('description', DESC)}
   ${meta('keywords', 'n1, community, cooperation, win-win, coordination, humanity, mission-driven')}
   ${meta('author', 'n1.community')}
@@ -270,24 +270,32 @@ const html = `<!DOCTYPE html>
 
     /* ─── Reset ─── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    ::selection { background: #111; color: #fff; }
 
     /* ─── Base ─── */
     html { font-size: 24px; scroll-behavior: smooth; }
     body {
       font-family: 'Playfair', serif;
-      color: #000;
+      color: #111;
       background: #fff;
       line-height: ${P};
+      overflow-wrap: break-word;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "liga" 1, "kern" 1;
     }
 
     /* ─── Typography ─── */
     h1, h2, h3, h4, h5, h6, .subtitle, .callout, .card-title {
       font-family: 'Playfair Display', serif;
       line-height: 1.2;
+      text-wrap: balance;
+      text-rendering: optimizeLegibility;
     }
     h1 {
       font-size: ${P2}rem;
       line-height: 1.1;
+      letter-spacing: -0.02em;
       margin-bottom: ${P}rem;
     }
     h2 {
