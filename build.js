@@ -237,11 +237,37 @@ const html = `<!DOCTYPE html>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="n1" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
   <style>
+    @font-face {
+      font-family: 'Playfair';
+      src: url('/static/fonts/Playfair/Playfair-VariableFont_opsz,wdth,wght.ttf') format('truetype');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Playfair';
+      src: url('/static/fonts/Playfair/Playfair-Italic-VariableFont_opsz,wdth,wght.ttf') format('truetype');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('/static/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('/static/fonts/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype');
+      font-weight: 400 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
     /* ─── Reset ─── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
