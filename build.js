@@ -337,7 +337,7 @@ const html = `<!DOCTYPE html>
       left: var(--tt-left, 0px);
       top: 100%;
       margin-top: 0.4em;
-      background: #000;
+      background: #111;
       color: #fff;
       font-size: ${iP}rem;
       line-height: 1.4;
@@ -358,7 +358,7 @@ const html = `<!DOCTYPE html>
 
     /* ─── Links ─── */
     article a:not(.btn-scroll) {
-      color: #000;
+      color: #111;
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 0.2em;
@@ -369,7 +369,7 @@ const html = `<!DOCTYPE html>
       opacity: 0.7;
     }
     article a:not(.btn-scroll):focus-visible {
-      outline: 1px solid #000;
+      outline: 1px solid #111;
       outline-offset: 0.15em;
     }
 
@@ -429,7 +429,7 @@ const html = `<!DOCTYPE html>
       width: ${iP}rem;
       height: ${iP}rem;
       background: transparent;
-      border: ${r(iP2 * iP3)}rem solid #000;
+      border: 1px solid #111;
       transform: translate(-50%, -50%);
       opacity: 0.12;
       animation: breathe ${P3}s ease-in-out infinite;
@@ -479,7 +479,7 @@ const html = `<!DOCTYPE html>
       width: 100%;
       height: auto;
       display: block;
-      border: 1px solid #000;
+      border: 1px solid #111;
     }
     .fig figcaption {
       font-size: ${iSP}rem;
@@ -493,7 +493,7 @@ const html = `<!DOCTYPE html>
     }
 
     /* ─── Components ─── */
-    .card, .box, .cta-box { border: 1px solid #000; padding: ${P}rem; }
+    .card, .box, .cta-box { border: 1px solid #111; padding: ${P}rem; }
     .card { transition: opacity 0.3s; }
     .card-title {
       font-size: ${SP}rem;
@@ -524,7 +524,7 @@ const html = `<!DOCTYPE html>
       position: relative;
       width: min(20rem, 100%);
       aspect-ratio: 1;
-      border: 1px solid #000;
+      border: 1px solid #111;
       cursor: crosshair;
       touch-action: none;
       user-select: none;
@@ -551,7 +551,7 @@ const html = `<!DOCTYPE html>
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: #000;
+      background: #111;
       transform: translate(-50%, 50%);
       cursor: grab;
       touch-action: none;
@@ -578,7 +578,7 @@ const html = `<!DOCTYPE html>
       bottom: 15%;
       transform: translate(1rem, -0.5rem);
       font-size: ${iSP}rem;
-      color: #000;
+      color: #111;
       white-space: nowrap;
       pointer-events: none;
       z-index: 2;
@@ -610,21 +610,21 @@ const html = `<!DOCTYPE html>
       display: block;
       margin-top: ${P}rem;
       padding: ${iP}rem ${P}rem;
-      border: 1px solid #000;
+      border: 1px solid #111;
       text-align: center;
       text-decoration: none;
-      color: #000;
+      color: #111;
       font-size: ${P}rem;
       line-height: 1.2;
       background: #fff;
       transition: background 0.2s, color 0.2s;
     }
     .btn-scroll:hover {
-      background: #000;
+      background: #111;
       color: #fff;
     }
     .btn-scroll:focus-visible {
-      outline: 1px solid #000;
+      outline: 1px solid #111;
       outline-offset: ${iP2}rem;
     }
     .btn-scroll:active {
@@ -652,7 +652,7 @@ const html = `<!DOCTYPE html>
       top: -100%;
       left: 0;
       padding: 0.4em 0.8em;
-      background: #000;
+      background: #111;
       color: #fff;
       z-index: 9999;
       font-size: ${iSP}rem;
@@ -812,9 +812,9 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi"><a href="https://np2.ru/">np2.ru</a> is a community app platform we built ourselves — profiles with skills and requests, AI-powered member search, event ticketing with payments.</p>
 
       <p class="mb-phi"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
-      <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, 1.5M ₽ revenue processed.</p>
+      <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, $20K revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 1,000 communities → $5M/year.</p>
     `)}
 
     ${section('join', 'Who this is for', `
