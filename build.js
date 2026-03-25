@@ -170,26 +170,26 @@ const pastMilestones = {
   1945: 'Nuclear Fission Weapon ☢️',
   1953: 'Double Helix Structure of DNA 🧬',
   1957: 'Sputnik 1 Launch 🛰️',
-  1961: 'First human in space 🧑‍🚀',
-  1965: 'First spacewalk 🧑‍🚀',
-  1969: 'First human on Moon 🌕',
+  1961: 'First Human in Space 🧑‍🚀',
+  1965: 'First Spacewalk 🧑‍🚀',
+  1969: 'First Human on the Moon 🌕',
   1973: 'Recombinant DNA Technology 🔬',
   1978: 'First IVF Baby 👶',
   1980: 'Discovery of Cosmic Inflation 🌌',
   1983: 'GNU Project 💿', // also WarGames: "The only winning move is not to play." We disagree.
-  1987: 'Black Monday crash 📉',
+  1987: 'Black Monday Crash 📉',
   1989: 'World Wide Web 🌐',
-  1991: 'Linux kernel released 🐧',
-  1995: 'First exoplanet around a sun-like star 🪐',
+  1991: 'Linux Kernel Released 🐧',
+  1995: 'First Exoplanet Around a Sun-like Star 🪐',
   1997: 'Deep Blue vs. Kasparov ♟️',
   2001: 'Human Genome Sequence 🧪',
-  2004: 'Mars Rovers land 🤖',
+  2004: 'Mars Rovers Land 🤖',
   2007: 'iPhone 📱',
   2009: 'Bitcoin 🪙',
-  2010: 'First synthetic cell created 🧫',
+  2010: 'First Synthetic Cell Created 🧫',
   2012: 'CRISPR/Cas9 ✂️',
-  2013: 'NSA revelations 👀',
-  2015: 'SpaceX Falcon 9 landing 🚀',
+  2013: 'NSA Revelations 👀',
+  2015: 'SpaceX Falcon 9 Landing 🚀',
   2016: 'AlphaGo vs. Lee Sedol 🎲',
   2017: 'Transformer Architecture 🤖',
   2018: 'CRISPR Human Embryo Editing 🧬',
@@ -198,7 +198,7 @@ const pastMilestones = {
   2021: 'James Webb Space Telescope 🔭',
   2022: 'ChatGPT 💬',
   2023: 'Repeated Fusion Ignition ☀️',
-  2024: 'First complete brain connectome 🪰',
+  2024: 'First Complete Brain Connectome 🪰',
   2025: 'Humanoid Robots at Scale 🦿',
 };
 
@@ -682,7 +682,7 @@ const html = `<!DOCTYPE html>
     </header>
 
     ${section('timeline', 'Not that long ago, right?', `
-      <p class="mb-phi">In 1543 we realized Earth isn't the center of the universe. We took it personally:</p>
+      <p class="mb-phi">In 1543, we realized Earth isn't the center of the universe. We took it personally:</p>
       ${dots(1543, 2025, pastMilestones)}
       <p class="milestone">. 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
     `)}
@@ -712,7 +712,7 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi">For 300,000 years, a single human could kill one person with <span class='tooltip' data-tip='Cain and Abel energy.'>a rock</span>. Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.</p>
       <p class="mb-phi">The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.</p>
       <p class="callout"><strong>Elevate the system for humanity: make it easier to grow through benefit, harder to grow through harm.</strong></p>
-      <p class="mb-micro">Create a way of living by win-win that beats selfishness — not through morality, but through better results.</p>
+      <p class="mb-micro">Create a way of living through win-win that beats selfishness — not through morality, but through better results.</p>
       <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
 
       <h3>Why "n1"</h3>
@@ -726,7 +726,7 @@ const html = `<!DOCTYPE html>
 
     ${section('values', 'Values', items([
       `<strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.`,
-      `<strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.`,
+      `<strong>2. Truth.</strong> Accurate models over comfortable narratives — starting with self-deception.`,
       `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
       `<strong>4. Transparency.</strong> Default to open. Remove information gaps, starting with your own.`,
       `<strong>5. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.`,
@@ -737,7 +737,7 @@ const html = `<!DOCTYPE html>
     ]))}
 
     ${section('participants', 'Participants', `
-      <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
+      <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by a first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
       <p class="mb-phi"><strong>Current status:</strong> early stage — we are assembling the founding core from scratch. The group is small, tight-knit, and hands-on.</p>
       <p><strong>Language:</strong> day-to-day communication is mostly in Russian for now.</p>
     `)}
@@ -768,7 +768,7 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${section('external', 'External products', `
-      <p class="mb-phi">We build and ship our own products — tools that make cooperation easier and deception harder. Weekly updates, small steps compound.</p>
+      <p class="mb-phi">We build and ship our own products — tools that make cooperation easier and deception harder. Weekly updates, small steps that compound.</p>
 
       <p class="mb-micro">1. IT products for cooperation</p>
       <p class="mb-micro">2. Methods to simplify win-win</p>
@@ -1068,7 +1068,7 @@ const html = `<!DOCTYPE html>
           return 'Partial progress. The gap narrows but hasn\\'t closed.' + (hasDystopian ? ' Dystopian outcomes still loom.' : '');
         }
         if (safety < 0.70) {
-          return 'Genuine progress. Cooperation and accountability are catching up.' + (hasBeneficial ? ' Life extension, aligned AI become real possibilities.' : '') + ' Trust starts to outcompete exploitation.';
+          return 'Genuine progress. Cooperation and accountability are catching up.' + (hasBeneficial ? ' Life extension and aligned AI become real possibilities.' : '') + ' Trust starts to outcompete exploitation.';
         }
 
         return 'The system works. Cooperation is easy, deception is expensive. Humanity unlocks its full potential.';
