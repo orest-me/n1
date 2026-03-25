@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>n1.community — Closing the&nbsp;gap between destruction and&nbsp;cooperation</title>
-  <meta name="description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta name="description" content="We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
   <meta name="keywords" content="n1, community, cooperation, win-win, coordination, humanity, mission-driven">
   <meta name="author" content="n1.community">
   <link rel="canonical" href="https://n1.community/">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://n1.community/">
   <meta property="og:title" content="n1.community — Weekly fixes for humanity">
-  <meta property="og:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta property="og:description" content="We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
   <meta property="og:image" content="https://n1.community/web-app-manifest-512x512.png">
   <meta property="og:site_name" content="n1.community">
   <meta property="og:locale" content="en_US">
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="n1.community — Weekly fixes for humanity">
-  <meta name="twitter:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
+  <meta name="twitter:description" content="We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
   <meta name="twitter:image" content="https://n1.community/web-app-manifest-512x512.png">
 
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -133,10 +133,62 @@
       padding: 2.618rem 1.618rem;
     }
     .hero-logotype {
-      height: 4.236rem;
-      width: auto;
       margin-top: 2.618rem;
-      margin-bottom: 2.618rem;
+      margin-bottom: 4.236rem;
+      display: inline-block;
+    }
+    .logo-top {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.236rem;
+    }
+    .logo-n1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 1.272rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .logo-circle {
+      position: relative;
+      width: 8.718rem;
+      height: 8.718rem;
+      flex-shrink: 0;
+    }
+    .logo-ring {
+      position: absolute;
+      inset: 0;
+    }
+    .logo-ring-outer {
+      animation: spin 60s linear infinite;
+    }
+    .logo-ring-inner {
+      animation: spin 37.083s linear infinite reverse;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.12; }
+      50% { opacity: 0.55; }
+    }
+    .logo-dot {
+      position: absolute;
+      width: 0.618rem;
+      height: 0.618rem;
+      background: transparent;
+      border: 0.09rem solid #000;
+      transform: translate(-50%, -50%);
+      opacity: 0.12;
+      animation: breathe 4.236s ease-in-out infinite;
+    }
+    .logo-community {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 1.272rem;
+      line-height: 1;
+      display: block;
+      margin-top: 0.236rem;
     }
     header {
       margin-bottom: 4.236rem;
@@ -323,7 +375,7 @@
     "name": "n1.community",
     "url": "https://n1.community",
     "logo": "https://n1.community/web-app-manifest-512x512.png",
-    "description": "We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.",
+    "description": "We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.",
     "sameAs": ["https://t.me/Oresty"]
   }
   </script>
@@ -355,7 +407,48 @@
 
     <header>
       <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
-      <img class="hero-logotype" src="/static/n1-logotype.svg" alt="n1.community">
+      <div class="hero-logotype">
+      <div class="logo-top">
+        <span class="logo-n1">n1.</span>
+        <div class="logo-circle">
+          <div class="logo-ring logo-ring-outer">
+            <span class="logo-dot" style="left:50%;top:6%;animation-delay:0s"></span>
+            <span class="logo-dot" style="left:61.388%;top:7.499%;animation-delay:0.177s"></span>
+            <span class="logo-dot" style="left:72%;top:11.895%;animation-delay:0.353s"></span>
+            <span class="logo-dot" style="left:81.113%;top:18.887%;animation-delay:0.53s"></span>
+            <span class="logo-dot" style="left:88.105%;top:28%;animation-delay:0.706s"></span>
+            <span class="logo-dot" style="left:92.501%;top:38.612%;animation-delay:0.883s"></span>
+            <span class="logo-dot" style="left:94%;top:50%;animation-delay:1.059s"></span>
+            <span class="logo-dot" style="left:92.501%;top:61.388%;animation-delay:1.236s"></span>
+            <span class="logo-dot" style="left:88.105%;top:72%;animation-delay:1.412s"></span>
+            <span class="logo-dot" style="left:81.113%;top:81.113%;animation-delay:1.588s"></span>
+            <span class="logo-dot" style="left:72%;top:88.105%;animation-delay:1.765s"></span>
+            <span class="logo-dot" style="left:61.388%;top:92.501%;animation-delay:1.941s"></span>
+            <span class="logo-dot" style="left:50%;top:94%;animation-delay:2.118s"></span>
+            <span class="logo-dot" style="left:38.612%;top:92.501%;animation-delay:2.294s"></span>
+            <span class="logo-dot" style="left:28%;top:88.105%;animation-delay:2.471s"></span>
+            <span class="logo-dot" style="left:18.887%;top:81.113%;animation-delay:2.648s"></span>
+            <span class="logo-dot" style="left:11.895%;top:72%;animation-delay:2.824s"></span>
+            <span class="logo-dot" style="left:7.499%;top:61.388%;animation-delay:3.001s"></span>
+            <span class="logo-dot" style="left:6%;top:50%;animation-delay:3.177s"></span>
+            <span class="logo-dot" style="left:7.499%;top:38.612%;animation-delay:3.353s"></span>
+            <span class="logo-dot" style="left:11.895%;top:28%;animation-delay:3.53s"></span>
+            <span class="logo-dot" style="left:18.887%;top:18.887%;animation-delay:3.706s"></span>
+            <span class="logo-dot" style="left:28%;top:11.895%;animation-delay:3.883s"></span>
+            <span class="logo-dot" style="left:38.612%;top:7.499%;animation-delay:4.06s"></span>
+          </div>
+          <div class="logo-ring logo-ring-inner">
+            <span class="logo-dot" style="left:50%;top:34.6%;animation-delay:0s"></span>
+            <span class="logo-dot" style="left:63.337%;top:42.3%;animation-delay:0.706s"></span>
+            <span class="logo-dot" style="left:63.337%;top:57.7%;animation-delay:1.412s"></span>
+            <span class="logo-dot" style="left:50%;top:65.4%;animation-delay:2.118s"></span>
+            <span class="logo-dot" style="left:36.663%;top:57.7%;animation-delay:2.824s"></span>
+            <span class="logo-dot" style="left:36.663%;top:42.3%;animation-delay:3.53s"></span>
+          </div>
+        </div>
+      </div>
+      <span class="logo-community">community</span>
+    </div>
       <h1>Weekly fixes for&nbsp;humanity</h1>
       <p class="mt-sm">We&nbsp;build products that make cooperation easy and&nbsp;deception expensive. New updates — every week.</p>
       <p class="mt-sm">A&nbsp;community of&nbsp;individuals who absorb the&nbsp;coordination cost no&nbsp;one else will — driven by&nbsp;the&nbsp;first-principles understanding that win-win isn't idealism, it's a&nbsp;superior strategy.</p>

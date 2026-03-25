@@ -17,7 +17,7 @@ const iP2 = r(1 / phi / phi);    // 0.382 — dots, micro text
 const iSP = r(1 / sqrtPhi);      // 0.786 — small body, milestones, labels
 const iP3 = r(1 / phi / phi / phi); // 0.236
 
-const DESC = "We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
+const DESC = "We build products that lower the cost of trust and raise the cost of fraud. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
 const OG_TITLE = 'n1.community — Weekly fixes for humanity';
 
 // ─── DRY Functions ───
@@ -82,6 +82,47 @@ function items(arr, cls = 'mb-micro') {
   return arr.map((t, i) =>
     `<p${i < arr.length - 1 ? ` class="${cls}"` : ''}>${t}</p>`
   ).join('\n      ');
+}
+
+function logotype() {
+  const outerCount = 24;
+  const innerCount = 6;
+  const outerR = 44;
+  const innerR = 15.4;
+  const period = P3;
+  const outerDots = [];
+  const innerDots = [];
+
+  for (let i = 0; i < outerCount; i++) {
+    const angle = (i / outerCount) * 2 * Math.PI - Math.PI / 2;
+    const x = r(50 + outerR * Math.cos(angle));
+    const y = r(50 + outerR * Math.sin(angle));
+    const delay = r(i / outerCount * period);
+    outerDots.push(`<span class="logo-dot" style="left:${x}%;top:${y}%;animation-delay:${delay}s"></span>`);
+  }
+
+  for (let i = 0; i < innerCount; i++) {
+    const angle = (i / innerCount) * 2 * Math.PI - Math.PI / 2;
+    const x = r(50 + innerR * Math.cos(angle));
+    const y = r(50 + innerR * Math.sin(angle));
+    const delay = r(i / innerCount * period);
+    innerDots.push(`<span class="logo-dot" style="left:${x}%;top:${y}%;animation-delay:${delay}s"></span>`);
+  }
+
+  return `<div class="hero-logotype">
+      <div class="logo-top">
+        <span class="logo-n1">n1.</span>
+        <div class="logo-circle">
+          <div class="logo-ring logo-ring-outer">
+            ${outerDots.join('\n            ')}
+          </div>
+          <div class="logo-ring logo-ring-inner">
+            ${innerDots.join('\n            ')}
+          </div>
+        </div>
+      </div>
+      <span class="logo-community">community</span>
+    </div>`;
 }
 
 
@@ -288,10 +329,62 @@ const html = `<!DOCTYPE html>
       padding: ${P2}rem ${P}rem;
     }
     .hero-logotype {
-      height: ${P3}rem;
-      width: auto;
       margin-top: ${P2}rem;
-      margin-bottom: ${P2}rem;
+      margin-bottom: ${P3}rem;
+      display: inline-block;
+    }
+    .logo-top {
+      display: flex;
+      align-items: flex-end;
+      gap: ${iP3}rem;
+    }
+    .logo-n1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: ${SP}rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .logo-circle {
+      position: relative;
+      width: ${r(SP * P3 * P)}rem;
+      height: ${r(SP * P3 * P)}rem;
+      flex-shrink: 0;
+    }
+    .logo-ring {
+      position: absolute;
+      inset: 0;
+    }
+    .logo-ring-outer {
+      animation: spin 60s linear infinite;
+    }
+    .logo-ring-inner {
+      animation: spin ${r(60 / P)}s linear infinite reverse;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.12; }
+      50% { opacity: 0.55; }
+    }
+    .logo-dot {
+      position: absolute;
+      width: ${iP}rem;
+      height: ${iP}rem;
+      background: transparent;
+      border: ${r(iP2 * iP3)}rem solid #000;
+      transform: translate(-50%, -50%);
+      opacity: 0.12;
+      animation: breathe ${P3}s ease-in-out infinite;
+    }
+    .logo-community {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: ${SP}rem;
+      line-height: 1;
+      display: block;
+      margin-top: ${iP3}rem;
     }
     header {
       margin-bottom: ${P3}rem;
@@ -510,7 +603,7 @@ const html = `<!DOCTYPE html>
 
     <header>
       <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
-      <img class="hero-logotype" src="/static/n1-logotype.svg" alt="n1.community">
+      ${logotype()}
       <h1>Weekly fixes for humanity</h1>
       <p class="mt-sm">We build products that make cooperation easy and deception expensive. New updates — every week.</p>
       <p class="mt-sm">A community of individuals who absorb the coordination cost no one else will — driven by the first-principles understanding that win-win isn't idealism, it's a superior strategy.</p>
@@ -937,10 +1030,8 @@ fs.copyFileSync(
 const pub = path.join(__dirname, 'public');
 if (fs.existsSync(pub)) {
   for (const file of fs.readdirSync(pub)) {
-    if (file === 'n1-logotype.svg') continue; // only used from /static/
     fs.copyFileSync(path.join(pub, file), path.join(dist, file));
   }
-  fs.copyFileSync(path.join(pub, 'n1-logotype.svg'), path.join(staticDir, 'n1-logotype.svg'));
 }
 fs.writeFileSync(path.join(dist, 'index.html'), typographNbsp(html));
 console.log('Built dist/index.html');
