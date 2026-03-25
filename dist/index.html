@@ -1139,19 +1139,6 @@
       <p class="mb-micro">Create a&nbsp;way of&nbsp;living through win-win that beats selfishness — not&nbsp;through morality, but&nbsp;through better results.</p>
       <p class="mb-phi">Radical openness and&nbsp;win-win as&nbsp;the&nbsp;de&nbsp;facto standard for&nbsp;humanity.</p>
 
-      <h3>Why "n1"</h3>
-      <p class="mb-phi">Named after the&nbsp;Soviet N-1 rocket. In&nbsp;the&nbsp;1960s, engineers built it&nbsp;with 30&nbsp;engines working together — but&nbsp;computers were too weak to&nbsp;coordinate them. It&nbsp;failed not&nbsp;because the&nbsp;idea was wrong, but&nbsp;because the&nbsp;technology wasn't ready. Sixty years later, SpaceX flew Starship with 33&nbsp;engines. Same approach — now proven by&nbsp;modern computing.</p>
-      <div class="fig-grid">
-        <figure class="fig">
-          <img src="/static/img/n1-rocket.jpg" alt="Soviet N-1 rocket — 30 engines" loading="lazy" />
-          <figcaption>N-1 rocket — 30&nbsp;engines, failed by&nbsp;coordination limits.</figcaption>
-        </figure>
-        <figure class="fig">
-          <img src="/static/img/spacex-starship.jpg" alt="SpaceX Starship — 33 engines" loading="lazy" />
-          <figcaption>Starship — 33&nbsp;engines, proven by&nbsp;modern computing.</figcaption>
-        </figure>
-      </div>
-      <p>Same story with cooperation. For&nbsp;centuries, thinkers and&nbsp;reformers tried to&nbsp;build a&nbsp;society on&nbsp;mutual benefit — and&nbsp;every time it&nbsp;fell apart. Not&nbsp;because the&nbsp;idea was wrong, but&nbsp;because the&nbsp;technology didn't exist. Now it&nbsp;does. Internet, Big Data, AI, cryptography, smart contracts, real-time communication — for&nbsp;the&nbsp;first time, large-scale cooperation is&nbsp;possible.</p>
     
   </section>
 
@@ -1214,10 +1201,13 @@
       <p class="mb-micro">2. Methods to&nbsp;simplify win-win</p>
       <p class="mb-phi">3. Methods to&nbsp;raise costs of&nbsp;deception</p>
 
-      <h3>Current product</h3>
+      <h3>Current products</h3>
+
+      <h4>np2</h4>
+
       <p class="mb-phi"><a href="https://np2.ru/">np2.ru</a> is&nbsp;a&nbsp;community app platform we&nbsp;built ourselves — profiles with skills and&nbsp;requests, AI-powered member search, event ticketing with payments.</p>
 
-      <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the&nbsp;right person instantly, organizers make decisions from real data instead of&nbsp;gut feelings.</p>
+      <p class="mb-phi"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the&nbsp;right person instantly, organizers make decisions from real data instead of&nbsp;gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764&nbsp;users, 20&nbsp;events, 355&nbsp;transactions, 1.5M ₽ revenue processed.</p>
 
       <p class="mb-micro"><strong>Model:</strong> SaaS — monthly&nbsp;fee. Target: 100&nbsp;clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
@@ -1319,7 +1309,7 @@
           yearRange: [2060, 2150], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.45 },
         { label: 'A-Mortality (Death Optional) \u{1F52E}', category: 'beneficial',
           yearRange: [2070, 2200], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.50 },
-        { label: 'Homo Deus: Transcendence \u{1F30C}', category: 'beneficial',
+        { label: 'Flourishing Civilization \u{1F30C}', category: 'beneficial',
           yearRange: [2100, 2300], cW: 0.5, dW: 0.5, minCoop: 0.65, minDecep: 0.60 },
 
         // ── DYSTOPIAN: appear when specific slider is too low ──
@@ -1488,7 +1478,7 @@
         if (extinctionYear !== null && extinctionYear <= 2200) {
           visibleEvents.push({ label: 'Human Extinction \u{1F480}', category: 'extinction', year: extinctionYear });
         } else if (coop >= 0.65 && decep >= 0.60) {
-          visibleEvents.push({ label: 'Humanity \u2014 gods with wisdom \u2728', category: 'transcendence', year: lastYear + 10 });
+          visibleEvents.push({ label: 'Humanity thrives \u2014 a long future ahead \u2728', category: 'transcendence', year: lastYear + 10 });
         } else if (safety >= 0.45) {
           visibleEvents.push({ label: 'Intelligent life survives \u{1F331}', category: 'survival', year: lastYear + 5 });
         }
@@ -1508,7 +1498,6 @@
         if (cx === 0 && dx === 0) return 'Solitary, poor, nasty, brutish, and short. \u2014 Thomas Hobbes, who was fun at parties.';
         if (cx === 100 && dx === 100) return 'Bertrand Russell warned that the demand for certainty is one of the most dangerous things. But this does look nice.';
         if (cx === 50 && dx === 50) return 'Nash equilibrium. Stable, but not optimal. John would tell you to cooperate more.';
-        if (cx === 83 && dx === 17) return 'Pareto says 80% of outcomes come from 20% of causes. You\'re close \u2014 but deception is the 20% you\'re ignoring.';
 
         var hasExtinction = extinctionYear !== null && extinctionYear <= 2200;
         var hasDystopian = events.some(function(e) { return e.category === 'dystopian'; });

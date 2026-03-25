@@ -753,13 +753,6 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro">Create a way of living through win-win that beats selfishness — not through morality, but through better results.</p>
       <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
 
-      <h3>Why "n1"</h3>
-      <p class="mb-phi">Named after the Soviet N-1 rocket. In the 1960s, engineers built it with 30 engines working together — but computers were too weak to coordinate them. It failed not because the idea was wrong, but because the technology wasn't ready. Sixty years later, SpaceX flew Starship with 33 engines. Same approach — now proven by modern computing.</p>
-      ${figGrid([
-        fig('/static/img/n1-rocket.jpg', 'Soviet N-1 rocket — 30 engines', 'N-1 rocket — 30 engines, failed by coordination limits.'),
-        fig('/static/img/spacex-starship.jpg', 'SpaceX Starship — 33 engines', 'Starship — 33 engines, proven by modern computing.'),
-      ])}
-      <p>Same story with cooperation. For centuries, thinkers and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technology didn't exist. Now it does. Internet, Big Data, AI, cryptography, smart contracts, real-time communication — for the first time, large-scale cooperation is possible.</p>
     `)}
 
     ${section('values', 'Values', items([
@@ -812,10 +805,13 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro">2. Methods to simplify win-win</p>
       <p class="mb-phi">3. Methods to raise costs of deception</p>
 
-      <h3>Current product</h3>
+      <h3>Current products</h3>
+
+      <h4>np2</h4>
+
       <p class="mb-phi"><a href="https://np2.ru/">np2.ru</a> is a community app platform we built ourselves — profiles with skills and requests, AI-powered member search, event ticketing with payments.</p>
 
-      <p class="mb-micro"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
+      <p class="mb-phi"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, 1.5M ₽ revenue processed.</p>
 
       <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 100 clubs → <span class='tooltip' data-tip='42. Yes, we noticed. Accidentally calculated, honest.'>42M</span> ₽/year.</p>
@@ -906,7 +902,7 @@ const html = `<!DOCTYPE html>
           yearRange: [2060, 2150], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.45 },
         { label: 'A-Mortality (Death Optional) \\u{1F52E}', category: 'beneficial',
           yearRange: [2070, 2200], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.50 },
-        { label: 'Homo Deus: Transcendence \\u{1F30C}', category: 'beneficial',
+        { label: 'Flourishing Civilization \\u{1F30C}', category: 'beneficial',
           yearRange: [2100, 2300], cW: 0.5, dW: 0.5, minCoop: 0.65, minDecep: 0.60 },
 
         // ── DYSTOPIAN: appear when specific slider is too low ──
@@ -1075,7 +1071,7 @@ const html = `<!DOCTYPE html>
         if (extinctionYear !== null && extinctionYear <= 2200) {
           visibleEvents.push({ label: 'Human Extinction \\u{1F480}', category: 'extinction', year: extinctionYear });
         } else if (coop >= 0.65 && decep >= 0.60) {
-          visibleEvents.push({ label: 'Humanity \\u2014 gods with wisdom \\u2728', category: 'transcendence', year: lastYear + 10 });
+          visibleEvents.push({ label: 'Humanity thrives \\u2014 a long future ahead \\u2728', category: 'transcendence', year: lastYear + 10 });
         } else if (safety >= 0.45) {
           visibleEvents.push({ label: 'Intelligent life survives \\u{1F331}', category: 'survival', year: lastYear + 5 });
         }
@@ -1095,7 +1091,6 @@ const html = `<!DOCTYPE html>
         if (cx === 0 && dx === 0) return 'Solitary, poor, nasty, brutish, and short. \\u2014 Thomas Hobbes, who was fun at parties.';
         if (cx === 100 && dx === 100) return 'Bertrand Russell warned that the demand for certainty is one of the most dangerous things. But this does look nice.';
         if (cx === 50 && dx === 50) return 'Nash equilibrium. Stable, but not optimal. John would tell you to cooperate more.';
-        if (cx === 83 && dx === 17) return 'Pareto says 80% of outcomes come from 20% of causes. You\\'re close \\u2014 but deception is the 20% you\\'re ignoring.';
 
         var hasExtinction = extinctionYear !== null && extinctionYear <= 2200;
         var hasDystopian = events.some(function(e) { return e.category === 'dystopian'; });
