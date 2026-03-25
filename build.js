@@ -814,7 +814,7 @@ const html = `<!DOCTYPE html>
       <p class="mb-phi"><strong>Mission alignment:</strong> np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.</p>
       <p class="mb-phi"><strong>Traction (7 weeks in):</strong> 764 users, 20 events, 355 transactions, $20K revenue processed.</p>
 
-      <p class="mb-micro"><strong>Model:</strong> SaaS — monthly fee. Target: 1,000 communities → $5M/year.</p>
+      <p class="mb-micro"><strong>Model:</strong> <span class='tooltip' data-tip='Also: Salvation as a Subscription'>SaaS</span> — monthly fee. Target: 1,000 communities → $5M/year.</p>
     `)}
 
     ${section('join', 'Who this is for', `
