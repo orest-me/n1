@@ -8,14 +8,17 @@ const phi = 1.618033988749895;
 const sqrtPhi = Math.sqrt(phi);    // 1.272
 const r = (n) => Math.round(n * 1000) / 1000; // round to 3 decimals
 
-// Type scale (all derived from phi):
-//   phi²    = 2.618rem — h1/hero
-//   phi     = 1.618rem — h2, subtitle, button
-//   sqrtPhi    = 1.272rem — h3
-//   1     = 1rem     — body
-//   1/sqrtPhi  = 0.786rem — small body, milestones, labels
-//   1/phi   = 0.618rem — captions, slider values
-//   1/phi²  = 0.382rem — dots, micro text
+const P   = r(phi);              // 1.618 — h2, subtitle, button
+const P2  = r(phi * phi);        // 2.618 — h1/hero
+const P3  = r(phi * phi * phi);  // 4.236
+const SP  = r(sqrtPhi);          // 1.272 — h3
+const iP  = r(1 / phi);          // 0.618 — captions, slider values
+const iP2 = r(1 / phi / phi);    // 0.382 — dots, micro text
+const iSP = r(1 / sqrtPhi);      // 0.786 — small body, milestones, labels
+const iP3 = r(1 / phi / phi / phi); // 0.236
+
+const DESC = "We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
+const OG_TITLE = 'n1.community — Weekly fixes for humanity';
 
 // ─── DRY Functions ───
 
@@ -68,6 +71,17 @@ function card(id, title, body) {
     <p class="card-title">${title}</p>
     ${body}
   </div>`;
+}
+
+function meta(key, val) {
+  const attr = key.startsWith('og:') ? 'property' : 'name';
+  return `<meta ${attr}="${key}" content="${val}">`;
+}
+
+function items(arr, cls = 'mb-micro') {
+  return arr.map((t, i) =>
+    `<p${i < arr.length - 1 ? ` class="${cls}"` : ''}>${t}</p>`
+  ).join('\n      ');
 }
 
 
@@ -145,25 +159,25 @@ const html = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>n1.community — Closing the gap between destruction and cooperation</title>
-  <meta name="description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
-  <meta name="keywords" content="n1, community, cooperation, win-win, coordination, humanity, mission-driven">
-  <meta name="author" content="n1.community">
+  ${meta('description', DESC)}
+  ${meta('keywords', 'n1, community, cooperation, win-win, coordination, humanity, mission-driven')}
+  ${meta('author', 'n1.community')}
   <link rel="canonical" href="https://n1.community/">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://n1.community/">
-  <meta property="og:title" content="n1.community — Weekly fixes for humanity">
-  <meta property="og:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
-  <meta property="og:image" content="https://n1.community/web-app-manifest-512x512.png">
-  <meta property="og:site_name" content="n1.community">
-  <meta property="og:locale" content="en_US">
+  ${meta('og:type', 'website')}
+  ${meta('og:url', 'https://n1.community/')}
+  ${meta('og:title', OG_TITLE)}
+  ${meta('og:description', DESC)}
+  ${meta('og:image', 'https://n1.community/web-app-manifest-512x512.png')}
+  ${meta('og:site_name', 'n1.community')}
+  ${meta('og:locale', 'en_US')}
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="n1.community — Weekly fixes for humanity">
-  <meta name="twitter:description" content="We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.">
-  <meta name="twitter:image" content="https://n1.community/web-app-manifest-512x512.png">
+  ${meta('twitter:card', 'summary')}
+  ${meta('twitter:title', OG_TITLE)}
+  ${meta('twitter:description', DESC)}
+  ${meta('twitter:image', 'https://n1.community/web-app-manifest-512x512.png')}
 
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -185,45 +199,42 @@ const html = `<!DOCTYPE html>
       font-family: 'Playfair', serif;
       color: #000;
       background: #fff;
-      line-height: ${r(phi)};
+      line-height: ${P};
     }
 
     /* ─── Typography ─── */
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6, .subtitle, .callout, .card-title {
       font-family: 'Playfair Display', serif;
       line-height: 1.2;
     }
     h1 {
-      font-size: ${r(phi * phi)}rem;
+      font-size: ${P2}rem;
       line-height: 1.1;
-      margin-bottom: ${r(phi)}rem;
+      margin-bottom: ${P}rem;
     }
     h2 {
-      font-size: ${r(phi)}rem;
-      margin-bottom: ${r(phi)}rem;
+      font-size: ${P}rem;
+      margin-bottom: ${P}rem;
     }
     h3 {
-      font-size: ${r(sqrtPhi)}rem;
-      margin-top: ${r(phi * phi)}rem;
-      margin-bottom: ${r(1/phi)}rem;
+      font-size: ${SP}rem;
+      margin-top: ${P2}rem;
+      margin-bottom: ${iP}rem;
     }
     h4 {
-      margin-top: ${r(1/phi)}rem;
-      margin-bottom: ${r(1/phi/phi)}rem;
+      margin-top: ${iP}rem;
+      margin-bottom: ${iP2}rem;
     }
     .subtitle {
-      font-family: 'Playfair Display', serif;
-      font-size: ${r(phi)}rem;
-      line-height: 1.2;
-      margin-bottom: ${r(phi)}rem;
+      font-size: ${P}rem;
+      margin-bottom: ${P}rem;
     }
     .callout {
-      font-family: 'Playfair Display', serif;
-      font-size: ${r(sqrtPhi)}rem;
-      margin-bottom: ${r(phi)}rem;
+      font-size: ${SP}rem;
+      margin-bottom: ${P}rem;
     }
     .text-sm {
-      font-size: ${r(1/sqrtPhi)}rem;
+      font-size: ${iSP}rem;
     }
     .tooltip {
       position: relative;
@@ -239,7 +250,7 @@ const html = `<!DOCTYPE html>
       margin-top: 0.4em;
       background: #000;
       color: #fff;
-      font-size: ${r(1/phi)}rem;
+      font-size: ${iP}rem;
       line-height: 1.4;
       padding: 0.4em 0.7em;
       border-radius: 0.25em;
@@ -274,67 +285,55 @@ const html = `<!DOCTYPE html>
     article {
       max-width: 38em;
       margin: 0 auto;
-      padding: ${r(phi * phi)}rem ${r(phi)}rem;
+      padding: ${P2}rem ${P}rem;
     }
     .hero-logotype {
-      height: ${r(phi * phi * phi)}rem;
+      height: ${P3}rem;
       width: auto;
-      margin-top: ${r(phi * phi)}rem;
-      margin-bottom: ${r(phi * phi)}rem;
+      margin-top: ${P2}rem;
+      margin-bottom: ${P2}rem;
     }
     header {
-      margin-bottom: ${r(phi * phi * phi)}rem;
+      margin-bottom: ${P3}rem;
     }
     section {
-      margin-top: ${r(phi * phi * phi)}rem;
+      margin-top: ${P3}rem;
     }
     .two-col {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-      gap: ${r(phi)}rem;
+      gap: ${P}rem;
       align-items: stretch;
     }
 
     /* ─── Spacing (phi-derived) ─── */
-    .mb-phi { margin-bottom: ${r(phi)}rem; }
-    .mb-sm { margin-bottom: ${r(1/phi)}rem; }
-    .mb-micro { margin-bottom: ${r(1/phi/phi)}rem; }
-    .mt-phi { margin-top: ${r(phi)}rem; }
-    .mt-sm { margin-top: ${r(1/phi)}rem; }
-    .mt-lg { margin-top: ${r(phi * phi)}rem; }
-    .mb-lg { margin-bottom: ${r(phi * phi)}rem; }
+    .mb-phi { margin-bottom: ${P}rem; }
+    .mb-sm { margin-bottom: ${iP}rem; }
+    .mb-micro { margin-bottom: ${iP2}rem; }
+    .mt-phi { margin-top: ${P}rem; }
+    .mt-sm { margin-top: ${iP}rem; }
+    .mt-lg { margin-top: ${P2}rem; }
+    .mb-lg { margin-bottom: ${P2}rem; }
 
     /* ─── Components ─── */
-    .card {
-      border: 1px solid #000;
-      padding: ${r(phi)}rem;
-      transition: opacity 0.3s;
-    }
+    .card, .box, .cta-box { border: 1px solid #000; padding: ${P}rem; }
+    .card { transition: opacity 0.3s; }
     .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: ${r(sqrtPhi)}rem;
-      margin-bottom: ${r(phi)}rem;
+      font-size: ${SP}rem;
+      margin-bottom: ${P}rem;
     }
-    .box {
-      border: 1px solid #000;
-      padding: ${r(phi)}rem;
-    }
-    .cta-box {
-      margin-top: ${r(phi * phi * phi)}rem;
-      padding: ${r(phi)}rem;
-      border: 1px solid #000;
-    }
+    .cta-box { margin-top: ${P3}rem; }
     .plane-2d {
       display: flex;
       align-items: stretch;
-      margin: ${r(phi)}rem 0;
-      gap: ${r(1/phi/phi)}rem;
+      margin: ${P}rem 0;
+      gap: ${iP2}rem;
       max-width: 65vw;
     }
     .plane-y-label {
       writing-mode: vertical-lr;
       transform: rotate(180deg);
-      font-size: ${r(1/sqrtPhi)}rem;
+      font-size: ${iSP}rem;
       text-align: center;
       white-space: nowrap;
     }
@@ -342,7 +341,7 @@ const html = `<!DOCTYPE html>
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: ${r(1/phi/phi)}rem;
+      gap: ${iP2}rem;
     }
     .plane-canvas {
       position: relative;
@@ -394,7 +393,7 @@ const html = `<!DOCTYPE html>
       50% { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
     }
     .plane-x-label {
-      font-size: ${r(1/sqrtPhi)}rem;
+      font-size: ${iSP}rem;
       text-align: center;
     }
     .plane-hint {
@@ -402,7 +401,7 @@ const html = `<!DOCTYPE html>
       left: 30%;
       bottom: 15%;
       transform: translate(1rem, -0.5rem);
-      font-size: ${r(1/sqrtPhi)}rem;
+      font-size: ${iSP}rem;
       color: #000;
       white-space: nowrap;
       pointer-events: none;
@@ -415,31 +414,31 @@ const html = `<!DOCTYPE html>
 
     /* ─── Timeline ─── */
     .dot, .milestone {
-      font-size: ${r(1/phi/phi)}rem;
+      font-size: ${iP2}rem;
       line-height: 1.1;
       margin: 0;
       padding: 0;
     }
     .dot-year {
-      font-size: ${r(1/phi)}rem;
+      font-size: ${iP}rem;
       opacity: 0.30;
     }
     .milestone {
-      font-size: ${r(1/sqrtPhi)}rem;
-      line-height: ${r(phi)};
-      padding: ${r(1/phi/phi/phi)}rem 0;
+      font-size: ${iSP}rem;
+      line-height: ${P};
+      padding: ${iP3}rem 0;
     }
 
     /* ─── Controls ─── */
     .btn-scroll {
       display: block;
-      margin-top: ${r(phi)}rem;
-      padding: ${r(1/phi)}rem ${r(phi)}rem;
+      margin-top: ${P}rem;
+      padding: ${iP}rem ${P}rem;
       border: 1px solid #000;
       text-align: center;
       text-decoration: none;
       color: #000;
-      font-size: ${r(phi)}rem;
+      font-size: ${P}rem;
       line-height: 1.2;
       background: #fff;
       transition: background 0.2s, color 0.2s;
@@ -450,7 +449,7 @@ const html = `<!DOCTYPE html>
     }
     .btn-scroll:focus-visible {
       outline: 1px solid #000;
-      outline-offset: ${r(1/phi/phi)}rem;
+      outline-offset: ${iP2}rem;
     }
     .btn-scroll:active {
       opacity: 0.8;
@@ -459,7 +458,7 @@ const html = `<!DOCTYPE html>
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
       html { font-size: 18px; }
-      h1 { font-size: ${r(phi)}rem; }
+      h1 { font-size: ${P}rem; }
     }
     @media (max-width: 380px) {
       html { font-size: 16px; }
@@ -467,8 +466,8 @@ const html = `<!DOCTYPE html>
 
     /* ─── Overrides ─── */
     #future {
-      scroll-margin-top: ${r(1/phi/phi)}rem;
-      padding-top: ${r(phi * phi * phi)}rem;
+      scroll-margin-top: ${iP2}rem;
+      padding-top: ${P3}rem;
       margin-top: 0 !important;
     }
   </style>
@@ -479,7 +478,7 @@ const html = `<!DOCTYPE html>
     "name": "n1.community",
     "url": "https://n1.community",
     "logo": "https://n1.community/web-app-manifest-512x512.png",
-    "description": "We build products that make cooperation easy and deception expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.",
+    "description": "${DESC}",
     "sameAs": ["https://t.me/Oresty"]
   }
   </script>
@@ -554,17 +553,17 @@ const html = `<!DOCTYPE html>
       <p>Same story with cooperation. For centuries, philosophers, writers, and reformers tried to build a society on mutual benefit — and every time it fell apart. Not because the idea was wrong, but because the technologies didn't exist. Now they do: internet, Big Data, AI, cryptography, smart contracts, and global real-time communication make large-scale cooperation possible for the first time.</p>
     `)}
 
-    ${section('values', 'Values', `
-      <p class="mb-micro"><strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.</p>
-      <p class="mb-micro"><strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.</p>
-      <p class="mb-micro"><strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.</p>
-      <p class="mb-micro"><strong>4. Transparency.</strong> Default to open. Eliminate information asymmetry starting with yourself.</p>
-      <p class="mb-micro"><strong>5. Antifragility.</strong> Build mechanisms that get stronger when attacked.</p>
-      <p class="mb-micro"><strong>6. Leverage.</strong> Minimum force at the point of maximum systemic effect.</p>
-      <p class="mb-micro"><strong>7. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.</p>
-      <p class="mb-micro"><strong>8. Skin in the Game.</strong> Live the system yourself. The founder is the first evidence.</p>
-      <p><strong>9. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.</p>
-    `)}
+    ${section('values', 'Values', items([
+      `<strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.`,
+      `<strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.`,
+      `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
+      `<strong>4. Transparency.</strong> Default to open. Eliminate information asymmetry starting with yourself.`,
+      `<strong>5. Antifragility.</strong> Build mechanisms that get stronger when attacked.`,
+      `<strong>6. Leverage.</strong> Minimum force at the point of maximum systemic effect.`,
+      `<strong>7. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.`,
+      `<strong>8. Skin in the Game.</strong> Live the system yourself. The founder is the first evidence.`,
+      `<strong>9. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.`,
+    ]))}
 
     ${section('participants', 'Participants', `
       <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
@@ -577,16 +576,20 @@ const html = `<!DOCTYPE html>
       <h3>Activities</h3>
       <p class="mb-phi">Weekly: Set goals, execute, demo results.</p>
 
-      <p class="mb-micro"><strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.</p>
-      <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
-      <p class="mb-micro"><strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.</p>
-      <p class="mb-micro"><strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and iteration.</p>
-      <p class="mb-micro"><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
+      ${items([
+        `<strong>Joint projects.</strong> In teams of 2‑4. Each must make cooperation easier or deception harder.`,
+        `<strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.`,
+        `<strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.`,
+        `<strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and iteration.`,
+        `<strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.`,
+      ])}
 
       <h3>Infrastructure</h3>
-      <p class="mb-micro"><strong>Shared expertise map.</strong> Members' skills, contacts, and knowledge — mapped and accessible.</p>
-      <p class="mb-micro"><strong>Systematic mutual help.</strong> Structured system where helping is tracked, visible, and reciprocated.</p>
-      <p><strong>Club chat.</strong> Async coordination — decisions, questions, quick feedback.</p>
+      ${items([
+        `<strong>Shared expertise map.</strong> Members' skills, contacts, and knowledge — mapped and accessible.`,
+        `<strong>Systematic mutual help.</strong> Structured system where helping is tracked, visible, and reciprocated.`,
+        `<strong>Club chat.</strong> Async coordination — decisions, questions, quick feedback.`,
+      ])}
 
       <h3>Upcoming event</h3>
       <p class="mb-phi"><strong>Strategy alignment.</strong> Our first community-wide session to review our goals, recalibrate the roadmap, and make sure everyone is pulling in the same direction. Goals review, open discussion, and clear next steps — so every member knows where we're headed and why.</p>
@@ -610,16 +613,16 @@ const html = `<!DOCTYPE html>
 
     ${section('join', 'Join', `
       <div class="two-col">
-        ${card('card-join-yes', 'Who fits', `
-          <p class="mb-micro">Ambitious goals</p>
-          <p class="mb-micro">Explorer of the world</p>
-          <p class="mb-micro">Impact on society/humanity</p>
-          <p>Growth through win-win</p>
-        `)}
-        ${card('card-join-no', 'Who doesn\'t fit', `
-          <p class="mb-micro">Not ready to devote their life to serving humanity</p>
-          <p>Satisfied with how the world is</p>
-        `)}
+        ${card('card-join-yes', 'Who fits', items([
+          'Ambitious goals',
+          'Explorer of the world',
+          'Impact on society/humanity',
+          'Growth through win-win',
+        ]))}
+        ${card('card-join-no', 'Who doesn\'t fit', items([
+          'Not ready to devote their life to serving humanity',
+          'Satisfied with how the world is',
+        ]))}
       </div>
     `)}
 
@@ -810,19 +813,12 @@ const html = `<!DOCTYPE html>
 
         // Determine ending
         var safety = safetyScore(coop, decep);
+        var lastYear = visibleEvents.reduce(function(m, e) { return e.year > m ? e.year : m; }, 2060);
         if (extinctionYear !== null && extinctionYear <= 2200) {
           visibleEvents.push({ label: 'Human Extinction \\u{1F480}', category: 'extinction', year: extinctionYear });
         } else if (coop >= 0.65 && decep >= 0.60) {
-          var lastYear = 2060;
-          for (var j = 0; j < visibleEvents.length; j++) {
-            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
-          }
           visibleEvents.push({ label: 'Humanity \\u2014 gods with wisdom \\u2728', category: 'transcendence', year: lastYear + 10 });
         } else if (safety >= 0.45) {
-          var lastYear = 2060;
-          for (var j = 0; j < visibleEvents.length; j++) {
-            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
-          }
           visibleEvents.push({ label: 'Intelligent life survives \\u{1F331}', category: 'survival', year: lastYear + 5 });
         }
 

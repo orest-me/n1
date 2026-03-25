@@ -48,7 +48,7 @@
     }
 
     /* ─── Typography ─── */
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6, .subtitle, .callout, .card-title {
       font-family: 'Playfair Display', serif;
       line-height: 1.2;
     }
@@ -71,13 +71,10 @@
       margin-bottom: 0.382rem;
     }
     .subtitle {
-      font-family: 'Playfair Display', serif;
       font-size: 1.618rem;
-      line-height: 1.2;
       margin-bottom: 1.618rem;
     }
     .callout {
-      font-family: 'Playfair Display', serif;
       font-size: 1.272rem;
       margin-bottom: 1.618rem;
     }
@@ -164,25 +161,13 @@
     .mb-lg { margin-bottom: 2.618rem; }
 
     /* ─── Components ─── */
-    .card {
-      border: 1px solid #000;
-      padding: 1.618rem;
-      transition: opacity 0.3s;
-    }
+    .card, .box, .cta-box { border: 1px solid #000; padding: 1.618rem; }
+    .card { transition: opacity 0.3s; }
     .card-title {
-      font-family: 'Playfair Display', serif;
       font-size: 1.272rem;
       margin-bottom: 1.618rem;
     }
-    .box {
-      border: 1px solid #000;
-      padding: 1.618rem;
-    }
-    .cta-box {
-      margin-top: 4.236rem;
-      padding: 1.618rem;
-      border: 1px solid #000;
-    }
+    .cta-box { margin-top: 4.236rem; }
     .plane-2d {
       display: flex;
       align-items: stretch;
@@ -928,8 +913,7 @@
     
   <section id="values">
     <h2>Values</h2>
-    
-      <p class="mb-micro"><strong>1. Win-win or&nbsp;no&nbsp;deal.</strong> Every interaction either creates mutual value or&nbsp;doesn't happen.</p>
+    <p class="mb-micro"><strong>1. Win-win or&nbsp;no&nbsp;deal.</strong> Every interaction either creates mutual value or&nbsp;doesn't happen.</p>
       <p class="mb-micro"><strong>2. Truth.</strong> Accurate models above comfortable narratives — starting with self-deception.</p>
       <p class="mb-micro"><strong>3. Rationality.</strong> Evidence and&nbsp;logic over consensus and&nbsp;emotion — including the&nbsp;obligation to&nbsp;update when proven wrong.</p>
       <p class="mb-micro"><strong>4. Transparency.</strong> Default to&nbsp;open. Eliminate information asymmetry starting with yourself.</p>
@@ -938,7 +922,6 @@
       <p class="mb-micro"><strong>7. Courage.</strong> Act on&nbsp;the&nbsp;Mission despite resistance from those who profit from the&nbsp;status quo.</p>
       <p class="mb-micro"><strong>8. Skin in&nbsp;the&nbsp;Game.</strong> Live the&nbsp;system yourself. The&nbsp;founder is&nbsp;the&nbsp;first evidence.</p>
       <p><strong>9. Patience.</strong> Compound interest mindset — urgency in&nbsp;action, patience in&nbsp;expectation.</p>
-    
   </section>
 
     
@@ -963,7 +946,7 @@
       <p class="mb-micro"><strong>Quarterly:</strong> Strategy alignment, goals review, roadmap recalibration.</p>
       <p class="mb-micro"><strong>Research.</strong> Deep dives into problems worth solving — findings feed back into members' work.</p>
       <p class="mb-micro"><strong>Idea incubator.</strong> Raw ideas shaped into projects through collective feedback and&nbsp;iteration.</p>
-      <p class="mb-micro"><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
+      <p><strong>Informal meetups.</strong> Sports, dinners, spontaneous conversations.</p>
 
       <h3>Infrastructure</h3>
       <p class="mb-micro"><strong>Shared expertise map.</strong> Members' skills, contacts, and&nbsp;knowledge — mapped and&nbsp;accessible.</p>
@@ -1002,19 +985,15 @@
       <div class="two-col">
         <div id="card-join-yes" class="card">
     <p class="card-title">Who fits</p>
-    
-          <p class="mb-micro">Ambitious goals</p>
-          <p class="mb-micro">Explorer of&nbsp;the&nbsp;world</p>
-          <p class="mb-micro">Impact on&nbsp;society/humanity</p>
-          <p>Growth through win-win</p>
-        
+    <p class="mb-micro">Ambitious goals</p>
+      <p class="mb-micro">Explorer of&nbsp;the&nbsp;world</p>
+      <p class="mb-micro">Impact on&nbsp;society/humanity</p>
+      <p>Growth through win-win</p>
   </div>
         <div id="card-join-no" class="card">
     <p class="card-title">Who doesn't fit</p>
-    
-          <p class="mb-micro">Not&nbsp;ready to&nbsp;devote their life to&nbsp;serving humanity</p>
-          <p>Satisfied with how the&nbsp;world is</p>
-        
+    <p class="mb-micro">Not&nbsp;ready to&nbsp;devote their life to&nbsp;serving humanity</p>
+      <p>Satisfied with how the&nbsp;world is</p>
   </div>
       </div>
     
@@ -1211,19 +1190,12 @@
 
         // Determine ending
         var safety = safetyScore(coop, decep);
+        var lastYear = visibleEvents.reduce(function(m, e) { return e.year > m ? e.year : m; }, 2060);
         if (extinctionYear !== null && extinctionYear <= 2200) {
           visibleEvents.push({ label: 'Human Extinction \u{1F480}', category: 'extinction', year: extinctionYear });
         } else if (coop >= 0.65 && decep >= 0.60) {
-          var lastYear = 2060;
-          for (var j = 0; j < visibleEvents.length; j++) {
-            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
-          }
           visibleEvents.push({ label: 'Humanity \u2014 gods with wisdom \u2728', category: 'transcendence', year: lastYear + 10 });
         } else if (safety >= 0.45) {
-          var lastYear = 2060;
-          for (var j = 0; j < visibleEvents.length; j++) {
-            if (visibleEvents[j].year > lastYear) lastYear = visibleEvents[j].year;
-          }
           visibleEvents.push({ label: 'Intelligent life survives \u{1F331}', category: 'survival', year: lastYear + 5 });
         }
 
