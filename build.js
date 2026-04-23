@@ -91,6 +91,23 @@ function meta(key, val) {
   return `<meta ${attr}="${key}" content="${val}">`;
 }
 
+function ensureDir(dirPath) {
+  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+}
+
+function copyDir(src, dest) {
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      ensureDir(destPath);
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 function items(arr, cls = 'mb-micro') {
   return arr.map((t, i) =>
     `<p${i < arr.length - 1 ? ` class="${cls}"` : ''}>${t}</p>`
@@ -1039,6 +1056,35 @@ const html = `<!DOCTYPE html>
         return Math.round(slow - range * factor);
       }
 
+      function shouldShowEvent(event, coop, decep) {
+        if (event.minCoop !== undefined && coop < event.minCoop) return false;
+        if (event.minDecep !== undefined && decep < event.minDecep) return false;
+        if (event.maxCoop !== undefined && coop >= event.maxCoop) return false;
+        if (event.maxDecep !== undefined && decep >= event.maxDecep) return false;
+        return true;
+      }
+
+      function addMilestone(milestones, year, label) {
+        if (milestones[year]) {
+          milestones[year] += ' / ' + label;
+        } else {
+          milestones[year] = label;
+        }
+      }
+
+      function buildTimelineMarkup(startYear, endYear, milestones) {
+        var html = '';
+        for (var y = startYear; y <= endYear; y++) {
+          if (milestones[y]) {
+            html += '<p class="milestone">· ' + y + ' \u2014 ' + milestones[y] + '</p>';
+          } else {
+            html += '<p class="dot">· <span class="dot-year">' + y + '</span></p>';
+          }
+          if (milestones[y] && milestones[y].indexOf('Extinction') !== -1) break;
+        }
+        return html;
+      }
+
       // ── Timeline Computation ──
       function computeTimeline(coopRaw, decepRaw) {
         var coop = coopRaw / 100;
@@ -1048,14 +1094,7 @@ const html = `<!DOCTYPE html>
 
         for (var i = 0; i < futureEvents.length; i++) {
           var ev = futureEvents[i];
-
-          // Beneficial: need minimum cooperation and/or deception cost
-          if (ev.minCoop !== undefined && coop < ev.minCoop) continue;
-          if (ev.minDecep !== undefined && decep < ev.minDecep) continue;
-
-          // Dystopian: filtered out when slider is high enough
-          if (ev.maxCoop !== undefined && coop >= ev.maxCoop) continue;
-          if (ev.maxDecep !== undefined && decep >= ev.maxDecep) continue;
+          if (!shouldShowEvent(ev, coop, decep)) continue;
 
           var year = computeEventYear(ev, coop, decep);
 
@@ -1152,12 +1191,7 @@ const html = `<!DOCTYPE html>
         // Build milestone map (handle same-year events)
         var milestones = {};
         for (var i = 0; i < events.length; i++) {
-          var e = events[i];
-          if (milestones[e.year]) {
-            milestones[e.year] += ' / ' + e.label;
-          } else {
-            milestones[e.year] = e.label;
-          }
+          addMilestone(milestones, events[i].year, events[i].label);
         }
 
         // Determine timeline range
@@ -1167,18 +1201,7 @@ const html = `<!DOCTYPE html>
         }
         var endYear = lastEventYear + 3;
 
-        var startYear = 2027;
-        var html = '';
-        for (var y = startYear; y <= endYear; y++) {
-          if (milestones[y]) {
-            html += '<p class="milestone">· ' + y + ' \u2014 ' + milestones[y] + '</p>';
-          } else {
-            html += '<p class="dot">· <span class="dot-year">' + y + '</span></p>';
-          }
-          // Stop after extinction
-          if (milestones[y] && milestones[y].indexOf('Extinction') !== -1) break;
-        }
-        container.innerHTML = html;
+        container.innerHTML = buildTimelineMarkup(2027, endYear, milestones);
       }
 
       render();
@@ -1191,26 +1214,15 @@ const html = `<!DOCTYPE html>
 
 const dist = path.join(__dirname, 'dist');
 const staticDir = path.join(dist, 'static');
-if (!fs.existsSync(dist)) fs.mkdirSync(dist);
-if (!fs.existsSync(staticDir)) fs.mkdirSync(staticDir);
+ensureDir(dist);
+ensureDir(staticDir);
 fs.copyFileSync(
   path.join(__dirname, 'node_modules/typograf/dist/typograf.min.js'),
   path.join(staticDir, 'typograf.min.js')
 );
 const pub = path.join(__dirname, 'public');
 if (fs.existsSync(pub)) {
-  (function copyDir(src, dest) {
-    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-      const srcPath = path.join(src, entry.name);
-      const destPath = path.join(dest, entry.name);
-      if (entry.isDirectory()) {
-        if (!fs.existsSync(destPath)) fs.mkdirSync(destPath, { recursive: true });
-        copyDir(srcPath, destPath);
-      } else {
-        fs.copyFileSync(srcPath, destPath);
-      }
-    }
-  })(pub, dist);
+  copyDir(pub, dist);
 }
 fs.writeFileSync(path.join(dist, 'index.html'), typographNbsp(html));
 console.log('Built dist/index.html');
