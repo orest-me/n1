@@ -75,6 +75,13 @@ function card(id, title, body) {
   </div>`;
 }
 
+function detailBlock(title, content) {
+  return `<div class="box mt-lg">
+    <p class="card-title">${title}</p>
+    ${content}
+  </div>`;
+}
+
 function fig(src, alt, caption) {
   return `<figure class="fig">
           <img src="${src}" alt="${alt}" loading="lazy" />
@@ -112,6 +119,12 @@ function items(arr, cls = 'mb-micro') {
   return arr.map((t, i) =>
     `<p${i < arr.length - 1 ? ` class="${cls}"` : ''}>${t}</p>`
   ).join('\n      ');
+}
+
+function bookItems(books) {
+  return items(
+    books.map(({ title, author }) => `<strong>${title}</strong> — ${author}`)
+  );
 }
 
 function logotype(className = 'hero-logotype') {
@@ -220,6 +233,24 @@ const pastMilestones = {
   2024: 'First Complete Brain Connectome 🪰',
   2025: 'Humanoid Robots at Scale 🦿',
 };
+
+const moscowLibraryBooks = [
+  { title: 'The Power of Habit', author: 'Charles Duhigg' },
+  { title: 'The Lean Startup', author: 'Eric Ries' },
+  { title: 'Atomic Habits', author: 'James Clear' },
+  { title: 'The Meditations', author: 'Marcus Aurelius' },
+  { title: 'Antifragile', author: 'Nassim Nicholas Taleb' },
+  { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
+  { title: 'The 80/20 Principle', author: 'Richard Koch' },
+  { title: 'The Speed of Trust', author: 'Stephen M. R. Covey' },
+  { title: 'The 7 Habits of Highly Effective People', author: 'Stephen R. Covey' },
+  { title: 'Principle-Centered Leadership', author: 'Stephen R. Covey' },
+  { title: 'Sapiens', author: 'Yuval Noah Harari' },
+  { title: 'Homo Deus', author: 'Yuval Noah Harari' },
+  { title: '21 Lessons for the 21st Century', author: 'Yuval Noah Harari' },
+  { title: 'Nexus', author: 'Yuval Noah Harari' },
+  { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman' },
+];
 
 
 // ─── Build HTML ───
@@ -850,6 +881,17 @@ const html = `<!DOCTYPE html>
     `)}
 
     ${ctaBox("Statistically, you shouldn't still be here. And yet.", "Write to us", "https://t.me/Oresty")}
+
+    ${section('moscow', 'Moscow', `
+      <p class="mb-phi">Moscow is where the community is starting offline. If you are nearby, this is the easiest place to join the weekly rhythm in person.</p>
+      <p>We are building a local base: people, meetups, and shared infrastructure that compounds over time.</p>
+
+      ${detailBlock('<span id="books">Free library of books in Moscow</span>', `
+        <p class="mb-phi">Anyone can borrow these books in Moscow for free. All copies are in the original English language.</p>
+        ${bookItems(moscowLibraryBooks)}
+        <a href="https://t.me/Oresty" class="btn-scroll">Borrow a book</a>
+      `)}
+    `)}
 
   </article>
   </main>
