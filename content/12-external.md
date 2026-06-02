@@ -17,6 +17,4 @@ We build and ship our own products — tools that make cooperation easier and de
 
 **Mission alignment:** np2 makes cooperation inside communities systematic — members find the right person instantly, organizers make decisions from real data instead of gut feelings.
 
-**Traction (7 weeks in):** 764 users, 20 events, 355 transactions, $20K revenue processed.
-
-**Model:** ^[SaaS](Also: Salvation as a Subscription) — monthly fee. Target: 1,000 communities → $5M/year.
+**Model:** ^[SaaS](Also: Salvation as a Subscription) — monthly fee.
