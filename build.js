@@ -927,13 +927,13 @@ const html = `<!DOCTYPE html>
         `<strong>And we keep losing what's left of it.</strong> Each feed, proxy, and model slips between you and the thing itself — and the copy is easier to love than the original.`,
       ])}
 
-      <h3>Universe &amp; knowledge</h3>
+      <h3>Universe and knowledge</h3>
       ${items([
         `<strong>The universe owes us nothing.</strong> No center, no purpose, no audience. <span class='tooltip' data-tip='It was here 13.8 billion years before your opinion of it.'>It was here first.</span>`,
         `<strong>If everything is information, data becomes the new god.</strong> <span class='tooltip' data-tip="Harari named the religion. We're trying not to join it.">Dataism</span> is the worldview worth understanding before it understands you — and worth keeping in service of people, not the reverse.`,
       ])}
 
-      <h3>Life &amp; civilisation</h3>
+      <h3>Life and civilisation</h3>
       ${items([
         `<strong>Who counts as a player in win-win?</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Only Homo sapiens? Or AI too — even when, in fair competition, it outgrows us?`,
         `<strong>Civilisation runs in one direction.</strong> No reset between rounds; <span class='tooltip' data-tip='Ship to prod, pray, repeat.'>every move ships to production.</span>`,
@@ -948,7 +948,7 @@ const html = `<!DOCTYPE html>
         `<strong>Then what is art?</strong> Your mindset, reflected back with its deviations from the norm intact. <span class='tooltip' data-tip='Integrity + intent + system. The rest is decoration.'>The bug is the signature.</span>`,
       ])}
 
-      <h3>Meaning &amp; communication</h3>
+      <h3>Meaning and communication</h3>
       ${items([
         `<strong>No cosmic meaning is owed to us.</strong> The species ends or transforms, either way. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — <span class='tooltip' data-tip='100% is a target, not a forecast. Asymptotes are honest about this.'>100% effective.</span>`,
         `<strong>Meaning is built, not found</strong> — and it's built in communication. Most conflict is a failure to translate, not a failure to agree; effective communication is the cheapest technology we have for win-win.`,
