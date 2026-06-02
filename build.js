@@ -371,11 +371,14 @@ const html = `<!DOCTYPE html>
           color-mix(in oklab, #04060c, #e3ebf7 var(--m)) 70%,
           color-mix(in oklab, #020306, #dae4f4 var(--m)) 100%);
     }
-    /* Clip container: EXACTLY the largest stable viewport — never oversized, so
-       it can never add scrollable area (the bug when the canvas itself was
-       oversized + fixed: rubber-band scrolling revealed it). lvh stays constant
-       when the mobile URL/bottom bar shows/hides → no jump. overflow:hidden
-       clips the canvas overscan so it can never be panned into view. */
+    /* Clip container. CSS height is the largest stable viewport (lvh) as the
+       fallback when JS/visualViewport is unavailable. On mobile, pinSky() (see
+       JS) makes the wrap slightly oversized at the BOTTOM so a stale vv.height
+       mid-scroll (Chrome-Android bar hiding) can never leave a gap. That is safe
+       and adds NO scrollable area: position:fixed never contributes to
+       scrollHeight, overflow:hidden clips the overscan so it can't be panned
+       into view, and overscroll-behavior:none kills rubber-band reveal (the old
+       bug, when the canvas itself was oversized + fixed). */
     #sky-wrap {
       position: fixed;
       top: 0;
@@ -1488,16 +1491,29 @@ const html = `<!DOCTYPE html>
     var skyWrap = document.getElementById('sky-wrap');
     var vv = window.visualViewport;
     if (skyWrap && vv) {
+      var maxVVH = 0;                 // tallest visual-viewport height ever seen
+      var BOTTOM_OVERSCAN = 120;      // px safety pad below the visible bottom
       var pinSky = function () {
+        // During an in-progress Chrome-Android bar-hide, scroll events fire with a
+        // STALE (smaller) vv.height while the visible area is already taller. Never
+        // shrink below the tallest height we've observed, and add a fixed pad, so
+        // the fixed+clipped wrap always extends past the real bottom edge. The
+        // extra height is clipped (overflow:hidden) and, being position:fixed,
+        // adds no scrollable area — overscroll-behavior:none also kills rubber-band.
+        if (vv.height > maxVVH) maxVVH = vv.height;
+        var h = Math.max(vv.height, maxVVH) + BOTTOM_OVERSCAN;
         skyWrap.style.width = vv.width + 'px';
-        skyWrap.style.height = vv.height + 'px';
+        skyWrap.style.height = h + 'px';
         skyWrap.style.transformOrigin = '0 0';
         skyWrap.style.transform =
           'translate(' + vv.offsetLeft + 'px,' + vv.offsetTop + 'px) scale(' + (1 / vv.scale) + ')';
       };
       vv.addEventListener('resize', pinSky, { passive: true });
       vv.addEventListener('scroll', pinSky, { passive: true });
-      window.addEventListener('orientationchange', function () { setTimeout(pinSky, 250); });
+      window.addEventListener('orientationchange', function () {
+        maxVVH = 0;                   // metrics invalid after rotation — reset, then re-pin
+        setTimeout(pinSky, 250);
+      });
       pinSky();
     }
 
@@ -1561,7 +1577,7 @@ const html = `<!DOCTYPE html>
       cur.city   = lerp(cur.city, Math.max(0, benefit - 0.15), 0.03);
       cur.px     = lerp(cur.px, px, 0.04);
       cur.py     = lerp(cur.py, py, 0.04);
-      cur.light  = lerp(cur.light, lightTarget, 0.06);
+      cur.light  = lerp(cur.light, lightTarget, 0.4);
       // Mood = the plane's colour grade. Unlike health (slow, asymmetric — the
       // story), this responds FAST so dragging a plane recolours the sky live.
       // Stretched so the playable range sweeps the full warm→cool palette.
@@ -1644,7 +1660,7 @@ const html = `<!DOCTYPE html>
         }
         function tick() {
           target = measure();
-          cur += (target - cur) * 0.06;             // same rate as WebGL cur.light
+          cur += (target - cur) * 0.4;             // same rate as WebGL cur.light
           if (Math.abs(target - cur) < 0.0004) cur = target;
           apply(cur);
           raf = (cur === target) ? 0 : requestAnimationFrame(tick);
