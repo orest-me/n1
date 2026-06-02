@@ -12,20 +12,20 @@ A unified, decentralized openness system. No one owns it; everyone reads it.
 
 ### Governance
 
-- **DAO.** Coordination without a king.
+- **DAO.** More transparent decision-making and easier coordination.
 - **Constitution.** Rules you can read, fork, and amend.
 - **AI court.** Arbitration that does not get tired, bribed, or bored.
 
 ### Technology
 
-- **Smart contracts & oracle networks.** Agreements that keep themselves.
-- **Real-time big-data analysis.** The system sees itself thinking.
 - **Decentralized intelligence & AI win-win search.** Machines hunting for deals where everyone wins.
-- **Digital-twin simulations.** Make the civilizational mistake in the sandbox, not in reality.
+- **Real-time big-data analysis about each subject.** The system sees itself thinking.
+- **Smart contracts & oracle networks.** Agreements that keep themselves.
+- **Digital-twin simulations.** Test decisions in simulation before committing them.
 - **Preventive vulnerability detection.** Patch the weakness before anyone finds it.
 
 :::callout
-Openness only adds power. It opens no new wound.
+Openness only adds power. It opens no new wound — it only puts a spotlight on the ones already there.
 :::
 
 Each participant gets stronger and exposes no new vulnerability — and it works even for the one who adopts it alone.
