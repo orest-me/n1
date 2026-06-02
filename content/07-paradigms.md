@@ -1,12 +1,12 @@
 ---
-id: questions
+id: paradigms
 title: Our paradigms
 ---
-Hard questions don't weaken the mission. They aim it. Here is the map of the territory we're betting on.
+The map of the territory we're betting on.
 
 ### Reality
 
-- **Reaching reality may be impossible.** Every sense, model, and instrument is a translation layer. If we're inside a ^[simulation](Bostrom gives it non-trivial odds. The pixels seem fine with it either way.), either everything is fixed by an outside observer or every subject inside it still gets a vote. **We bet on the vote.**
+- **Reaching reality is impossible.** Every sense, model, and instrument is a translation layer. For example, we are inside a simulation, either everything is fixed by an outside observer or every subject inside it still gets a vote. **We bet on the vote.**
 - **And we keep losing what's left of it.** Each feed, proxy, and model slips between you and the thing itself — and the copy is easier to love than the original.
 
 ### Universe and knowledge
