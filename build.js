@@ -45,7 +45,7 @@ function section(id, title, content) {
 function plane2D(id, xLabel, yLabel, initialX, initialY) {
   return `
   <div id="${id}" class="plane-2d">
-    <div class="plane-y-label" aria-hidden="true">${yLabel} — <span class="plane-pct" id="pct-y">${initialY}%</span></div>
+    <div class="plane-y-label" aria-hidden="true">${yLabel} — <span class="plane-pct" id="${id}-pct-y">${initialY}%</span></div>
     <div class="plane-canvas-wrap">
       <div class="plane-canvas" role="application" tabindex="0"
            aria-label="${xLabel} and ${yLabel} interactive plane. Use arrow keys: left/right for ${xLabel}, up/down for ${yLabel}.">
@@ -55,7 +55,7 @@ function plane2D(id, xLabel, yLabel, initialX, initialY) {
         <p class="plane-hint" aria-hidden="true">Drag responsibly</p>
         <div id="${id}-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
       </div>
-      <div class="plane-x-label" aria-hidden="true">${xLabel} — <span class="plane-pct" id="pct-x">${initialX}%</span></div>
+      <div class="plane-x-label" aria-hidden="true">${xLabel} — <span class="plane-pct" id="${id}-pct-x">${initialX}%</span></div>
     </div>
   </div>`;
 }
@@ -234,22 +234,20 @@ const pastMilestones = {
   2025: 'Humanoid Robots at Scale 🦿',
 };
 
-const moscowLibraryBooks = [
-  { title: 'The Power of Habit', author: 'Charles Duhigg' },
-  { title: 'The Lean Startup', author: 'Eric Ries' },
-  { title: 'Atomic Habits', author: 'James Clear' },
-  { title: 'The Meditations', author: 'Marcus Aurelius' },
-  { title: 'Antifragile', author: 'Nassim Nicholas Taleb' },
-  { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
-  { title: 'The 80/20 Principle', author: 'Richard Koch' },
-  { title: 'The Speed of Trust', author: 'Stephen M. R. Covey' },
-  { title: 'The 7 Habits of Highly Effective People', author: 'Stephen R. Covey' },
-  { title: 'Principle-Centered Leadership', author: 'Stephen R. Covey' },
-  { title: 'Sapiens', author: 'Yuval Noah Harari' },
+// Books currently circulating in n1.books — passed reader to reader, in person
+const n1Books = [
   { title: 'Homo Deus', author: 'Yuval Noah Harari' },
-  { title: '21 Lessons for the 21st Century', author: 'Yuval Noah Harari' },
-  { title: 'Nexus', author: 'Yuval Noah Harari' },
+  { title: 'Principle-Centered Leadership', author: 'Stephen R. Covey' },
+  { title: 'Meditations', author: 'Marcus Aurelius' },
   { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman' },
+  { title: 'The Lean Startup', author: 'Eric Ries' },
+  { title: 'Antifragile', author: 'Nassim Nicholas Taleb' },
+  { title: 'The Power of Habit', author: 'Charles Duhigg' },
+  { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
+  { title: 'Nexus', author: 'Yuval Noah Harari' },
+  { title: 'Atomic Habits', author: 'James Clear' },
+  { title: '21 Lessons for the 21st Century', author: 'Yuval Noah Harari' },
+  { title: 'The 80/20 Principle', author: 'Richard Koch' },
 ];
 
 
@@ -286,7 +284,7 @@ const html = `<!DOCTYPE html>
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="n1" />
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#04060c">
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="stylesheet" href="/static/style.css">
   <style>
@@ -318,19 +316,104 @@ const html = `<!DOCTYPE html>
       font-style: italic;
       font-display: swap;
     }
+    @font-face {
+      font-family: 'Space Grotesk';
+      src: url('/static/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+      font-weight: 300 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ─── Theme: a journey from deep space to heaven ─── */
+    /* One scalar — --lp (light progress, 0..1) — drives the whole palette. It
+       starts at 0 (the original deep-space dark) and is eased to 1 by scroll
+       once the "future" section is behind you, turning the world into a
+       luminous white heaven. Every token is the SAME perceptual (oklab) mix
+       between its dark endpoint and its light endpoint, so there is exactly one
+       source of truth and the transition stays even across hue and lightness. */
+    @property --lp {
+      syntax: '<number>';
+      inherits: true;
+      initial-value: 0;
+    }
+    :root {
+      --lp: 0;                         /* set by JS on scroll (smoothed in rAF) */
+      --m: calc(var(--lp) * 100%);     /* the mix amount, reused everywhere */
+
+      --bg:          color-mix(in oklab, #04060c,             #ffffff             var(--m));
+      --fg:          color-mix(in oklab, #eef1f8,             #0a0e1a             var(--m));
+      --muted:       color-mix(in oklab, rgba(238,241,248,0.62), rgba(10,14,26,0.60) var(--m));
+      --panel:       color-mix(in oklab, rgba(10,14,26,0.52),  rgba(245,247,252,0.72) var(--m));
+      --panel-solid: color-mix(in oklab, #0c1018,             #f2f4f9             var(--m));
+      --line:        color-mix(in oklab, rgba(238,241,248,0.22), rgba(10,14,26,0.20) var(--m));
+      --line-strong: color-mix(in oklab, rgba(238,241,248,0.55), rgba(10,14,26,0.45) var(--m));
+      --outline:     color-mix(in oklab, #ffffff,             #0a0e1a             var(--m));
+      --accent:      color-mix(in oklab, #eef1f8,             #0a0e1a             var(--m));
+      --glow:        color-mix(in oklab, rgba(238,241,248,0.45), rgba(10,14,26,0.40) var(--m));
+      color-scheme: light dark;
+    }
 
     /* ─── Reset ─── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    ::selection { background: #111; color: #fff; }
+    ::selection { background: var(--fg); color: var(--bg); text-shadow: none; }
+
+    /* ─── Fixed, always-interactive planet background ─── */
+    /* Static deep-space gradient: the fallback if WebGL is unavailable; the
+       canvas paints over it when the shader runs. */
+    html {
+      font-size: 24px;
+      scroll-behavior: smooth;
+      overscroll-behavior: none;
+      background:
+        radial-gradient(120% 90% at 50% 8%,
+          color-mix(in oklab, #0a1430, #ffffff var(--m)) 0%,
+          color-mix(in oklab, #060a18, #eef3fc var(--m)) 38%,
+          color-mix(in oklab, #04060c, #e3ebf7 var(--m)) 70%,
+          color-mix(in oklab, #020306, #dae4f4 var(--m)) 100%);
+    }
+    /* Clip container: EXACTLY the largest stable viewport — never oversized, so
+       it can never add scrollable area (the bug when the canvas itself was
+       oversized + fixed: rubber-band scrolling revealed it). lvh stays constant
+       when the mobile URL/bottom bar shows/hides → no jump. overflow:hidden
+       clips the canvas overscan so it can never be panned into view. */
+    #sky-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100lvh;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    /* Canvas overscans INSIDE the clip — fills the edges with margin so there is
+       never a gap during a bar transition, but the overflow is clipped, not
+       scrollable. */
+    #sky-bg {
+      position: absolute;
+      top: -10%;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      display: block;
+      border: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #sky-wrap { display: none; }
+    }
 
     /* ─── Base ─── */
-    html { font-size: 24px; scroll-behavior: smooth; }
     body {
       font-family: 'Playfair', serif;
-      color: #111;
-      background: #fff;
+      color: var(--fg);
+      background: transparent;
       line-height: ${P};
       overflow-wrap: break-word;
+      /* dark text needs a light halo; light text a dark one — transition both */
+      text-shadow:
+        0 1px 3px color-mix(in srgb, rgba(0,0,0,0.55), rgba(255,255,255,0.85) var(--m)),
+        0 0 18px color-mix(in srgb, rgba(0,0,0,0.25), rgba(255,255,255,0.55) var(--m));
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-feature-settings: "liga" 1, "kern" 1;
@@ -385,8 +468,9 @@ const html = `<!DOCTYPE html>
       left: var(--tt-left, 0px);
       top: 100%;
       margin-top: 0.4em;
-      background: #111;
-      color: #fff;
+      background: var(--panel-solid);
+      color: var(--fg);
+      border: 1px solid var(--line);
       font-size: ${iP}rem;
       line-height: 1.4;
       padding: 0.4em 0.7em;
@@ -406,7 +490,7 @@ const html = `<!DOCTYPE html>
 
     /* ─── Links ─── */
     article a:not(.btn-scroll) {
-      color: #111;
+      color: var(--fg);
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 0.2em;
@@ -417,7 +501,7 @@ const html = `<!DOCTYPE html>
       opacity: 0.7;
     }
     article a:not(.btn-scroll):focus-visible {
-      outline: 1px solid #111;
+      outline: 1px solid var(--fg);
       outline-offset: 0.15em;
     }
 
@@ -443,8 +527,8 @@ const html = `<!DOCTYPE html>
       gap: ${iP3}rem;
     }
     .logo-n1 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
       font-size: ${SP}rem;
       line-height: 1;
       letter-spacing: -0.02em;
@@ -477,14 +561,14 @@ const html = `<!DOCTYPE html>
       width: ${iP}rem;
       height: ${iP}rem;
       background: transparent;
-      border: 1px solid #111;
+      border: 1px solid var(--line-strong);
       transform: translate(-50%, -50%);
       opacity: 0.12;
       animation: breathe ${P3}s ease-in-out infinite;
     }
     .logo-community {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
       font-size: ${SP}rem;
       line-height: 1;
       display: block;
@@ -527,7 +611,7 @@ const html = `<!DOCTYPE html>
       width: 100%;
       height: auto;
       display: block;
-      border: 1px solid #111;
+      border: 1px solid var(--line);
     }
     .fig figcaption {
       font-size: ${iSP}rem;
@@ -541,7 +625,12 @@ const html = `<!DOCTYPE html>
     }
 
     /* ─── Components ─── */
-    .card, .box, .cta-box { border: 1px solid #111; padding: ${P}rem; }
+    .card, .box, .cta-box {
+      border: 1px solid var(--outline);
+      padding: ${P}rem;
+      background: transparent;
+      border-radius: 0.25rem;
+    }
     .card { transition: opacity 0.3s; }
     .card-title {
       font-size: ${SP}rem;
@@ -572,7 +661,9 @@ const html = `<!DOCTYPE html>
       position: relative;
       width: min(20rem, 100%);
       aspect-ratio: 1;
-      border: 1px solid #111;
+      border: 1px solid var(--outline);
+      background: transparent;
+      border-radius: 0.25rem;
       cursor: crosshair;
       touch-action: none;
       user-select: none;
@@ -582,7 +673,7 @@ const html = `<!DOCTYPE html>
     .plane-line-h, .plane-line-v {
       position: absolute;
       pointer-events: none;
-      background: rgba(0,0,0,0.15);
+      background: var(--line-strong);
     }
     .plane-line-h {
       left: 0;
@@ -599,7 +690,7 @@ const html = `<!DOCTYPE html>
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: #111;
+      background: var(--fg);
       transform: translate(-50%, 50%);
       cursor: grab;
       touch-action: none;
@@ -613,8 +704,8 @@ const html = `<!DOCTYPE html>
       animation: none;
     }
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.4); }
-      50% { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
+      0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+      50% { box-shadow: 0 0 0 12px transparent; }
     }
     .plane-x-label {
       font-size: ${iSP}rem;
@@ -626,7 +717,7 @@ const html = `<!DOCTYPE html>
       bottom: 15%;
       transform: translate(1rem, -0.5rem);
       font-size: ${iSP}rem;
-      color: #111;
+      color: var(--muted);
       white-space: nowrap;
       pointer-events: none;
       z-index: 2;
@@ -658,21 +749,25 @@ const html = `<!DOCTYPE html>
       display: block;
       margin-top: ${P}rem;
       padding: ${iP}rem ${P}rem;
-      border: 1px solid #111;
+      border: 1px solid var(--outline);
       text-align: center;
       text-decoration: none;
-      color: #111;
+      color: var(--fg);
       font-size: ${P}rem;
       line-height: 1.2;
-      background: #fff;
+      background: transparent;
+      border-radius: 0.25rem;
+    }
+    /* Transition only on hover so the per-frame --fg/--bg theme shift does not
+       re-trigger a color/background transition on every scroll frame. */
+    .btn-scroll:hover {
+      background: var(--fg);
+      color: var(--bg);
+      text-shadow: none;
       transition: background 0.2s, color 0.2s;
     }
-    .btn-scroll:hover {
-      background: #111;
-      color: #fff;
-    }
     .btn-scroll:focus-visible {
-      outline: 1px solid #111;
+      outline: 1px solid var(--fg);
       outline-offset: ${iP2}rem;
     }
     .btn-scroll:active {
@@ -700,8 +795,9 @@ const html = `<!DOCTYPE html>
       top: -100%;
       left: 0;
       padding: 0.4em 0.8em;
-      background: #111;
-      color: #fff;
+      background: var(--fg);
+      color: var(--bg);
+      text-shadow: none;
       z-index: 9999;
       font-size: ${iSP}rem;
       text-decoration: none;
@@ -756,6 +852,7 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <!-- You're reading the source. That's either professional curiosity or existential procrastination. Either way, welcome. -->
+  <div id="sky-wrap" aria-hidden="true"><canvas id="sky-bg"></canvas></div>
   <a href="#content" class="skip-link">Skip to main content</a>
   <main id="content">
   <article>
@@ -801,19 +898,90 @@ const html = `<!DOCTYPE html>
       <p class="mb-micro">Create a way of living through win-win that beats selfishness — not through morality, but through better results.</p>
       <p class="mb-phi">Radical openness and win-win as the de facto standard for humanity.</p>
 
+      <h3>Why</h3>
+      <p class="mb-phi">So our species grows wiser and worthier — playing at a higher level. A civilization built on deception stays primitive, fragile, and <span class='tooltip' data-tip='The most damning critique of any system. Worse than evil — boring.'>boring</span>.</p>
+
+      <h3>Who I serve</h3>
+      <p class="mb-phi">Humanity as a species: the generations arriving over the next thousand years, and the people alive beside us now. <span class='tooltip' data-tip='The longest feedback loop in existence. We will never see the score.'>Both at once.</span></p>
     `)}
 
-    ${section('values', 'Values', items([
-      `<strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.`,
-      `<strong>2. Truth.</strong> Accurate models over comfortable narratives — starting with self-deception.`,
-      `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
-      `<strong>4. Transparency.</strong> Default to open. Remove information gaps, starting with your own.`,
-      `<strong>5. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.`,
-      `<strong>6. Leverage.</strong> Minimum force at the point of maximum systemic effect.`,
-      `<strong>7. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.`,
-      `<strong>8. <span class='tooltip' data-tip='Also Taleb. He&#39;s doing well in this section.'>Skin in the Game.</span></strong> Live the system yourself. The founder is the first evidence.`,
-      `<strong>9. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.`,
-    ]))}
+    ${section('method', 'The Method', `
+      <p class="callout"><strong>Data collection + Proactivity + Data openness = Result.</strong></p>
+      <p class="mb-phi text-sm">Three moves. Each is useless alone and compounding together.</p>
+      ${items([
+        `<strong>1. Collect data.</strong> Internal and external. Find the patterns, build the models, run the forecasts — you cannot manage what you refuse to measure.`,
+        `<strong>2. Be proactive.</strong> Close vulnerabilities before they cost you. Build <span class='tooltip' data-tip='Strength you can audit. The other kind is called a press release.'>real strength</span>, not the illusion of it. Always hunt for the win-win.`,
+        `<strong>3. Open the data.</strong> Transparent intentions and actions build trust — and trust is the cheap entry into win-win. A <span class='tooltip' data-tip='Cortés burned his ships. We just publish ours.'>public commitment</span> makes defection too expensive and virtue maximally profitable. Feedback loops, on by default.`,
+      ])}
+    `)}
+
+    ${section('world', "The World We're Building", `
+      <p class="mb-phi">Radical openness and win-win as the de facto standard for 80% of humanity. Goals, plans, decisions, actions, agreements, transactions, problems — published by default.</p>
+      <p class="mb-phi text-sm">Drag the future into existence. Watch what openness compounds into.</p>
+
+      ${plane2D('worldplane', 'Radical openness', 'Win-win standard', 30, 20)}
+
+      <div class="box mt-lg">
+        <p id="world-readout" class="text-sm mb-phi"></p>
+        <p id="world-message"></p>
+      </div>
+
+      <p class="callout mt-lg">One protocol, more influential than the internet.</p>
+      <p class="mb-phi">A unified, decentralized openness system. No one owns it; everyone reads it.</p>
+
+      ${detailBlock('Governance', items([
+        `<strong>DAO.</strong> Coordination without a king.`,
+        `<strong>Constitution.</strong> Rules you can read, fork, and amend.`,
+        `<strong>AI court.</strong> Arbitration that does not get tired, bribed, or bored.`,
+      ]))}
+
+      ${detailBlock('Technology', items([
+        `<strong>Smart contracts & oracle networks.</strong> Agreements that keep themselves.`,
+        `<strong>Real-time big-data analysis.</strong> The system sees itself thinking.`,
+        `<strong>Decentralized intelligence & AI win-win search.</strong> Machines hunting for deals where everyone wins.`,
+        `<strong>Digital-twin simulations.</strong> Make the civilizational mistake in the sandbox, not in reality.`,
+        `<strong>Preventive vulnerability detection.</strong> Patch the weakness before anyone finds it.`,
+      ]))}
+
+      <p class="callout mt-lg">Openness only adds power. It opens no new wound.</p>
+      <p class="mb-phi">Each participant gets stronger and exposes no new vulnerability — and it works even for the one who adopts it alone.</p>
+
+      ${detailBlock('What this buys us', items([
+        `<strong>Fair competition.</strong> You win on merit or not at all.`,
+        `<strong>Zero corruption.</strong> Nowhere left to hide it.`,
+        `<strong>Deception goes bankrupt.</strong> Expensive to run, short to live, dangerous to attempt.`,
+        `<strong>Fewer civilizational mistakes.</strong> The species checks its work.`,
+      ]))}
+    `)}
+
+    ${section('values', 'Values', `
+      ${items([
+        `<strong>1. Win-win or no deal.</strong> Every interaction either creates mutual value or doesn't happen.`,
+        `<strong>2. Truth.</strong> Accurate models over comfortable narratives — starting with self-deception.`,
+        `<strong>3. Rationality.</strong> Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.`,
+        `<strong>4. Transparency.</strong> Default to open. Remove information gaps, starting with your own.`,
+        `<strong>5. Wisdom.</strong> Knowing which game you're playing, and why it's worth playing.`,
+        `<strong>6. Genius.</strong> The unfair solution — maximum effect from minimum, surprising means.`,
+        `<strong>7. Obsession.</strong> The mission is not a hobby. It is the thing you cannot put down.`,
+        `<strong>8. Discipline.</strong> Do the boring thing on the boring day. Compounding requires showing up.`,
+        `<strong>9. <span class='tooltip' data-tip='Aristotle&#39;s golden mean — itself a kind of ratio. We approve.'>Temperance.</span></strong> Strength held in reserve. The opposite of impulse.`,
+        `<strong>10. Awareness.</strong> See the system you're inside — including yourself inside it.`,
+        `<strong>11. <span class='tooltip' data-tip="Taleb's term. He'd want us to note he invented it. We just did.">Antifragility.</span></strong> Build mechanisms that get stronger when attacked.`,
+        `<strong>12. Leverage.</strong> Minimum force at the point of maximum systemic effect.`,
+        `<strong>13. Courage.</strong> Act on the Mission despite resistance from those who profit from the status quo.`,
+        `<strong>14. <span class='tooltip' data-tip='Also Taleb. He&#39;s doing well in this section.'>Skin in the Game.</span></strong> Live the system yourself. The founder is the first evidence.`,
+        `<strong>15. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.`,
+        `<strong>16. <span class='tooltip' data-tip='To understand the universe is clever. To find it funny is wisdom.'>Humor.</span></strong> Only the free can laugh at what they cannot escape.`,
+      ])}
+
+      ${detailBlock('Five fundamental habits', items([
+        `<strong>1. Be proactive.</strong> Act on the system, don't react to it.`,
+        `<strong>2. Plan first.</strong> Begin with the end in mind.`,
+        `<strong>3. Important things first.</strong> Urgency is a liar; importance isn't.`,
+        `<strong>4. Win-win.</strong> The only deal worth repeating.`,
+        `<strong>5. Self-improve.</strong> <span class='tooltip' data-tip="Covey called it sharpening the saw. We just kept cutting until we read the book.">Sharpen the saw</span> — the habit that maintains the other four.`,
+      ]))}
+    `)}
 
     ${section('participants', 'Participants', `
       <p class="mb-phi"><strong>n1.member</strong> — an individual who absorbs the coordination cost no one else will, driven by a first-principles understanding that win-win isn't idealism but a superior strategy — in the interests of all humanity.</p>
@@ -880,25 +1048,616 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
+    ${section('questions', 'Open questions', `
+      <p class="mb-phi">Hard questions don't weaken the mission. They aim it.</p>
+      ${items([
+        `<strong>Can we ever reach reality?</strong> If we're inside a <span class='tooltip' data-tip='Bostrom gives it non-trivial odds. The pixels seem fine with it either way.'>simulation</span>, is everything fixed by some outside observer — or does every subject inside it still get a vote?`,
+        `<strong>Who counts as a player in win-win?</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Only Homo sapiens? Or AI too — even when, in fair competition, it outgrows us?`,
+        `<strong>Are we just biochemical algorithms?</strong> If personality is mutation from the factory settings, a clean reset wouldn't heal you — it would <span class='tooltip' data-tip='The ship of Theseus, but the planks are neurons.'>delete you</span>.`,
+        `<strong>Then what is art?</strong> Your mindset, reflected back with its deviations from the norm intact. The bug is the signature.`,
+        `<strong>We know the species ends or transforms.</strong> No cosmic meaning is owed to us. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — <span class='tooltip' data-tip='100% is a target, not a forecast. Asymptotes are honest about this.'>100% effective.</span>`,
+      ])}
+      <p class="callout mt-lg">To understand the universe is clever. To find it funny is wisdom — only the free can laugh at what they cannot escape.</p>
+      <p class="callout">Science is the answer — to build, to create technology, to influence people.</p>
+    `)}
+
     ${ctaBox("Statistically, you shouldn't still be here. And yet.", "Write to us", "https://t.me/Oresty")}
 
     ${section('moscow', 'Moscow', `
       <p class="mb-phi">Moscow is where the community is starting offline. If you are nearby, this is the easiest place to join the weekly rhythm in person.</p>
       <p>We are building a local base: people, meetups, and shared infrastructure that compounds over time.</p>
 
-      ${detailBlock('<span id="books">Free library of books in Moscow</span>', `
-        <p class="mb-phi">Anyone can borrow these books in Moscow for free. All copies are in the original English language.</p>
-        ${bookItems(moscowLibraryBooks)}
-        <a href="https://t.me/Oresty" class="btn-scroll">Borrow a book</a>
+      ${detailBlock('<span id="books">n1.books — read a book, meet two people 📚</span>', `
+        <p class="mb-phi">The last reader hands you the book in person. Two weeks later, you hand it to the next reader in person. The book is the reason two strangers meet.</p>
+        <p class="mb-phi"><strong>Why:</strong> to find like-minded people and introduce them to each other. Only books that match our values make it into n1.books.</p>
+
+        <h4>How it works</h4>
+        ${items([
+          `Take a book only at an in-person meeting — from its last reader, or from an n1.community resident (e.g. <a href="https://t.me/Oresty">@Oresty</a>).`,
+          `Keep it two weeks, then pass it on the same way — in person, to the next reader.`,
+        ])}
+
+        <h4>In circulation</h4>
+        <p class="text-sm mb-phi">All copies are in the original English.</p>
+        ${bookItems(n1Books)}
+        <a href="https://t.me/Oresty" class="btn-scroll">Request a book</a>
       `)}
     `)}
 
   </article>
   </main>
+  <!-- ─── Living planet background: physically-based atmospheric scattering ───
+       Raw WebGL2, single fullscreen triangle. Rayleigh + Mie + ozone, raymarched.
+       Hidden storytelling: the planet IS "the system for humanity". Cooperation,
+       openness and win-win (benefit) lift the sun and clear the sky; deception
+       (harm) sinks it into haze and night. The transfer function is asymmetric —
+       it is easier to grow the light through benefit than to drag it into dark. -->
+  <script>
+  (function () {
+    var canvas = document.getElementById('sky-bg');
+    if (!canvas) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var gl = null;
+    try {
+      if (!reduce) gl = canvas.getContext('webgl2', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance' });
+    } catch (e) { gl = null; }
+    if (!gl) { canvas.style.display = 'none'; return; } // CSS gradient fallback shows
+
+    var VERT = \`#version 300 es
+    void main() {
+      vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+      gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+    }\`;
+
+    var FRAG = \`#version 300 es
+    precision highp float;
+    out vec4 fragColor;
+
+    uniform vec2  uRes;
+    uniform float uTime;
+    uniform vec3  uSunDir;     // normalized world-space sun direction
+    uniform vec3  uCamPos;     // camera position, metres from planet centre
+    uniform float uPitch;      // camera pitch below horizon (scroll-driven)
+    uniform vec2  uParallax;   // subtle pointer tilt
+    uniform float uHaze;       // Mie multiplier — rises with harm
+    uniform float uCity;       // night-side civilisation lights — rises with benefit
+    uniform float uHealth;     // system-health 0..1 — drives surface albedo (biosphere)
+    uniform float uLight;      // theme 0..1 — 0 = dark space (top), 1 = white "heaven"
+    uniform float uMood;       // plane 0..1 — sweeps the grade hue
+    uniform float uHueA;       // grade hue at mood=0 (random per reload)
+    uniform float uHueB;       // grade hue at mood=1 (analogous to uHueA)
+
+    const float PI   = 3.141592653589793;
+    const float Rp   = 6371000.0;            // planet radius (m)
+    const float Ra   = 6471000.0;            // atmosphere radius (m)
+    const vec3  bR   = vec3(5.8e-6, 13.5e-6, 33.1e-6); // Rayleigh scattering
+    const vec3  bMs  = vec3(21e-6);          // Mie scattering
+    const vec3  bO   = vec3(3.426e-6, 8.298e-6, 0.356e-6); // ozone absorption
+    const float shR  = 8000.0;               // Rayleigh scale height
+    const float shM  = 1200.0;               // Mie scale height
+    const float g    = 0.76;                 // Mie anisotropy
+    const float iSun = 22.0;                 // sun intensity
+    const int   PRIMARY = 16;
+    const int   LIGHT   = 8;
+
+    // ray vs sphere centred at origin; returns (near, far), near>far if miss
+    vec2 rsi(vec3 ro, vec3 rd, float r) {
+      float b = dot(ro, rd);
+      float c = dot(ro, ro) - r * r;
+      float d = b * b - c;
+      if (d < 0.0) return vec2(1e20, -1e20);
+      d = sqrt(d);
+      return vec2(-b - d, -b + d);
+    }
+
+    float hash(vec2 p) {
+      p = fract(p * vec2(123.34, 456.21));
+      p += dot(p, p + 45.32);
+      return fract(p.x * p.y);
+    }
+    float vnoise(vec3 p) {
+      vec3 i = floor(p); vec3 f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      vec2 e = vec2(0.0, 1.0);
+      float a = hash(i.xy + i.z * 57.0 + e.xx);
+      float b = hash(i.xy + i.z * 57.0 + e.yx);
+      float c = hash(i.xy + i.z * 57.0 + e.xy);
+      float d = hash(i.xy + i.z * 57.0 + e.yy);
+      float z0 = mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      float a2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.xx);
+      float b2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.yx);
+      float c2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.xy);
+      float d2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.yy);
+      float z1 = mix(mix(a2, b2, f.x), mix(c2, d2, f.x), f.y);
+      return mix(z0, z1, f.z);
+    }
+    float fbm(vec3 p) {
+      float s = 0.0, a = 0.5;
+      for (int i = 0; i < 4; i++) { s += a * vnoise(p); p *= 2.02; a *= 0.5; }
+      return s;
+    }
+
+    // ── Star field — direction-based, round & anti-aliased (no block artifacts).
+    //    Two depth layers + gentle twinkle, like the article's space view. ──
+    float hash13(vec3 p3) {
+      p3 = fract(p3 * 0.1031);
+      p3 += dot(p3, p3.zyx + 31.32);
+      return fract((p3.x + p3.y) * p3.z);
+    }
+    // Iridescent "heaven" palette. A cosine palette (Inigo Quilez form) tuned
+    // for ethereal jewel tones — luminous teal → cyan → periwinkle → violet →
+    // rose → gold — never muddy. High bias (a) keeps every hue bright and
+    // surreal; moderate amplitude (b) keeps it pastel-luminous, not garish.
+    vec3 heaven(float t) {
+      return vec3(0.62, 0.60, 0.72)
+           + vec3(0.34, 0.32, 0.34) * cos(6.28318530718 * (t + vec3(0.00, 0.12, 0.55)));
+    }
+    // Star field: three depth layers of round, anti-aliased stars, each with a
+    // tight core + soft bloom, a unique heaven-palette hue, and gentle twinkle.
+    //   col  — colored radiance (used additively for the dark night sky).
+    //   mask — a CRISP per-star coverage (sharp dot + tight halo, NO wide bloom)
+    //          so the light/heaven theme can stamp clean jewel points on white
+    //          instead of the wide grey smudges a soft bloom would leave.
+    vec3 stars(vec3 rd, out float mask) {
+      vec3 col = vec3(0.0);
+      mask = 0.0;
+      for (float s = 0.0; s < 3.0; s += 1.0) {
+        float sc = 58.0 + s * 92.0;
+        vec3 p = rd * sc;
+        vec3 id = floor(p);
+        vec3 f = fract(p) - 0.5;
+        float n = hash13(id + s * 19.0);
+        float present = step(0.92 + s * 0.028, n);
+        float d = length(f);
+        float core = smoothstep(0.11, 0.0, d);
+        float bloom = smoothstep(0.45, 0.0, d) * 0.30; // dreamy halo (dark sky only)
+        float tw = 0.65 + 0.35 * sin(uTime * 1.4 + n * 40.0);
+        vec3 hue = heaven(fract(n * 7.3) + uTime * 0.012 + s * 0.21);
+        float bright = (0.4 + 0.6 * fract(n * 13.1)) * (1.0 - s * 0.26);
+        col += hue * present * (core + bloom) * tw * bright;
+        // crisp dot + a tight, faint halo — clean enough to read on white
+        float pt = present * tw * (core + smoothstep(0.20, 0.0, d) * 0.18);
+        mask = max(mask, pt);
+      }
+      return col;
+    }
+
+    float density(float h, float scale) { return exp(-max(h, 0.0) / scale); }
+    // ozone: triangular band peaking ~25 km
+    float ozone(float h) { return max(0.0, 1.0 - abs(h - 25000.0) / 25000.0); }
+
+    float luma(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+
+    // Filmic-ish tone map + gamma: physical radiance → display 0..1.
+    vec3 tonemap(vec3 c) {
+      c = vec3(1.0) - exp(-c * 1.3);
+      return pow(c, vec3(1.0 / 2.2));
+    }
+
+    // ── One composite for both themes (uLight blends between them) ──────────
+    //   DARK  (uLight=0): the original deep-space look — scene on black, with
+    //                     luminous colored stars added on top.
+    //   LIGHT (uLight=1): a white "heaven" — the scene is mixed toward #fff by
+    //                     its own luminance (so it stays light enough for dark
+    //                     text), and stars become saturated jewel specks.
+    //   sceneRad  — planet/atmosphere radiance.
+    //   star      — atmosphere-attenuated star radiance (its hue/glow).
+    //   starMask  — crisp star coverage 0..1 (see stars()).
+    // pure hue (0..1) → saturated rgb. Never gray for any input.
+    vec3 hue2rgb(float h) {
+      h = fract(h);
+      return clamp(vec3(abs(h * 6.0 - 3.0) - 1.0,
+                        2.0 - abs(h * 6.0 - 2.0),
+                        2.0 - abs(h * 6.0 - 4.0)), 0.0, 1.0);
+    }
+    // ── Plane-driven colour grade ──────────────────────────────────────────
+    //   The 2D planes are the user's hands on the system. Dragging them sweeps a
+    //   single hue along an ANALOGOUS arc (uHueA→uHueB), random each reload. We
+    //   interpolate the HUE, not two RGB tints — so the grade is a saturated
+    //   colour at EVERY mood value and can never wash out to gray. Luminance is
+    //   preserved, so it shifts hue, not exposure.
+    vec3 grade(vec3 c) {
+      vec3 hr  = hue2rgb(mix(uHueA, uHueB, uMood));
+      float m  = (hr.r + hr.g + hr.b) / 3.0;
+      vec3 tint = vec3(1.0) + 0.55 * (hr - vec3(m));   // chromatic, averages ~1
+      vec3 g    = c * tint;
+      g *= (luma(c) + 1e-4) / (luma(g) + 1e-4);         // keep exposure
+      // guarantee a colour floor even on near-gray scene pixels
+      float L = luma(g);
+      return mix(g, mix(vec3(L), g, 1.6), 0.5);          // gentle chroma lift
+    }
+
+    vec3 composite(vec3 sceneRad, vec3 star, float starMask) {
+      vec3 base  = grade(tonemap(sceneRad));
+      vec3 lightScene = mix(vec3(1.0), base, min(luma(base), 0.85));
+
+      // DARK theme: the original night sky with additive colored star glow.
+      vec3 darkOut = base + star;
+
+      // LIGHT theme: stamp a vivid, SATURATED jewel where a star core is. pow()
+      // deepens the off-hue channels so the dot reads as a true colour (not a
+      // washed pastel) on the white heaven; the crisp mask keeps it a point.
+      float m = max(star.r, max(star.g, star.b));
+      vec3 hue = star / max(m, 1e-4);                 // unit-bright star hue
+      vec3 jewel = pow(hue, vec3(1.7)) * 0.92;        // saturated, reads on white
+      vec3 lightOut = mix(lightScene, jewel, clamp(starMask, 0.0, 1.0));
+
+      return mix(darkOut, lightOut, uLight);
+    }
+
+    // optical depth from a point toward the sun (light march); false if shadowed
+    bool lightOD(vec3 p, vec3 sun, out vec3 od) {
+      vec2 pl = rsi(p, sun, Rp);
+      if (pl.x > 0.0) { od = vec3(1e9); return false; } // planet blocks the sun
+      vec2 a = rsi(p, sun, Ra);
+      float dt = a.y / float(LIGHT);
+      float odR = 0.0, odM = 0.0, odO = 0.0, t = 0.0;
+      for (int i = 0; i < LIGHT; i++) {
+        vec3 s = p + sun * (t + dt * 0.5);
+        float h = length(s) - Rp;
+        odR += density(h, shR) * dt;
+        odM += density(h, shM) * dt;
+        odO += ozone(h) * dt;
+        t += dt;
+      }
+      od = bR * odR + bMs * uHaze * 1.1 * odM + bO * odO;
+      return true;
+    }
+
+    void main() {
+      // Normalise by the SHORTER axis so framing is consistent in portrait and
+      // landscape (mobile-first): on tall phones this reveals more sky/limb
+      // vertically instead of zooming the scene in.
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
+
+      // ── camera basis: altitude along +Y, looking toward the horizon ──
+      vec3 up0 = vec3(0.0, 1.0, 0.0);
+      vec3 cam = uCamPos;
+      float pitch = uPitch + uParallax.y * 0.05;
+      vec3 fwd = normalize(vec3(0.0, -sin(pitch), -cos(pitch)));
+      vec3 right = normalize(cross(fwd, up0));
+      vec3 cup = cross(right, fwd);
+      float fov = 1.15;
+      vec3 rd = normalize(fwd + (right * (uv.x + uParallax.x * 0.06) + cup * uv.y) * fov);
+
+      vec3 sun = normalize(uSunDir);
+
+      vec2 atm = rsi(cam, rd, Ra);
+      vec2 pl  = rsi(cam, rd, Rp);
+      bool hitPlanet = (pl.x > 0.0 && pl.x < atm.y);
+
+      vec3 color = vec3(0.0);
+      float starMask;
+      vec3 bg = stars(rd, starMask); // deep-space stars sitting behind everything
+      vec3 star = vec3(0.0);         // star radiance reaching the eye (set below)
+      float sMask = 0.0;             // star coverage reaching the eye
+
+      // ray misses the atmosphere entirely -> pure space (full, unobstructed stars)
+      if (atm.y < 0.0 || atm.x > atm.y) {
+        fragColor = vec4(composite(vec3(0.0), bg, starMask), 1.0);
+        return;
+      }
+
+      float tStart = max(atm.x, 0.0);
+      float tEnd   = hitPlanet ? pl.x : atm.y;
+      float dt     = max(tEnd - tStart, 0.0) / float(PRIMARY);
+      float jit    = hash(gl_FragCoord.xy); // static dither — removes step banding
+
+      vec3 totR = vec3(0.0), totM = vec3(0.0);
+      vec3 odV  = vec3(0.0); // accumulated view optical depth (surface attenuation)
+      float t = tStart + dt * jit;
+      for (int i = 0; i < PRIMARY; i++) {
+        vec3 p = cam + rd * t;
+        float h = length(p) - Rp;
+        float dR = density(h, shR) * dt;
+        float dM = density(h, shM) * dt;
+        float dO = ozone(h) * dt;
+        odV += bR * dR + bMs * uHaze * 1.1 * dM + bO * dO;
+        vec3 lod;
+        if (lightOD(p, sun, lod)) {
+          vec3 tr = exp(-(odV + lod));
+          totR += tr * dR;
+          totM += tr * dM;
+        }
+        t += dt;
+      }
+
+      float mu = dot(rd, sun);
+      float pR = 3.0 / (16.0 * PI) * (1.0 + mu * mu);
+      float gg = g * g;
+      float pM = 3.0 / (8.0 * PI) * ((1.0 - gg) * (1.0 + mu * mu)) /
+                 ((2.0 + gg) * pow(max(1.0 + gg - 2.0 * g * mu, 1e-4), 1.5));
+
+      color = iSun * (pR * bR * totR + pM * bMs * uHaze * totM);
+
+      // ── planet surface, seen through the atmosphere ──
+      if (hitPlanet) {
+        vec3 sp = cam + rd * pl.x;
+        vec3 n  = normalize(sp);
+        float ca = cos(uTime * 0.02), sa = sin(uTime * 0.02);
+        vec3 np = vec3(n.x * ca - n.z * sa, n.y, n.x * sa + n.z * ca);
+        float land = smoothstep(0.50, 0.62, fbm(np * 2.3));
+        // Surface albedo responds to system-health — a real, physical property.
+        // Thriving biosphere: deep-blue oceans, green continents. Barren / sick
+        // world: murky water, brown desert. The scattering physics is unchanged.
+        vec3 ocean = mix(vec3(0.055, 0.06, 0.05), vec3(0.012, 0.045, 0.13), uHealth);
+        vec3 forest = mix(vec3(0.20, 0.15, 0.08), vec3(0.03, 0.19, 0.05), uHealth);  // desert -> forest
+        vec3 arid   = mix(vec3(0.17, 0.14, 0.10), vec3(0.15, 0.17, 0.07), uHealth);
+        vec3 ground = mix(forest, arid, fbm(np * 6.0));
+        vec3 ice = vec3(0.7, 0.78, 0.85);
+        vec3 surf = mix(ocean, ground, land);
+        surf = mix(surf, ice, smoothstep(0.78, 0.95, abs(np.y)));
+        float sd  = dot(n, sun);
+        float ndl = max(sd, 0.0);
+        vec3 viewTr = exp(-odV);
+        // Day side lit brightly enough to read THROUGH the atmosphere, with a
+        // crisp terminator so the day/night "shadow" curves visibly across the
+        // surface (otherwise the atmosphere glow drowns the dark albedo).
+        float day = smoothstep(-0.05, 0.16, sd);          // crisp terminator
+        vec3 lit = surf * (day * 3.0 + ndl * 0.5 + 0.012);
+        // night side: lights of a flourishing civilisation (benefit-driven)
+        float night = smoothstep(0.05, -0.15, dot(n, sun));
+        float pop = smoothstep(0.55, 0.75, fbm(np * 9.0)) * land;
+        vec3 lights = vec3(1.0, 0.82, 0.5) * pop * night * uCity * 1.4;
+        color += (lit + lights) * viewTr;
+      }
+      else {
+        vec3 tr = exp(-odV);   // view transmittance through the thin / night sky
+        star = bg * tr;
+        sMask = starMask * max(tr.r, max(tr.g, tr.b)); // dim the dot where sky is thick
+      }
+
+      fragColor = vec4(composite(color, star, sMask), 1.0);
+    }\`;
+
+    function compile(type, src) {
+      var s = gl.createShader(type);
+      gl.shaderSource(s, src.replace(/^\\s+/gm, ''));
+      gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+        console.warn('sky shader:', gl.getShaderInfoLog(s));
+      }
+      return s;
+    }
+    var prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.warn('sky link:', gl.getProgramInfoLog(prog));
+      canvas.style.display = 'none';
+      return;
+    }
+    gl.useProgram(prog);
+    gl.bindVertexArray(gl.createVertexArray());
+
+    var U = {};
+    ['uRes', 'uTime', 'uSunDir', 'uCamPos', 'uPitch', 'uParallax', 'uHaze', 'uCity', 'uHealth', 'uLight', 'uMood', 'uHueA', 'uHueB'].forEach(function (n) {
+      U[n] = gl.getUniformLocation(prog, n);
+    });
+
+    // ── Random colour personality, fresh each reload ──────────────────────────
+    //   Pick one random base hue; the plane sweeps an ANALOGOUS arc from it (a
+    //   harmonious ~58° span), so the grade is always a vivid, well-matched
+    //   colour — never gray, no matter where the plane sits. Reloading reshuffles
+    //   the whole palette.
+    (function () {
+      var h = Math.random();
+      gl.uniform1f(U.uHueA, h);
+      gl.uniform1f(U.uHueB, h + 0.16);
+    })();
+
+    var Rp = 6371000.0;
+    // mobile-first render scale: the heavy raymarch runs below native resolution
+    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    var scale = coarse ? 0.6 : 0.8;
+    function resize() {
+      // Match the drawing buffer to the canvas's ACTUAL box. The box is pinned
+      // to 100lvh in CSS — a constant the mobile URL/bottom bar can't change —
+      // so there is no jump, and the buffer always fills the element exactly so
+      // there is no cropping / gap.
+      var dpr = Math.min(window.devicePixelRatio || 1, coarse ? 2 : 1.5);
+      var rect = canvas.getBoundingClientRect();
+      var cw = rect.width || window.innerWidth;
+      var ch = rect.height || window.innerHeight;
+      var w = Math.max(2, Math.round(cw * dpr * scale));
+      var h = Math.max(2, Math.round(ch * dpr * scale));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+    }
+    if (window.ResizeObserver) {
+      new ResizeObserver(resize).observe(canvas);
+    } else {
+      window.addEventListener('resize', resize, { passive: true });
+    }
+    window.addEventListener('orientationchange', function () { setTimeout(resize, 250); });
+    window.addEventListener('load', resize);
+    resize();
+
+    // ── Pin the background to the VISUAL viewport ─────────────────────────────
+    // A position:fixed layer is anchored to the LAYOUT viewport. On Chrome
+    // Android the dynamic URL bar resizes only the visual viewport, so as the
+    // bar hides/shows the visible window slides over the layout-fixed canvas and
+    // the background appears to scroll a little. visualViewport reports the exact
+    // box that is actually on screen — translate + size the wrap to match it so
+    // the background stays locked to what the user sees. (No-op on desktop and
+    // where the API is missing → the CSS 100lvh box is used as the fallback.)
+    var skyWrap = document.getElementById('sky-wrap');
+    var vv = window.visualViewport;
+    if (skyWrap && vv) {
+      var pinSky = function () {
+        skyWrap.style.width = vv.width + 'px';
+        skyWrap.style.height = vv.height + 'px';
+        skyWrap.style.transformOrigin = '0 0';
+        skyWrap.style.transform =
+          'translate(' + vv.offsetLeft + 'px,' + vv.offsetTop + 'px) scale(' + (1 / vv.scale) + ')';
+      };
+      vv.addEventListener('resize', pinSky, { passive: true });
+      vv.addEventListener('scroll', pinSky, { passive: true });
+      window.addEventListener('orientationchange', function () { setTimeout(pinSky, 250); });
+      pinSky();
+    }
+
+    // ── State: targets driven by planes / scroll / pointer; current values ease
+    //    toward them every frame (asymmetric easing carries the message). ──
+    var account = 0.15, scrollP = 0.0;          // accountability target, scroll
+    var coopX = 0.30, openX = 0.30, wwY = 0.20;  // raw plane axes (benefit)
+    var benefit = 0.30, healthTarget = 0.2;
+    var px = 0.0, py = 0.0;                       // parallax target
+    var lightTarget = 0.0;                        // theme target: 0 dark, 1 light
+    var cur = { health: 0.15, alt: 0.0, haze: 1.0, city: 0.0, px: 0.0, py: 0.0, light: 0.0, mood: 0.15 };
+
+    function recompute() {
+      benefit = (coopX + openX + wwY) / 3.0;
+      // benefit only fully counts when paired with accountability — mirrors the
+      // site's safetyScore (the sqrt term penalises an imbalanced system).
+      var sq = Math.sqrt(Math.max(benefit * account, 0.0));
+      healthTarget = Math.max(0, Math.min(1, 0.45 * benefit + 0.20 * account + 0.35 * sq));
+    }
+    recompute();
+
+    window.__n1bg = {
+      setSystem: function (coop, decep) { coopX = coop; account = decep; recompute(); },
+      setWorld: function (open, ww) { openX = open; wwY = ww; recompute(); },
+      setScroll: function (p) { scrollP = Math.max(0, Math.min(1, p)); },
+      setLight: function (p) { lightTarget = Math.max(0, Math.min(1, p)); }
+    };
+
+    // Cache the scrollable height; recompute only on resize so the scroll
+    // handler stays read-free (no forced layout per scroll tick).
+    var scrollMax = 0;
+    function measureScroll() {
+      scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+    }
+    function onScroll() {
+      window.__n1bg.setScroll(scrollMax > 0 ? window.scrollY / scrollMax : 0);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measureScroll, { passive: true });
+    measureScroll();
+    onScroll();
+
+    window.addEventListener('pointermove', function (e) {
+      px = (e.clientX / window.innerWidth) * 2.0 - 1.0;
+      py = (e.clientY / window.innerHeight) * 2.0 - 1.0;
+    }, { passive: true });
+
+    var t0 = performance.now();
+    function lerp(a, b, k) { return a + (b - a) * k; }
+
+    var rafId = 0;
+    function frame(now) {
+      if (document.hidden) { rafId = requestAnimationFrame(frame); return; }
+      var time = (now - t0) / 1000.0;
+
+      // Brighten fast (benefit is easy), darken slow (harm is hard): the story.
+      var rate = healthTarget > cur.health ? 0.045 : 0.012;
+      cur.health = lerp(cur.health, healthTarget, rate);
+      cur.alt    = lerp(cur.alt, scrollP, 0.05);
+      cur.haze   = lerp(cur.haze, 1.0 + (1.0 - cur.health) * 2.2, 0.04);
+      cur.city   = lerp(cur.city, Math.max(0, benefit - 0.15), 0.03);
+      cur.px     = lerp(cur.px, px, 0.04);
+      cur.py     = lerp(cur.py, py, 0.04);
+      cur.light  = lerp(cur.light, lightTarget, 0.06);
+      // Mood = the plane's colour grade. Unlike health (slow, asymmetric — the
+      // story), this responds FAST so dragging a plane recolours the sky live.
+      // Stretched so the playable range sweeps the full warm→cool palette.
+      var moodTarget = Math.max(0, Math.min(1, (healthTarget - 0.18) / 0.62));
+      cur.mood   = lerp(cur.mood, moodTarget, 0.10);
+
+      // Sun: low and raking so one side of the limb is lit (day) while the other
+      // curves into shadow (night) — the day/night terminator sweeps visibly
+      // across the screen. Elevation still rises with health (the story), but
+      // stays low so the shadow is always present.
+      var elev = 0.05 + cur.health * 0.55 + 0.04 * Math.sin(time * 0.05);
+      // Azimuth ~90° to the SIDE of the view (forward is -Z) so the sun lights
+      // the limb from the right and the terminator runs across the disk.
+      var azi  = -0.05 + 0.18 * Math.sin(time * 0.02);
+      var ce = Math.cos(elev);
+      var sx = ce * Math.cos(azi), sy = Math.sin(elev), sz = ce * Math.sin(azi);
+
+      // Scroll = the journey, PLANET -> SPACE: top is the planet (low orbit,
+      // tangent limb); scrolling down pulls back into deep space until the
+      // planet is a small lit sphere among the stars.
+      var alt   = lerp(220000.0, 3600000.0, cur.alt);
+      var pitch = lerp(0.06, 0.6, cur.alt);
+
+      gl.uniform2f(U.uRes, canvas.width, canvas.height);
+      gl.uniform1f(U.uTime, time);
+      gl.uniform3f(U.uSunDir, sx, sy, sz);
+      gl.uniform3f(U.uCamPos, 0.0, Rp + alt, 0.0);
+      gl.uniform1f(U.uPitch, pitch);
+      gl.uniform2f(U.uParallax, cur.px, cur.py);
+      gl.uniform1f(U.uHaze, cur.haze);
+      gl.uniform1f(U.uCity, cur.city);
+      gl.uniform1f(U.uHealth, cur.health);
+      gl.uniform1f(U.uLight, cur.light);
+      gl.uniform1f(U.uMood, cur.mood);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      rafId = requestAnimationFrame(frame);
+    }
+    rafId = requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) t0 = performance.now() - 0;
+    });
+  })();
+  </script>
   <script src="/static/typograf.min.js"></script>
   <script>
     (function() {
       console.log('You opened the console. Kant would approve \\u2014 you\\'re using reason autonomously. t.me/Oresty');
+
+      // ── Scroll-driven theme ────────────────────────────────────────────
+      //   Dark space at the top (as it always was); once the "future" section
+      //   has scrolled past, the world turns into a luminous white "heaven".
+      //   Single source of truth: progress() feeds BOTH the CSS theme (--lp,
+      //   consumed by color-mix) and the WebGL background (uLight). Works with
+      //   or without WebGL (reduced-motion uses the CSS gradient + --lp only).
+      //
+      //   Smoothness: scroll/resize only KICK a single self-stopping rAF loop —
+      //   no layout reads or style writes happen in the event itself. Each frame
+      //   measures the target once and eases --lp toward it (same lerp rate as
+      //   the WebGL background's cur.light), so the CSS theme and the WebGL sky
+      //   brighten in lockstep with no re-triggered CSS transition or layout
+      //   thrash. The loop halts once settled and is re-kicked on the next scroll.
+      (function () {
+        var root = document.documentElement;
+        var future = document.getElementById('future');
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var cur = 0, target = 0, raf = 0;
+        function measure() {
+          if (!future) return 0;
+          var r = future.getBoundingClientRect();
+          var vh = window.innerHeight || 1;
+          // 0 while the section's bottom is still at/below the viewport bottom;
+          // 1 once it has risen fully past the top → "scrolled the future".
+          var x = Math.max(0, Math.min(1, (vh - r.bottom) / vh));
+          return x * x * (3.0 - 2.0 * x); // smoothstep
+        }
+        function apply(v) {
+          root.style.setProperty('--lp', v.toFixed(4));
+          if (window.__n1bg && window.__n1bg.setLight) window.__n1bg.setLight(target);
+        }
+        function tick() {
+          target = measure();
+          cur += (target - cur) * 0.06;             // same rate as WebGL cur.light
+          if (Math.abs(target - cur) < 0.0004) cur = target;
+          apply(cur);
+          raf = (cur === target) ? 0 : requestAnimationFrame(tick);
+        }
+        function kick() {
+          if (reduce) { target = cur = measure(); apply(cur); return; }
+          if (!raf) raf = requestAnimationFrame(tick);
+        }
+        window.addEventListener('scroll', kick, { passive: true });
+        window.addEventListener('resize', kick, { passive: true });
+        target = cur = measure();
+        apply(cur);
+      })();
 
       // ── Tooltip edge protection ──
       document.querySelectorAll('.tooltip').forEach(function(el) {
@@ -987,66 +1746,76 @@ const html = `<!DOCTYPE html>
         return tp.execute(text);
       }
 
-      // ── DOM ──
-      var planeCanvas = document.querySelector('#plane .plane-canvas');
-      var planePoint = document.querySelector('#plane .plane-point');
-      var planeHint = document.querySelector('#plane .plane-hint');
-      var lineH = document.querySelector('#plane .plane-line-h');
-      var lineV = document.querySelector('#plane .plane-line-v');
-      var pctX = document.getElementById('pct-x');
-      var pctY = document.getElementById('pct-y');
+      // ── Reusable 2D Plane wiring (DRY: powers every plane2D component) ──
+      // Mouse/touch/keyboard + accessibility. State lives here; the host supplies
+      // an onChange(x, y) that maps the two axes (0-100) to its own content.
+      function initPlane(id, opts) {
+        var canvas = document.querySelector('#' + id + ' .plane-canvas');
+        if (!canvas) return;
+        var point = document.querySelector('#' + id + ' .plane-point');
+        var hint  = document.querySelector('#' + id + ' .plane-hint');
+        var lineH = document.querySelector('#' + id + ' .plane-line-h');
+        var lineV = document.querySelector('#' + id + ' .plane-line-v');
+        var pctX  = document.getElementById(id + '-pct-x');
+        var pctY  = document.getElementById(id + '-pct-y');
+        var announce = document.getElementById(id + '-announce');
+        var xVal = opts.initialX;
+        var yVal = opts.initialY;
+
+        function updatePos() {
+          point.style.left = xVal + '%';
+          point.style.bottom = yVal + '%';
+          lineH.style.bottom = yVal + '%';
+          lineV.style.left = xVal + '%';
+          pctX.textContent = xVal + '%';
+          pctY.textContent = yVal + '%';
+        }
+
+        function fromPointer(e) {
+          hint.classList.add('hidden');
+          var rect = canvas.getBoundingClientRect();
+          var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          var x = (clientX - rect.left) / rect.width;
+          var y = 1 - (clientY - rect.top) / rect.height;
+          xVal = Math.round(Math.max(0, Math.min(100, x * 100)));
+          yVal = Math.round(Math.max(0, Math.min(100, y * 100)));
+          updatePos();
+          opts.onChange(xVal, yVal);
+        }
+
+        var dragging = false;
+        canvas.addEventListener('mousedown', function(e) { dragging = true; point.classList.add('dragging'); fromPointer(e); });
+        document.addEventListener('mousemove', function(e) { if (dragging) { e.preventDefault(); fromPointer(e); } });
+        document.addEventListener('mouseup', function() { dragging = false; point.classList.remove('dragging'); });
+        canvas.addEventListener('touchstart', function(e) { dragging = true; point.classList.add('dragging'); fromPointer(e); e.preventDefault(); }, { passive: false });
+        document.addEventListener('touchmove', function(e) { if (dragging) { fromPointer(e); e.preventDefault(); } }, { passive: false });
+        document.addEventListener('touchend', function() { dragging = false; point.classList.remove('dragging'); });
+        canvas.addEventListener('keydown', function(e) {
+          var step = 5;
+          if (e.key === 'ArrowRight') { xVal = Math.min(100, xVal + step); }
+          else if (e.key === 'ArrowLeft') { xVal = Math.max(0, xVal - step); }
+          else if (e.key === 'ArrowUp') { yVal = Math.min(100, yVal + step); }
+          else if (e.key === 'ArrowDown') { yVal = Math.max(0, yVal - step); }
+          else return;
+          e.preventDefault();
+          hint.classList.add('hidden');
+          updatePos();
+          opts.onChange(xVal, yVal);
+          if (announce) announce.textContent = opts.xLabel + ': ' + xVal + '%, ' + opts.yLabel + ': ' + yVal + '%';
+        });
+
+        updatePos();
+        opts.onChange(xVal, yVal);
+      }
+
+      // ── Future plane DOM + state ──
       var container = document.getElementById('future-timeline');
       var systemMsg = document.getElementById('system-message');
       var cardWisdom = document.getElementById('card-wisdom');
       var cardDeath = document.getElementById('card-death');
-
-      // ── 2D Plane State ──
       var coopValue = 30;
       var decepValue = 15;
-
-      function updatePointPosition() {
-        planePoint.style.left = coopValue + '%';
-        planePoint.style.bottom = decepValue + '%';
-        lineH.style.bottom = decepValue + '%';
-        lineV.style.left = coopValue + '%';
-        pctX.textContent = coopValue + '%';
-        pctY.textContent = decepValue + '%';
-      }
-
-      function handlePlaneInteraction(e) {
-        planeHint.classList.add('hidden');
-        var rect = planeCanvas.getBoundingClientRect();
-        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        var x = (clientX - rect.left) / rect.width;
-        var y = 1 - (clientY - rect.top) / rect.height;
-        coopValue = Math.round(Math.max(0, Math.min(100, x * 100)));
-        decepValue = Math.round(Math.max(0, Math.min(100, y * 100)));
-        updatePointPosition();
-        render();
-      }
-
-      var dragging = false;
-      planeCanvas.addEventListener('mousedown', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); });
-      document.addEventListener('mousemove', function(e) { if (dragging) { e.preventDefault(); handlePlaneInteraction(e); } });
-      document.addEventListener('mouseup', function() { dragging = false; planePoint.classList.remove('dragging'); render(); });
-      planeCanvas.addEventListener('touchstart', function(e) { dragging = true; planePoint.classList.add('dragging'); handlePlaneInteraction(e); e.preventDefault(); }, { passive: false });
-      document.addEventListener('touchmove', function(e) { if (dragging) { handlePlaneInteraction(e); e.preventDefault(); } }, { passive: false });
-      document.addEventListener('touchend', function() { dragging = false; planePoint.classList.remove('dragging'); render(); });
-      planeCanvas.addEventListener('keydown', function(e) {
-        var step = 5;
-        if (e.key === 'ArrowRight') { coopValue = Math.min(100, coopValue + step); }
-        else if (e.key === 'ArrowLeft') { coopValue = Math.max(0, coopValue - step); }
-        else if (e.key === 'ArrowUp') { decepValue = Math.min(100, decepValue + step); }
-        else if (e.key === 'ArrowDown') { decepValue = Math.max(0, decepValue - step); }
-        else return;
-        e.preventDefault();
-        planeHint.classList.add('hidden');
-        updatePointPosition();
-        render();
-        var announceEl = document.getElementById('plane-announce');
-        if (announceEl) announceEl.textContent = 'Easy to cooperate: ' + coopValue + '%, Costs of deception: ' + decepValue + '%';
-      });
 
       // ── Safety Score for Extinction ──
       // Cooperation (40%): only helps if deception is costly — free defection exploits it
@@ -1223,6 +1992,10 @@ const html = `<!DOCTYPE html>
         var result = computeTimeline(coopValue, decepValue);
         var events = result.events;
 
+        // Drive the living planet: cooperation lifts the sun; deception costs are
+        // the accountability that lets benefit count. (See the #sky-bg shader.)
+        if (window.__n1bg) window.__n1bg.setSystem(result.coop, result.decep);
+
         systemMsg.textContent = typografRuntime(getMessage(result.coop, result.decep, result.extinctionYear, events));
 
         var hasWisdom = events.some(function(e) { return e.category === 'transcendence'; });
@@ -1246,7 +2019,59 @@ const html = `<!DOCTYPE html>
         container.innerHTML = buildTimelineMarkup(2027, endYear, milestones);
       }
 
-      render();
+      // ── Future plane: cooperation × deception costs → a timeline ──
+      initPlane('plane', {
+        initialX: 30, initialY: 15,
+        xLabel: 'Easy to cooperate', yLabel: 'Costs of deception',
+        onChange: function(coop, decep) { coopValue = coop; decepValue = decep; render(); }
+      });
+
+      // ── World plane: radical openness × win-win → the world materializes ──
+      (function() {
+        var readout = document.getElementById('world-readout');
+        var message = document.getElementById('world-message');
+        if (!readout) return;
+
+        // Honest totals — linear scaling against full-openness anchors
+        var TOTAL = { people: 8e9, orgs: 7e8, regions: 10000, states: 150 };
+
+        function fmt(n) {
+          if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e10 ? 0 : 1) + 'B';
+          if (n >= 1e6) return Math.round(n / 1e6) + 'M';
+          if (n >= 1e3) return Math.round(n / 1e3) + 'K';
+          return Math.round(n).toString();
+        }
+
+        function worldStage(open, ww) {
+          var lo = Math.min(open, ww);
+          if (lo === 0) return 'No one is watching. Deception is cheap, trust is a gamble, every deal starts from zero.';
+          if (open > ww + 20) return 'Plenty of open data, weak win-win. Transparency without fair rules just exposes everyone — raise the standard.';
+          if (ww > open + 20) return 'Win-win is the rule, but few publish. Good intentions stay invisible — open the data.';
+          if (lo < 25) return 'Early adopters publish first. They look exposed. They are, in fact, the only ones who can be trusted.';
+          if (lo < 50) return 'Enough eyes that lying gets expensive. Win-win becomes the default opening move, not the risky one.';
+          if (lo < 75) return 'The open network now sets the price of trust. Hiding is the anomaly — and it pays for itself, badly.';
+          return 'Radical openness is the standard. Corruption has nowhere to live; the species can finally see itself think.';
+        }
+
+        function worldRender(open, ww) {
+          // Radical openness + win-win are also "benefit" — they clear the sky.
+          if (window.__n1bg) window.__n1bg.setWorld(open / 100, ww / 100);
+          var frac = open / 100;
+          readout.innerHTML =
+            '<strong>' + open + '%</strong> open · <strong>' + ww + '%</strong> win-win — ' +
+            fmt(TOTAL.people * frac) + ' people · ' +
+            fmt(TOTAL.orgs * frac) + ' organizations · ' +
+            Math.round(TOTAL.regions * frac).toLocaleString() + ' regions · ' +
+            Math.round(TOTAL.states * frac) + ' states.';
+          message.textContent = typografRuntime(worldStage(open, ww));
+        }
+
+        initPlane('worldplane', {
+          initialX: 30, initialY: 20,
+          xLabel: 'Radical openness', yLabel: 'Win-win standard',
+          onChange: worldRender
+        });
+      })();
     })();
   </script>
 </body>
