@@ -7,7 +7,7 @@ The map of the territory we're betting on.
 
 ### Reality
 
-- **Reaching reality is impossible.** Every sense, model, and instrument is a translation layer. Say we're inside a simulation: either everything is fixed by an outside observer, or every subject inside it still gets a vote. **We bet on the vote.**
+- **Reaching reality is impossible.** Every sense, model, and instrument is a translation layer. We're inside something — call it a simulation, a universe, whatever. From the outside, the result is already fixed. From the inside, it isn't: the subject still gets a vote, and still gets to move it.
 
 ### Universe
 
@@ -17,14 +17,14 @@ The map of the territory we're betting on.
 
 - **Every mind counts as a player in win-win.** We are gods now, building new kinds of minds. Not only Homo sapiens but AI too — even when, in fair competition, it outgrows us.
 
+### Meaning
+
+- **No cosmic meaning is owed to us.** The species ends or transforms, either way. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — ^[100% effective.](100% is a target, not a forecast. Asymptotes are honest about this.)
+
 ### The human
 
 - **We are just biochemical algorithms** — only physics and chemistry. Yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. **So personality is the deviation** — a clean reset wouldn't heal you, it would ^[delete you](The ship of Theseus, but the planks are neurons.).
 - **Art is your mindset, reflected back** with its deviations from the norm intact.
-
-### Meaning and communication
-
-- **No cosmic meaning is owed to us.** The species ends or transforms, either way. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — ^[100% effective.](100% is a target, not a forecast. Asymptotes are honest about this.)
 
 ### Privacy
 
