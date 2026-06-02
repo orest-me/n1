@@ -1094,13 +1094,13 @@ ${article}
         float present = step(0.92 + s * 0.028, n);
         float d = length(f);
         float core = smoothstep(0.11, 0.0, d);
-        float bloom = smoothstep(0.45, 0.0, d) * 0.30; // dreamy halo (dark sky only)
+        float bloom = smoothstep(0.30, 0.0, d) * 0.06; // faint halo (dark sky only)
         float tw = 0.65 + 0.35 * sin(uTime * 1.4 + n * 40.0);
         vec3 hue = heaven(fract(n * 7.3) + uTime * 0.012 + s * 0.21);
         float bright = (0.4 + 0.6 * fract(n * 13.1)) * (1.0 - s * 0.26);
         col += hue * present * (core + bloom) * tw * bright;
         // crisp dot + a tight, faint halo — clean enough to read on white
-        float pt = present * tw * (core + smoothstep(0.20, 0.0, d) * 0.18);
+        float pt = present * tw * (core + smoothstep(0.16, 0.0, d) * 0.05);
         mask = max(mask, pt);
       }
       return col;
@@ -1164,6 +1164,7 @@ ${article}
       float m = max(star.r, max(star.g, star.b));
       vec3 hue = star / max(m, 1e-4);                 // unit-bright star hue
       vec3 jewel = pow(hue, vec3(1.7)) * 0.92;        // saturated, reads on white
+      starMask *= 0.45;                               // fainter stars on white heaven
       vec3 lightOut = mix(lightScene, jewel, clamp(starMask, 0.0, 1.0));
 
       return mix(darkOut, lightOut, uLight);
