@@ -2,6 +2,7 @@
 id: method
 title: The Method
 ---
+
 :::callout
 **Data collection + Proactivity + Data openness = Result.**
 :::

@@ -2,6 +2,7 @@
 id: values
 title: Values
 ---
+
 1. **Win-win or no deal.** Every interaction either creates mutual value or doesn't happen.
 2. **Truth.** Accurate models over comfortable narratives — starting with self-deception.
 3. **Rationality.** Evidence and logic over consensus and emotion — including the obligation to update when proven wrong.

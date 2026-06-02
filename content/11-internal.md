@@ -2,6 +2,7 @@
 id: internal
 title: Internal products
 ---
+
 Solve each other's problems. Access people who raise your ceiling. Raise your efficiency through shared tools and systems.
 
 ### Activities

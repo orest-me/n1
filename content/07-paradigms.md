@@ -2,6 +2,7 @@
 id: paradigms
 title: Our paradigms
 ---
+
 The map of the territory we're betting on.
 
 ### Reality

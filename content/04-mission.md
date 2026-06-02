@@ -2,6 +2,7 @@
 id: mission
 title: Mission
 ---
+
 For 300,000 years, a single human could kill one person with ^[a rock](Cain and Abel energy.). Today, a single human can kill millions. But our systems still reward harm and cooperation at roughly the same rate.
 
 The fix isn't better humans. It's a better system — one where growing through benefit is faster, cheaper, and more powerful than growing through harm.

@@ -2,6 +2,7 @@
 id: external
 title: External products
 ---
+
 We build and ship our own products — tools that make cooperation easier and deception harder. Weekly updates, small steps that compound.
 
 1. IT products for cooperation

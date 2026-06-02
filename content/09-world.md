@@ -2,6 +2,7 @@
 id: world
 title: "The World We're Building"
 ---
+
 Radical openness and win-win as the de facto standard for 80% of society. Goals, plans, decisions, actions, agreements, transactions, problems — published by default.
 
 :::callout

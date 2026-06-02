@@ -1,6 +1,7 @@
 ---
 tag: header
 ---
+
 :::small
 ^[Moscow, Earth.](Still not the center of the universe — we checked.)
 :::

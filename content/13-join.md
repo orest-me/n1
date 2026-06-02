@@ -2,6 +2,7 @@
 id: join
 title: Who this is for
 ---
+
 ::::two-col
 :::card {id="card-join-yes" title="Fits"}
 - Ambitious goals
