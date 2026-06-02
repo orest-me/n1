@@ -923,7 +923,7 @@ const html = `<!DOCTYPE html>
 
       <h3>Reality</h3>
       ${items([
-        `<strong>Reaching reality may be impossible.</strong> Every sense, model, and instrument is a translation layer. If we're inside a <span class='tooltip' data-tip='Bostrom gives it non-trivial odds. The pixels seem fine with it either way.'>simulation</span>, is everything fixed by an outside observer — or does every subject inside it still get a vote? <strong>We bet on the vote.</strong>`,
+        `<strong>Reaching reality may be impossible.</strong> Every sense, model, and instrument is a translation layer. If we're inside a <span class='tooltip' data-tip='Bostrom gives it non-trivial odds. The pixels seem fine with it either way.'>simulation</span>, either everything is fixed by an outside observer or every subject inside it still gets a vote. <strong>We bet on the vote.</strong>`,
         `<strong>And we keep losing what's left of it.</strong> Each feed, proxy, and model slips between you and the thing itself — and the copy is easier to love than the original.`,
       ])}
 
@@ -935,7 +935,7 @@ const html = `<!DOCTYPE html>
 
       <h3>Life and civilisation</h3>
       ${items([
-        `<strong>Who counts as a player in win-win?</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Only Homo sapiens? Or AI too — even when, in fair competition, it outgrows us?`,
+        `<strong>Every mind counts as a player in win-win.</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Not only Homo sapiens but AI too — even when, in fair competition, it outgrows us.`,
         `<strong>Civilisation runs in one direction.</strong> No reset between rounds; <span class='tooltip' data-tip='Ship to prod, pray, repeat.'>every move ships to production.</span>`,
         `<strong>Anonymity is a loan against trust.</strong> Cheap to take, expensive to repay — a system that can't see itself can't cooperate with itself.`,
         `<strong>Privacy is a superposition.</strong> People hide to stay undefined, every option still open. Radical openness <span class='tooltip' data-tip='Observe the particle and it has to pick a slit.'>collapses the wavefunction</span> — it forces one clear, niched position. The cost is the part of the audience you turn away; the gain is the trust of everyone who stays.`,
@@ -944,8 +944,8 @@ const html = `<!DOCTYPE html>
 
       <h3>The human</h3>
       ${items([
-        `<strong>Are we just biochemical algorithms?</strong> Only physics and chemistry — yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. <strong>So personality is the deviation</strong> — a clean reset wouldn't heal you, it would <span class='tooltip' data-tip='The ship of Theseus, but the planks are neurons.'>delete you</span>.`,
-        `<strong>Then what is art?</strong> Your mindset, reflected back with its deviations from the norm intact. <span class='tooltip' data-tip='Integrity + intent + system. The rest is decoration.'>The bug is the signature.</span>`,
+        `<strong>We are just biochemical algorithms</strong> — only physics and chemistry. Yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. <strong>So personality is the deviation</strong> — a clean reset wouldn't heal you, it would <span class='tooltip' data-tip='The ship of Theseus, but the planks are neurons.'>delete you</span>.`,
+        `<strong>Art is your mindset, reflected back</strong> with its deviations from the norm intact. <span class='tooltip' data-tip='Integrity + intent + system. The rest is decoration.'>The bug is the signature.</span>`,
       ])}
 
       <h3>Meaning and communication</h3>
