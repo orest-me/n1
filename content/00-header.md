@@ -11,4 +11,4 @@ tag: header
 
 # Weekly fixes for humanity
 
-Fellowship, which builds products that make cooperation easy and deception expensive — for the whole species, not some groups of it.
+Fellowship, which builds products that make cooperation easy and deception expensive — for the whole species, not just some groups of it.

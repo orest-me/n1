@@ -9,7 +9,7 @@ Solve each other's problems. Access people who raise your ceiling. Raise your ef
 
 Weekly rhythm, online and offline.
 
-- **Joint projects.** In teams of 2‑4. Each must make cooperation easier or deception harder.
+- **Joint projects.** In teams of 2–4. Each must make cooperation easier or deception harder.
 - **Idea incubator.** Raw ideas shaped into projects through collective feedback and iteration.
 - **Informal meetups.** Sports, dinners, spontaneous conversations.
 - **Strategy alignment.** Goals review, roadmap recalibration.
