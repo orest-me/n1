@@ -19,9 +19,9 @@ A unified, decentralized openness system. No one owns it; everyone reads it.
 
 ### Technology
 
-- **Decentralized intelligence & AI win-win search.** Machines hunting for deals where everyone wins.
+- **Decentralized intelligence and AI win-win search.** Machines hunting for deals where everyone wins.
 - **Real-time big-data analysis about each subject.** The system sees itself thinking.
-- **Smart contracts & oracle networks.** Agreements that keep themselves.
+- **Smart contracts and oracle networks.** Agreements that keep themselves.
 - **Digital-twin simulations.** Test decisions in simulation before committing them.
 - **Preventive vulnerability detection.** Patch the weakness before anyone finds it.
 
