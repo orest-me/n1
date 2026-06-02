@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "node build.js && npx @tailwindcss/cli -i input.css -o dist/static/style.css --minify",
-    "dev": "node build.js && npx @tailwindcss/cli -i input.css -o dist/static/style.css --watch"
+    "dev": "trap 'kill 0' EXIT; node --watch build.js & npx @tailwindcss/cli -i input.css -o dist/static/style.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4"

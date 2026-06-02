@@ -22,8 +22,17 @@ const OG_TITLE = 'n1.community — Weekly fixes for humanity';
 
 // ─── DRY Functions ───
 
-function dots(from, to, milestones = {}) {
+function dots(from, to, milestones = {}, leadFadeYears = 0) {
   const lines = [];
+  // Reversed gradient: before the first milestone the years fade in from the
+  // dark — the past keeps going back past where we can see it. Mirror of the
+  // future timeline's fade-out. Nearest `from` is full; the deep past dissolves.
+  for (let d = leadFadeYears; d >= 1; d--) {
+    const year = from - d;
+    const t = leadFadeYears > 1 ? (d - 1) / (leadFadeYears - 1) : 0; // 0 nearest -> 1 deepest
+    const mult = (1 - t) * (1 - t);                                  // ease-out into the dark
+    lines.push(`<p class="dot" style="opacity:${mult.toFixed(3)}">· <span class="dot-year">${year}</span></p>`);
+  }
   for (let year = from; year <= to; year++) {
     if (milestones[year]) {
       lines.push(`<p class="milestone">· ${year} — ${milestones[year]}</p>`);
@@ -75,13 +84,6 @@ function card(id, title, body) {
   </div>`;
 }
 
-function detailBlock(title, content) {
-  return `<div class="box mt-lg">
-    <p class="card-title">${title}</p>
-    ${content}
-  </div>`;
-}
-
 function fig(src, alt, caption) {
   return `<figure class="fig">
           <img src="${src}" alt="${alt}" loading="lazy" />
@@ -119,12 +121,6 @@ function items(arr, cls = 'mb-micro') {
   return arr.map((t, i) =>
     `<p${i < arr.length - 1 ? ` class="${cls}"` : ''}>${t}</p>`
   ).join('\n      ');
-}
-
-function bookItems(books) {
-  return items(
-    books.map(({ title, author }) => `<strong>${title}</strong> — ${author}`)
-  );
 }
 
 function logotype(className = 'hero-logotype') {
@@ -233,23 +229,6 @@ const pastMilestones = {
   2024: 'First Complete Brain Connectome 🪰',
   2025: 'Humanoid Robots at Scale 🦿',
 };
-
-// Books currently circulating in n1.books — passed reader to reader, in person
-const n1Books = [
-  { title: 'Homo Deus', author: 'Yuval Noah Harari' },
-  { title: 'Principle-Centered Leadership', author: 'Stephen R. Covey' },
-  { title: 'Meditations', author: 'Marcus Aurelius' },
-  { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman' },
-  { title: 'The Lean Startup', author: 'Eric Ries' },
-  { title: 'Antifragile', author: 'Nassim Nicholas Taleb' },
-  { title: 'The Power of Habit', author: 'Charles Duhigg' },
-  { title: 'Skin in the Game', author: 'Nassim Nicholas Taleb' },
-  { title: 'Nexus', author: 'Yuval Noah Harari' },
-  { title: 'Atomic Habits', author: 'James Clear' },
-  { title: '21 Lessons for the 21st Century', author: 'Yuval Noah Harari' },
-  { title: 'The 80/20 Principle', author: 'Richard Koch' },
-];
-
 
 // ─── Build HTML ───
 
@@ -864,12 +843,12 @@ const html = `<!DOCTYPE html>
       <p class="text-sm mb-lg"><span class="tooltip" data-tip="Still not the center of the universe — we checked.">Moscow, Earth.</span></p>
       ${logotype()}
       <h1>Weekly fixes for humanity</h1>
-      <p class="mt-sm">We build products that make cooperation easy and deception expensive.</p>
+      <p class="mt-sm">Fellowship, which builds products that make cooperation easy and deception expensive — for the whole species, not some groups of it.</p>
     </header>
 
     ${section('timeline', 'Not that long ago, right?', `
       <p class="mb-phi">In 1543, we realized Earth isn't the center of the universe. We took it personally:</p>
-      ${dots(1543, 2025, pastMilestones)}
+      ${dots(1543, 2025, pastMilestones, 12)}
       <p class="milestone">· 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>
     `)}
 
@@ -904,57 +883,8 @@ const html = `<!DOCTYPE html>
       <h3>Why</h3>
       <p class="mb-phi">So our species grows wiser and worthier — playing at a higher level. A civilization built on deception stays primitive, fragile, and <span class='tooltip' data-tip='The most damning critique of any system. Worse than evil — boring.'>boring</span>.</p>
 
-      <h3>Who I serve</h3>
-      <p class="mb-phi">Humanity as a species: the generations arriving over the next thousand years, and the people alive beside us now. <span class='tooltip' data-tip='The longest feedback loop in existence. We will never see the score.'>Both at once.</span></p>
-    `)}
-
-    ${section('method', 'The Method', `
-      <p class="callout"><strong>Data collection + Proactivity + Data openness = Result.</strong></p>
-      <p class="mb-phi text-sm">Three moves. Each is useless alone and compounding together.</p>
-      ${items([
-        `<strong>1. Collect data.</strong> Internal and external. Find the patterns, build the models, run the forecasts — you cannot manage what you refuse to measure.`,
-        `<strong>2. Be proactive.</strong> Close vulnerabilities before they cost you. Build <span class='tooltip' data-tip='Strength you can audit. The other kind is called a press release.'>real strength</span>, not the illusion of it. Always hunt for the win-win.`,
-        `<strong>3. Open the data.</strong> Transparent intentions and actions build trust — and trust is the cheap entry into win-win. A <span class='tooltip' data-tip='Cortés burned his ships. We just publish ours.'>public commitment</span> makes defection too expensive and virtue maximally profitable. Feedback loops, on by default.`,
-      ])}
-    `)}
-
-    ${section('world', "The World We're Building", `
-      <p class="mb-phi">Radical openness and win-win as the de facto standard for 80% of humanity. Goals, plans, decisions, actions, agreements, transactions, problems — published by default.</p>
-      <p class="mb-phi text-sm">Drag the future into existence. Watch what openness compounds into.</p>
-
-      ${plane2D('worldplane', 'Radical openness', 'Win-win standard', 30, 20)}
-
-      <div class="box mt-lg">
-        <p id="world-readout" class="text-sm mb-phi"></p>
-        <p id="world-message"></p>
-      </div>
-
-      <p class="callout mt-lg">One protocol, more influential than the internet.</p>
-      <p class="mb-phi">A unified, decentralized openness system. No one owns it; everyone reads it.</p>
-
-      ${detailBlock('Governance', items([
-        `<strong>DAO.</strong> Coordination without a king.`,
-        `<strong>Constitution.</strong> Rules you can read, fork, and amend.`,
-        `<strong>AI court.</strong> Arbitration that does not get tired, bribed, or bored.`,
-      ]))}
-
-      ${detailBlock('Technology', items([
-        `<strong>Smart contracts & oracle networks.</strong> Agreements that keep themselves.`,
-        `<strong>Real-time big-data analysis.</strong> The system sees itself thinking.`,
-        `<strong>Decentralized intelligence & AI win-win search.</strong> Machines hunting for deals where everyone wins.`,
-        `<strong>Digital-twin simulations.</strong> Make the civilizational mistake in the sandbox, not in reality.`,
-        `<strong>Preventive vulnerability detection.</strong> Patch the weakness before anyone finds it.`,
-      ]))}
-
-      <p class="callout mt-lg">Openness only adds power. It opens no new wound.</p>
-      <p class="mb-phi">Each participant gets stronger and exposes no new vulnerability — and it works even for the one who adopts it alone.</p>
-
-      ${detailBlock('What this buys us', items([
-        `<strong>Fair competition.</strong> You win on merit or not at all.`,
-        `<strong>Zero corruption.</strong> Nowhere left to hide it.`,
-        `<strong>Deception goes bankrupt.</strong> Expensive to run, short to live, dangerous to attempt.`,
-        `<strong>Fewer civilizational mistakes.</strong> The species checks its work.`,
-      ]))}
+      <h3>Who we serve</h3>
+      <p class="mb-phi">The people next to us now, and the ones who come after. We try to keep <span class='tooltip' data-tip='The longest feedback loop in existence.'>both in view.</span></p>
     `)}
 
     ${section('values', 'Values', `
@@ -976,14 +906,106 @@ const html = `<!DOCTYPE html>
         `<strong>15. Patience.</strong> Compound interest mindset — urgency in action, patience in expectation.`,
         `<strong>16. <span class='tooltip' data-tip='To understand the universe is clever. To find it funny is wisdom.'>Humor.</span></strong> Only the free can laugh at what they cannot escape.`,
       ])}
+    `)}
 
-      ${detailBlock('Five fundamental habits', items([
+    ${section('habits', 'Five fundamental habits', `
+      ${items([
         `<strong>1. Be proactive.</strong> Act on the system, don't react to it.`,
         `<strong>2. Plan first.</strong> Begin with the end in mind.`,
         `<strong>3. Important things first.</strong> Urgency is a liar; importance isn't.`,
         `<strong>4. Win-win.</strong> The only deal worth repeating.`,
-        `<strong>5. Self-improve.</strong> <span class='tooltip' data-tip="Covey called it sharpening the saw. We just kept cutting until we read the book.">Sharpen the saw</span> — the habit that maintains the other four.`,
-      ]))}
+        `<strong>5. Self-improve.</strong> <span class='tooltip' data-tip="Keep renewing yourself — your health, mind, and skills. Without it, the other four habits slowly stop working.">Sharpen the saw</span> — the habit that maintains the other four.`,
+      ])}
+    `)}
+
+    ${section('questions', 'Our paradigms', `
+      <p class="mb-phi">Hard questions don't weaken the mission. They aim it. Here is the map of the territory we're betting on.</p>
+
+      <h3>Reality</h3>
+      ${items([
+        `<strong>Reaching reality may be impossible.</strong> Every sense, model, and instrument is a translation layer. If we're inside a <span class='tooltip' data-tip='Bostrom gives it non-trivial odds. The pixels seem fine with it either way.'>simulation</span>, is everything fixed by an outside observer — or does every subject inside it still get a vote? <strong>We bet on the vote.</strong>`,
+        `<strong>And we keep losing what's left of it.</strong> Each feed, proxy, and model slips between you and the thing itself — and the copy is easier to love than the original.`,
+      ])}
+
+      <h3>Universe &amp; knowledge</h3>
+      ${items([
+        `<strong>The universe owes us nothing.</strong> No center, no purpose, no audience. <span class='tooltip' data-tip='It was here 13.8 billion years before your opinion of it.'>It was here first.</span>`,
+        `<strong>If everything is information, data becomes the new god.</strong> <span class='tooltip' data-tip="Harari named the religion. We're trying not to join it.">Dataism</span> is the worldview worth understanding before it understands you — and worth keeping in service of people, not the reverse.`,
+      ])}
+
+      <h3>Life &amp; civilisation</h3>
+      ${items([
+        `<strong>Who counts as a player in win-win?</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Only Homo sapiens? Or AI too — even when, in fair competition, it outgrows us?`,
+        `<strong>Civilisation runs in one direction.</strong> No reset between rounds; <span class='tooltip' data-tip='Ship to prod, pray, repeat.'>every move ships to production.</span>`,
+        `<strong>Anonymity is a loan against trust.</strong> Cheap to take, expensive to repay — a system that can't see itself can't cooperate with itself.`,
+        `<strong>Privacy is a superposition.</strong> People hide to stay undefined, every option still open. Radical openness <span class='tooltip' data-tip='Observe the particle and it has to pick a slit.'>collapses the wavefunction</span> — it forces one clear, niched position. The cost is the part of the audience you turn away; the gain is the trust of everyone who stays.`,
+        `<strong>The frontier keeps moving outward.</strong> Space, colonies, and lives long enough to <span class='tooltip' data-tip='A-mortality: not invincible, just no longer scheduled.'>outlast their own plans</span>. New addresses, same old game theory.`,
+      ])}
+
+      <h3>The human</h3>
+      ${items([
+        `<strong>Are we just biochemical algorithms?</strong> Only physics and chemistry — yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. <strong>So personality is the deviation</strong> — a clean reset wouldn't heal you, it would <span class='tooltip' data-tip='The ship of Theseus, but the planks are neurons.'>delete you</span>.`,
+        `<strong>Then what is art?</strong> Your mindset, reflected back with its deviations from the norm intact. <span class='tooltip' data-tip='Integrity + intent + system. The rest is decoration.'>The bug is the signature.</span>`,
+      ])}
+
+      <h3>Meaning &amp; communication</h3>
+      ${items([
+        `<strong>No cosmic meaning is owed to us.</strong> The species ends or transforms, either way. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — <span class='tooltip' data-tip='100% is a target, not a forecast. Asymptotes are honest about this.'>100% effective.</span>`,
+        `<strong>Meaning is built, not found</strong> — and it's built in communication. Most conflict is a failure to translate, not a failure to agree; effective communication is the cheapest technology we have for win-win.`,
+      ])}
+
+      <h3>The future</h3>
+      ${items([
+        `<strong>Superintelligence arrives either way.</strong> The only open question is whether it lands inside a system that rewards benefit — or one that still pays for harm.`,
+        `<strong>A-mortality is logistics now, not myth.</strong> Transfer the pattern, grow a <span class='tooltip' data-tip='A body-shaped vessel. The mind ships separately.'>bodioid</span>, or run clones in parallel — and discover the hard part was never the body. <strong>It was staying worth continuing.</strong>`,
+      ])}
+
+      <p class="callout mt-lg">To understand the universe is clever. To find it funny is wisdom — only the free can laugh at what they cannot escape.</p>
+      <p class="callout">Science is the answer — to build, to create technology, to influence people.</p>
+    `)}
+
+    ${section('method', 'The Method', `
+      <p class="callout"><strong>Data collection + Proactivity + Data openness = Result.</strong></p>
+      <p class="mb-phi">Three moves. Each is useless alone and compounding together.</p>
+      ${items([
+        `<strong>1. Collect data.</strong> Internal and external. Find the patterns, build the models, run the forecasts — you cannot manage what you refuse to measure.`,
+        `<strong>2. Be proactive.</strong> Close vulnerabilities before they cost you. Build <span class='tooltip' data-tip='Strength you can audit. The other kind is called a press release.'>real strength</span>, not the illusion of it. Always hunt for the win-win.`,
+        `<strong>3. Open the data.</strong> Transparent intentions and actions build trust — and trust is the cheap entry into win-win. A real <span class='tooltip' data-tip='Cortés burned his ships. We just publish ours.'>public commitment</span> makes defection too expensive and virtue maximally profitable.`,
+      ])}
+    `)}
+
+    ${section('world', "The World We're Building", `
+      <p class="mb-phi">Radical openness and win-win as the de facto standard for 80% of society. Goals, plans, decisions, actions, agreements, transactions, problems — published by default.</p>
+
+      <p class="callout mt-lg">One protocol, more influential than the internet.</p>
+      <p class="mb-phi">A unified, decentralized openness system. No one owns it; everyone reads it.</p>
+
+      <h3>Governance</h3>
+      ${items([
+        `<strong>DAO.</strong> Coordination without a king.`,
+        `<strong>Constitution.</strong> Rules you can read, fork, and amend.`,
+        `<strong>AI court.</strong> Arbitration that does not get tired, bribed, or bored.`,
+      ])}
+
+      <h3>Technology</h3>
+      ${items([
+        `<strong>Smart contracts & oracle networks.</strong> Agreements that keep themselves.`,
+        `<strong>Real-time big-data analysis.</strong> The system sees itself thinking.`,
+        `<strong>Decentralized intelligence & AI win-win search.</strong> Machines hunting for deals where everyone wins.`,
+        `<strong>Digital-twin simulations.</strong> Make the civilizational mistake in the sandbox, not in reality.`,
+        `<strong>Preventive vulnerability detection.</strong> Patch the weakness before anyone finds it.`,
+      ])}
+
+      <p class="callout mt-lg">Openness only adds power. It opens no new wound.</p>
+      <p class="mb-phi">Each participant gets stronger and exposes no new vulnerability — and it works even for the one who adopts it alone.</p>
+
+      <h3>What this buys us</h3>
+      ${items([
+        `<strong>Fair competition.</strong> You win on merit or not at all.`,
+        `<strong>Zero corruption.</strong> Nowhere left to hide it.`,
+        `<strong>Deception goes bankrupt.</strong> Expensive to run, short to live, dangerous to attempt.`,
+        `<strong>Fewer civilizational mistakes.</strong> The species checks its work.`,
+      ])}
     `)}
 
     ${section('participants', 'Participants', `
@@ -1051,41 +1073,7 @@ const html = `<!DOCTYPE html>
       </div>
     `)}
 
-    ${section('questions', 'Open questions', `
-      <p class="mb-phi">Hard questions don't weaken the mission. They aim it.</p>
-      ${items([
-        `<strong>Can we ever reach reality?</strong> If we're inside a <span class='tooltip' data-tip='Bostrom gives it non-trivial odds. The pixels seem fine with it either way.'>simulation</span>, is everything fixed by some outside observer — or does every subject inside it still get a vote?`,
-        `<strong>Who counts as a player in win-win?</strong> We are <span class='tooltip' data-tip="Harari's term — and our library card is overdue.">Homo Deus</span>, building new kinds of minds. Only Homo sapiens? Or AI too — even when, in fair competition, it outgrows us?`,
-        `<strong>Are we just biochemical algorithms?</strong> If personality is mutation from the factory settings, a clean reset wouldn't heal you — it would <span class='tooltip' data-tip='The ship of Theseus, but the planks are neurons.'>delete you</span>.`,
-        `<strong>Then what is art?</strong> Your mindset, reflected back with its deviations from the norm intact. The bug is the signature.`,
-        `<strong>We know the species ends or transforms.</strong> No cosmic meaning is owed to us. So we chose a game worth playing: reach the last stage of civilization at full cooperation, full win-win, full virtue — <span class='tooltip' data-tip='100% is a target, not a forecast. Asymptotes are honest about this.'>100% effective.</span>`,
-      ])}
-      <p class="callout mt-lg">To understand the universe is clever. To find it funny is wisdom — only the free can laugh at what they cannot escape.</p>
-      <p class="callout">Science is the answer — to build, to create technology, to influence people.</p>
-    `)}
-
     ${ctaBox("Statistically, you shouldn't still be here. And yet.", "Write to us", "https://t.me/Oresty")}
-
-    ${section('moscow', 'Moscow', `
-      <p class="mb-phi">Moscow is where the community is starting offline. If you are nearby, this is the easiest place to join the weekly rhythm in person.</p>
-      <p>We are building a local base: people, meetups, and shared infrastructure that compounds over time.</p>
-
-      ${detailBlock('<span id="books">n1.books — read a book, meet two people 📚</span>', `
-        <p class="mb-phi">The last reader hands you the book in person. Two weeks later, you hand it to the next reader in person. The book is the reason two strangers meet.</p>
-        <p class="mb-phi"><strong>Why:</strong> to find like-minded people and introduce them to each other. Only books that match our values make it into n1.books.</p>
-
-        <h4>How it works</h4>
-        ${items([
-          `Take a book only at an in-person meeting — from its last reader, or from an n1.community resident (e.g. <a href="https://t.me/Oresty">@Oresty</a>).`,
-          `Keep it two weeks, then pass it on the same way — in person, to the next reader.`,
-        ])}
-
-        <h4>In circulation</h4>
-        <p class="text-sm mb-phi">All copies are in the original English.</p>
-        ${bookItems(n1Books)}
-        <a href="https://t.me/Oresty" class="btn-scroll">Request a book</a>
-      `)}
-    `)}
 
   </article>
   </main>
@@ -1537,7 +1525,6 @@ const html = `<!DOCTYPE html>
 
     window.__n1bg = {
       setSystem: function (coop, decep) { coopX = coop; account = decep; recompute(); },
-      setWorld: function (open, ww) { openX = open; wwY = ww; recompute(); },
       setScroll: function (p) { scrollP = Math.max(0, Math.min(1, p)); },
       setLight: function (p) { lightTarget = Math.max(0, Math.min(1, p)); }
     };
@@ -1577,7 +1564,7 @@ const html = `<!DOCTYPE html>
       cur.city   = lerp(cur.city, Math.max(0, benefit - 0.15), 0.03);
       cur.px     = lerp(cur.px, px, 0.04);
       cur.py     = lerp(cur.py, py, 0.04);
-      cur.light  = lerp(cur.light, lightTarget, 0.4);
+      cur.light  = lerp(cur.light, lightTarget, 0.9);
       // Mood = the plane's colour grade. Unlike health (slow, asymmetric — the
       // story), this responds FAST so dragging a plane recolours the sky live.
       // Stretched so the playable range sweeps the full warm→cool palette.
@@ -1660,7 +1647,7 @@ const html = `<!DOCTYPE html>
         }
         function tick() {
           target = measure();
-          cur += (target - cur) * 0.4;             // same rate as WebGL cur.light
+          cur += (target - cur) * 0.9;             // same rate as WebGL cur.light
           if (Math.abs(target - cur) < 0.0004) cur = target;
           apply(cur);
           raf = (cur === target) ? 0 : requestAnimationFrame(tick);
@@ -1899,11 +1886,19 @@ const html = `<!DOCTYPE html>
         }
       }
 
-      function buildTimelineMarkup(startYear, endYear, milestones) {
+      function buildTimelineMarkup(startYear, endYear, milestones, fadeFromYear) {
         var html = '';
         for (var y = startYear; y <= endYear; y++) {
           if (milestones[y]) {
             html += '<p class="milestone">· ' + y + ' \u2014 ' + milestones[y] + '</p>';
+          } else if (fadeFromYear != null && y >= fadeFromYear) {
+            // Gradient disappearing: when the future is unbounded, the trailing
+            // years dim toward zero — a timeline that keeps going past where
+            // we can see it. Each step fades further into the dark.
+            var span = endYear - fadeFromYear;
+            var t = span > 0 ? (y - fadeFromYear) / span : 1; // 0 -> 1
+            var mult = (1 - t) * (1 - t);                      // ease-out toward invisible
+            html += '<p class="dot" style="opacity:' + mult.toFixed(3) + '">· <span class="dot-year">' + y + '</span></p>';
           } else {
             html += '<p class="dot">· <span class="dot-year">' + y + '</span></p>';
           }
@@ -2030,9 +2025,21 @@ const html = `<!DOCTYPE html>
         for (var i = 0; i < events.length; i++) {
           if (events[i].year > lastEventYear) lastEventYear = events[i].year;
         }
-        var endYear = lastEventYear + 3;
+        var endYear = lastEventYear + 5;
 
-        container.innerHTML = buildTimelineMarkup(2027, endYear, milestones);
+        // When humanity thrives, the future is unbounded — give it a long tail
+        // of years that fade out by gradient instead of stopping abruptly.
+        var thrivesYear = null;
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].category === 'transcendence') thrivesYear = events[i].year;
+        }
+        var fadeFromYear = null;
+        if (thrivesYear !== null) {
+          fadeFromYear = thrivesYear + 1;
+          endYear = thrivesYear + 12;
+        }
+
+        container.innerHTML = buildTimelineMarkup(2027, endYear, milestones, fadeFromYear);
       }
 
       // ── Future plane: cooperation × deception costs → a timeline ──
@@ -2041,53 +2048,6 @@ const html = `<!DOCTYPE html>
         xLabel: 'Easy to cooperate', yLabel: 'Costs of deception',
         onChange: function(coop, decep) { coopValue = coop; decepValue = decep; render(); }
       });
-
-      // ── World plane: radical openness × win-win → the world materializes ──
-      (function() {
-        var readout = document.getElementById('world-readout');
-        var message = document.getElementById('world-message');
-        if (!readout) return;
-
-        // Honest totals — linear scaling against full-openness anchors
-        var TOTAL = { people: 8e9, orgs: 7e8, regions: 10000, states: 150 };
-
-        function fmt(n) {
-          if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e10 ? 0 : 1) + 'B';
-          if (n >= 1e6) return Math.round(n / 1e6) + 'M';
-          if (n >= 1e3) return Math.round(n / 1e3) + 'K';
-          return Math.round(n).toString();
-        }
-
-        function worldStage(open, ww) {
-          var lo = Math.min(open, ww);
-          if (lo === 0) return 'No one is watching. Deception is cheap, trust is a gamble, every deal starts from zero.';
-          if (open > ww + 20) return 'Plenty of open data, weak win-win. Transparency without fair rules just exposes everyone — raise the standard.';
-          if (ww > open + 20) return 'Win-win is the rule, but few publish. Good intentions stay invisible — open the data.';
-          if (lo < 25) return 'Early adopters publish first. They look exposed. They are, in fact, the only ones who can be trusted.';
-          if (lo < 50) return 'Enough eyes that lying gets expensive. Win-win becomes the default opening move, not the risky one.';
-          if (lo < 75) return 'The open network now sets the price of trust. Hiding is the anomaly — and it pays for itself, badly.';
-          return 'Radical openness is the standard. Corruption has nowhere to live; the species can finally see itself think.';
-        }
-
-        function worldRender(open, ww) {
-          // Radical openness + win-win are also "benefit" — they clear the sky.
-          if (window.__n1bg) window.__n1bg.setWorld(open / 100, ww / 100);
-          var frac = open / 100;
-          readout.innerHTML =
-            '<strong>' + open + '%</strong> open · <strong>' + ww + '%</strong> win-win — ' +
-            fmt(TOTAL.people * frac) + ' people · ' +
-            fmt(TOTAL.orgs * frac) + ' organizations · ' +
-            Math.round(TOTAL.regions * frac).toLocaleString() + ' regions · ' +
-            Math.round(TOTAL.states * frac) + ' states.';
-          message.textContent = typografRuntime(worldStage(open, ww));
-        }
-
-        initPlane('worldplane', {
-          initialX: 30, initialY: 20,
-          xLabel: 'Radical openness', yLabel: 'Win-win standard',
-          onChange: worldRender
-        });
-      })();
     })();
   </script>
 </body>
