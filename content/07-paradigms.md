@@ -30,11 +30,6 @@ The map of the territory we're betting on.
 
 - **Privacy is a superposition.** People hide to stay undefined, every option still open. Radical openness ^[collapses the wavefunction](Observe the particle and it has to pick a slit.) — it forces one clear, niched position. The cost is the part of the audience you turn away; the gain is the trust of everyone who stays.
 
-### The future
-
-- **Superintelligence arrives either way.** The only open question is in which form.
-- **A-mortality is logistics now, not myth.** Transfer the pattern, grow a ^[bodioid](A body-shaped vessel. The mind ships separately.), or run clones in parallel — and discover the hard part was never the body. **It was staying worth continuing.**
-
 :::callout
 To understand the universe is clever. To find it funny is wisdom — only the free can laugh at what they cannot escape.
 :::
