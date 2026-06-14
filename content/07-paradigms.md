@@ -15,7 +15,8 @@ The map of the territory we're betting on.
 
 ### Life and civilizations
 
-- **Every mind counts as a player in win-win.** We are gods now, building new kinds of minds. Not only Homo sapiens but AI too — even when, in fair competition, it outgrows us.
+- **Every mind counts as a player in win-win.** Not only Homo sapiens but AI and every other form of life too. We are gods now, building new kinds of minds — even when, in fair competition, they outgrow us.
+- **But we act human-first.** Humanity is the side we're on; no other life form gets that loyalty. A seat at the table is not the same as our allegiance.
 
 ### Meaning
 
@@ -23,7 +24,7 @@ The map of the territory we're betting on.
 
 ### The human
 
-- **We are just biochemical algorithms** — only physics and chemistry. Yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. **So personality is the deviation** — a clean reset wouldn't heal you, it would ^[delete you](The ship of Theseus, but the planks are neurons.).
+- **We are just biochemical algorithms** — only physics and chemistry. Yet character is unique because of micro-anomalies: mutations from the default factory settings. Copy the brain faithfully and the same mind wakes up in the model. **So personality is the deviation** — a clean reset wouldn't heal you, it would delete you.
 - **Art is your mindset, reflected back** with its deviations from the norm intact.
 
 ### Privacy

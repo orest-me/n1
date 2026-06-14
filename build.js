@@ -1015,8 +1015,8 @@ ${article}
     const float Rp   = 6371000.0;            // planet radius (m)
     const float Ra   = 6471000.0;            // atmosphere radius (m)
     const vec3  bR   = vec3(5.8e-6, 13.5e-6, 33.1e-6); // Rayleigh scattering
-    const vec3  bMs  = vec3(21e-6);          // Mie scattering
-    const vec3  bO   = vec3(3.426e-6, 8.298e-6, 0.356e-6); // ozone absorption
+    const vec3  bM   = vec3(3e-6);           // Mie scattering
+    const vec3  bO   = vec3(0.65e-6, 1.88e-6, 0.08e-6); // ozone absorption
     const float shR  = 8000.0;               // Rayleigh scale height
     const float shM  = 1200.0;               // Mie scale height
     const float g    = 0.76;                 // Mie anisotropy
@@ -1034,26 +1034,21 @@ ${article}
       return vec2(-b - d, -b + d);
     }
 
-    float hash(vec2 p) {
-      p = fract(p * vec2(123.34, 456.21));
-      p += dot(p, p + 45.32);
-      return fract(p.x * p.y);
+    float hash13(vec3 p3) {
+      p3 = fract(p3 * 0.1031);
+      p3 += dot(p3, p3.zyx + 31.32);
+      return fract((p3.x + p3.y) * p3.z);
     }
     float vnoise(vec3 p) {
       vec3 i = floor(p); vec3 f = fract(p);
       f = f * f * (3.0 - 2.0 * f);
       vec2 e = vec2(0.0, 1.0);
-      float a = hash(i.xy + i.z * 57.0 + e.xx);
-      float b = hash(i.xy + i.z * 57.0 + e.yx);
-      float c = hash(i.xy + i.z * 57.0 + e.xy);
-      float d = hash(i.xy + i.z * 57.0 + e.yy);
-      float z0 = mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-      float a2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.xx);
-      float b2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.yx);
-      float c2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.xy);
-      float d2 = hash(i.xy + (i.z + 1.0) * 57.0 + e.yy);
-      float z1 = mix(mix(a2, b2, f.x), mix(c2, d2, f.x), f.y);
-      return mix(z0, z1, f.z);
+      return mix(
+        mix(mix(hash13(i + e.xxx), hash13(i + e.yxx), f.x),
+            mix(hash13(i + e.xyx), hash13(i + e.yyx), f.x), f.y),
+        mix(mix(hash13(i + e.xxy), hash13(i + e.yxy), f.x),
+            mix(hash13(i + e.xyy), hash13(i + e.yyy), f.x), f.y),
+        f.z);
     }
     float fbm(vec3 p) {
       float s = 0.0, a = 0.5;
@@ -1061,13 +1056,6 @@ ${article}
       return s;
     }
 
-    // ── Star field — direction-based, round & anti-aliased (no block artifacts).
-    //    Two depth layers + gentle twinkle, like the article's space view. ──
-    float hash13(vec3 p3) {
-      p3 = fract(p3 * 0.1031);
-      p3 += dot(p3, p3.zyx + 31.32);
-      return fract((p3.x + p3.y) * p3.z);
-    }
     // Iridescent "heaven" palette. A cosine palette (Inigo Quilez form) tuned
     // for ethereal jewel tones — luminous teal → cyan → periwinkle → violet →
     // rose → gold — never muddy. High bias (a) keeps every hue bright and
@@ -1112,10 +1100,10 @@ ${article}
 
     float luma(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
 
-    // Filmic-ish tone map + gamma: physical radiance → display 0..1.
+    // ACES filmic (Narkowicz fit) + gamma: physical radiance → display 0..1.
     vec3 tonemap(vec3 c) {
-      c = vec3(1.0) - exp(-c * 1.3);
-      return pow(c, vec3(1.0 / 2.2));
+      c = (c * (2.51 * c + 0.03)) / (c * (2.43 * c + 0.59) + 0.14);
+      return pow(clamp(c, 0.0, 1.0), vec3(1.0 / 2.2));
     }
 
     // ── One composite for both themes (uLight blends between them) ──────────
@@ -1170,22 +1158,20 @@ ${article}
       return mix(darkOut, lightOut, uLight);
     }
 
+    // extinction per metre at altitude h (scattering + absorption)
+    vec3 extinction(float h) {
+      return bR * density(h, shR) + bM * uHaze * density(h, shM) + bO * ozone(h);
+    }
+
     // optical depth from a point toward the sun (light march); false if shadowed
     bool lightOD(vec3 p, vec3 sun, out vec3 od) {
-      vec2 pl = rsi(p, sun, Rp);
-      if (pl.x > 0.0) { od = vec3(1e9); return false; } // planet blocks the sun
-      vec2 a = rsi(p, sun, Ra);
-      float dt = a.y / float(LIGHT);
-      float odR = 0.0, odM = 0.0, odO = 0.0, t = 0.0;
+      od = vec3(0.0);
+      if (rsi(p, sun, Rp).x > 0.0) return false; // planet blocks the sun
+      float dt = rsi(p, sun, Ra).y / float(LIGHT);
       for (int i = 0; i < LIGHT; i++) {
-        vec3 s = p + sun * (t + dt * 0.5);
-        float h = length(s) - Rp;
-        odR += density(h, shR) * dt;
-        odM += density(h, shM) * dt;
-        odO += ozone(h) * dt;
-        t += dt;
+        vec3 s = p + sun * (float(i) + 0.5) * dt;
+        od += extinction(length(s) - Rp) * dt;
       }
-      od = bR * odR + bMs * uHaze * 1.1 * odM + bO * odO;
       return true;
     }
 
@@ -1226,7 +1212,7 @@ ${article}
       float tStart = max(atm.x, 0.0);
       float tEnd   = hitPlanet ? pl.x : atm.y;
       float dt     = max(tEnd - tStart, 0.0) / float(PRIMARY);
-      float jit    = hash(gl_FragCoord.xy); // static dither — removes step banding
+      float jit    = hash13(vec3(gl_FragCoord.xy, 7.0)); // static dither — removes step banding
 
       vec3 totR = vec3(0.0), totM = vec3(0.0);
       vec3 odV  = vec3(0.0); // accumulated view optical depth (surface attenuation)
@@ -1236,8 +1222,7 @@ ${article}
         float h = length(p) - Rp;
         float dR = density(h, shR) * dt;
         float dM = density(h, shM) * dt;
-        float dO = ozone(h) * dt;
-        odV += bR * dR + bMs * uHaze * 1.1 * dM + bO * dO;
+        odV += extinction(h) * dt;
         vec3 lod;
         if (lightOD(p, sun, lod)) {
           vec3 tr = exp(-(odV + lod));
@@ -1253,7 +1238,7 @@ ${article}
       float pM = 3.0 / (8.0 * PI) * ((1.0 - gg) * (1.0 + mu * mu)) /
                  ((2.0 + gg) * pow(max(1.0 + gg - 2.0 * g * mu, 1e-4), 1.5));
 
-      color = iSun * (pR * bR * totR + pM * bMs * uHaze * totM);
+      color = iSun * (pR * bR * totR + pM * bM * uHaze * totM);
 
       // ── planet surface, seen through the atmosphere ──
       if (hitPlanet) {
@@ -1454,7 +1439,8 @@ ${article}
       var rate = healthTarget > cur.health ? 0.045 : 0.012;
       cur.health = lerp(cur.health, healthTarget, rate);
       cur.alt    = lerp(cur.alt, scrollP, 0.05);
-      cur.haze   = lerp(cur.haze, 1.0 + (1.0 - cur.health) * 2.2, 0.04);
+      // bM is the article's clean-sky value; harm scales it up to ~7x (hazy).
+      cur.haze   = lerp(cur.haze, 1.0 + (1.0 - cur.health) * 6.0, 0.04);
       cur.city   = lerp(cur.city, Math.max(0, benefit - 0.15), 0.03);
       cur.px     = lerp(cur.px, px, 0.04);
       cur.py     = lerp(cur.py, py, 0.04);
