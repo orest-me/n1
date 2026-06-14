@@ -1,0 +1,24 @@
+# The Trust Protocol — MVP workspace.
+# Rust owns every protocol semantic (entry primitive, log, projection, relay, verify).
+# The Telegram bot client lives separately under ./bot (Node).
+[workspace]
+resolver = "2"
+members = [
+  "crates/core",
+  "crates/log",
+  "crates/projection",
+  "crates/relay",
+  "crates/producer",
+]
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"            # default features -> BTreeMap objects -> sorted, compact (our JCS subset)
+blake3 = "1"
+hex = "0.4"
+ed25519-dalek = "2"
+getrandom = "0.2"
+tokio = { version = "1", features = ["full"] }
+n1-core = { path = "crates/core" }
+n1-log = { path = "crates/log" }
+n1-projection = { path = "crates/projection" }

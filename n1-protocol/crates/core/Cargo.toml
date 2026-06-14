@@ -1,0 +1,12 @@
+[package]
+name = "n1-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+blake3 = { workspace = true }
+hex = { workspace = true }
+ed25519-dalek = { workspace = true }
+getrandom = { workspace = true }

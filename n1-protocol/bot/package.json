@@ -1,0 +1,11 @@
+{
+  "name": "n1-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A third-party Trust Protocol client: subscribes to the stream and posts rich Telegram digests.",
+  "scripts": {
+    "bot": "node src/index.js",
+    "test": "node --test"
+  }
+}

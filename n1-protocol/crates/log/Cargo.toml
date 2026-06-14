@@ -1,0 +1,9 @@
+[package]
+name = "n1-log"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+n1-core = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
