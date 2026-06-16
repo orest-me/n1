@@ -1,6 +1,14 @@
-# The Trust Protocol
+---
+tag: raw
+---
+
+# Concept: The Trust Protocol
 
 A single, open protocol that makes a person's integrity cheap to verify — so trust stops being a gamble and win-win becomes the default move.
+
+:::callout
+**Concept only.** The Trust Protocol is a concept — a design, not a shipping product. Nothing described here is live or usable today; everything below explains how it *would* work.
+:::
 
 :::callout
 **Elevate the system for humanity: make it easier to grow through benefit, harder to grow through harm.** The protocol has one job — move the world toward 100% win-win at the ^[Speed of Trust](Covey's term. Trust down, cost up and speed down. Trust up, the opposite.).
@@ -274,5 +282,3 @@ Lying goes bankrupt — and win-win becomes the only game worth playing.
 ---
 
 Based on the ideas at [n1.community](https://n1.community).
-
-Example of a third-party client connected to the protocol: [Wireframes](https://api.anthropic.com/v1/design/h/0MaVkmRibRYzBIDTGnZFug?open_file=Wireframes.dc.html) — one page holding a whole life, where every record shares the single entry shape: *when · type · what · source*.

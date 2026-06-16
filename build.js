@@ -319,11 +319,21 @@ md.use(mdContainer, 'card', {
   },
 });
 
-// Read content/*.md (sorted by filename), render each body, wrap per `tag`.
-function renderContent() {
-  const dir = path.join(__dirname, 'content');
+// ─── Content → pages ───
+//
+// Structure: content/<slug>/ is one page. Its .md files (sorted by name) are the
+// page body — each wrapped per its `tag` frontmatter (section | header | raw |
+// cta; default section). A `_page.md` (underscore = not rendered) carries
+// page-level metadata (title/description/og…); everything it omits falls back to
+// the site defaults below. Output + canonical URL derive from the slug, with the
+// `home` page mapping to the site root.
+
+const SITE = 'https://n1.community';
+
+// Render every body file in a page dir (sorted; `_`-prefixed files are partials).
+function renderBody(dir) {
   return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.md'))
+    .filter(f => f.endsWith('.md') && !f.startsWith('_'))
     .sort()
     .map(file => {
       const { data, content } = matter(fs.readFileSync(path.join(dir, file), 'utf8'));
@@ -337,34 +347,63 @@ function renderContent() {
     .join('\n');
 }
 
-const article = renderContent();
+// Discover every page (each subdir of content/) and resolve its shell inputs.
+function discoverPages() {
+  const root = path.join(__dirname, 'content');
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter(e => e.isDirectory())
+    .map(e => e.name)
+    .sort()
+    .map(slug => {
+      const dir = path.join(root, slug);
+      const metaFile = path.join(dir, '_page.md');
+      const m = fs.existsSync(metaFile) ? matter(fs.readFileSync(metaFile, 'utf8')).data : {};
+      const isHome = slug === 'home';
+      const url = m.canonical || (isHome ? SITE + '/' : `${SITE}/${slug}/`);
+      return {
+        out: isHome ? 'index.html' : `${slug}/index.html`,
+        article: renderBody(dir),
+        title: m.title || OG_TITLE,
+        description: m.description || DESC,
+        canonical: url,
+        ogTitle: m.ogTitle || m.title || OG_TITLE,
+        ogUrl: m.ogUrl || url,
+      };
+    });
+}
 
 // ─── Build HTML ───
+//
+// One shell, many pages. Everything below is byte-identical across pages — the
+// CSS, the living-planet background, every script — and is shared verbatim. The
+// only per-page inputs are the rendered `article` body and the head metadata
+// (title/description/canonical/og), so a "page" is just that pair.
 
-const html = `<!DOCTYPE html>
+function pageShell({ title, description, canonical, ogTitle, ogUrl, article }) {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>n1.community — Weekly fixes for humanity</title>
-  ${meta('description', DESC)}
+  <title>${title}</title>
+  ${meta('description', description)}
   ${meta('keywords', 'n1, community, cooperation, win-win, coordination, humanity, mission-driven')}
   ${meta('author', 'n1.community')}
-  <link rel="canonical" href="https://n1.community/">
+  <link rel="canonical" href="${canonical}">
 
   <!-- Open Graph -->
   ${meta('og:type', 'website')}
-  ${meta('og:url', 'https://n1.community/')}
-  ${meta('og:title', OG_TITLE)}
-  ${meta('og:description', DESC)}
+  ${meta('og:url', ogUrl)}
+  ${meta('og:title', ogTitle)}
+  ${meta('og:description', description)}
   ${meta('og:image', 'https://n1.community/web-app-manifest-512x512.png')}
   ${meta('og:site_name', 'n1.community')}
   ${meta('og:locale', 'en_US')}
 
   <!-- Twitter Card -->
   ${meta('twitter:card', 'summary')}
-  ${meta('twitter:title', OG_TITLE)}
-  ${meta('twitter:description', DESC)}
+  ${meta('twitter:title', ogTitle)}
+  ${meta('twitter:description', description)}
   ${meta('twitter:image', 'https://n1.community/web-app-manifest-512x512.png')}
 
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -707,6 +746,81 @@ const html = `<!DOCTYPE html>
     header > :last-child,
     .card > :last-child,
     .box > :last-child { margin-bottom: 0; }
+
+    /* ─── Code & rules (long-form docs) ─── */
+    /* Tailwind Preflight gives monospace but no surface; give inline code a quiet
+       chip and fenced blocks a scrollable panel so long lines never overflow. */
+    article :not(pre) > code {
+      font-family: 'Space Grotesk', ui-monospace, monospace;
+      font-size: ${iSP}rem;
+      padding: 0.1em 0.35em;
+      border: 1px solid var(--line);
+      border-radius: 0.2em;
+      background: var(--panel);
+    }
+    article pre {
+      font-size: ${iSP}rem;
+      line-height: ${P};
+      padding: ${iP}rem;
+      margin-bottom: ${P}rem;
+      border: 1px solid var(--line);
+      border-radius: 0.25rem;
+      background: var(--panel);
+      overflow-x: auto;
+    }
+    article pre code {
+      font-family: 'Space Grotesk', ui-monospace, monospace;
+      border: 0;
+      padding: 0;
+      background: none;
+      white-space: pre;
+    }
+    article hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: ${P}rem 0;
+    }
+
+    /* ─── Tables (long-form docs) ─── */
+    /* Markdown tables are classless; Preflight strips all chrome, so they
+       inherit the loose body line-height with no padding or rules. Give them a
+       tight, full-width grid: header underlined by --line-strong, rows split by
+       --line, cells top-aligned with breathing room on the golden scale. */
+    article table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: ${iSP}rem;
+      line-height: 1.4;
+      margin-bottom: ${P}rem;
+      text-wrap: pretty;
+    }
+    article thead th {
+      text-align: left;
+      font-weight: 700;
+      padding: ${iP2}rem ${iP}rem;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    article tbody th,
+    article tbody td {
+      vertical-align: top;
+      text-align: left;
+      padding: ${iP2}rem ${iP}rem;
+      border-bottom: 1px solid var(--line);
+    }
+    article tbody th {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    article tbody tr:last-child th,
+    article tbody tr:last-child td { border-bottom: 0; }
+    article th:first-child,
+    article td:first-child { padding-left: 0; }
+    article th:last-child,
+    article td:last-child { padding-right: 0; }
+    @media (max-width: 28em) {
+      article table { font-size: ${iP}rem; }
+      article tbody th { white-space: normal; }
+    }
 
     /* ─── Figures ─── */
     .fig-grid {
@@ -1932,6 +2046,11 @@ ${article}
   </script>
 </body>
 </html>`;
+}
+
+// ─── Pages ───
+
+const pages = discoverPages();
 
 // ─── Write Output ───
 
@@ -1947,5 +2066,9 @@ const pub = path.join(__dirname, 'public');
 if (fs.existsSync(pub)) {
   copyDir(pub, dist);
 }
-fs.writeFileSync(path.join(dist, 'index.html'), typographNbsp(html));
-console.log('Built dist/index.html');
+for (const p of pages) {
+  const outPath = path.join(dist, p.out);
+  ensureDir(path.dirname(outPath));
+  fs.writeFileSync(outPath, typographNbsp(pageShell(p)));
+  console.log('Built dist/' + p.out);
+}

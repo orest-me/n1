@@ -1,6 +1,9 @@
 # The Trust Protocol — MVP
 
-A runnable MVP of [the Trust Protocol](../n1-protocol-v1.md): an open, append-only,
+> **Concept only.** The Trust Protocol is a concept, not a shipping product. This MVP exists
+> to explore and illustrate the design — it is not maintained or production-ready.
+
+A runnable MVP of [the Trust Protocol](../content/protocol/index.md): an open, append-only,
 signed, content-addressed log of a person's acts, streamed in real time, that anyone can
 read and verify.
 
