@@ -368,6 +368,8 @@ function discoverPages() {
         canonical: url,
         ogTitle: m.ogTitle || m.title || OG_TITLE,
         ogUrl: m.ogUrl || url,
+        ogType: isHome ? 'website' : 'article',
+        isHome,
       };
     });
 }
@@ -379,7 +381,7 @@ function discoverPages() {
 // only per-page inputs are the rendered `article` body and the head metadata
 // (title/description/canonical/og), so a "page" is just that pair.
 
-function pageShell({ title, description, canonical, ogTitle, ogUrl, article }) {
+function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHome, article }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -389,10 +391,11 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, article }) {
   ${meta('description', description)}
   ${meta('keywords', 'n1, community, cooperation, win-win, coordination, humanity, mission-driven')}
   ${meta('author', 'n1.community')}
+  ${meta('robots', 'index, follow, max-image-preview:large')}
   <link rel="canonical" href="${canonical}">
 
   <!-- Open Graph -->
-  ${meta('og:type', 'website')}
+  ${meta('og:type', ogType)}
   ${meta('og:url', ogUrl)}
   ${meta('og:title', ogTitle)}
   ${meta('og:description', description)}
@@ -1041,15 +1044,44 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, article }) {
     }
   </style>
   <script type="application/ld+json">
-  {
+  ${JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "n1.community",
-    "url": "https://n1.community",
-    "logo": "https://n1.community/web-app-manifest-512x512.png",
-    "description": "${DESC}",
-    "sameAs": ["https://t.me/Oresty"]
-  }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": SITE + "/#organization",
+        "name": "n1.community",
+        "url": SITE,
+        "logo": SITE + "/web-app-manifest-512x512.png",
+        "description": DESC,
+        "sameAs": ["https://t.me/Oresty"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": SITE + "/#website",
+        "name": "n1.community",
+        "url": SITE,
+        "publisher": { "@id": SITE + "/#organization" }
+      },
+      {
+        "@type": "WebPage",
+        "@id": canonical + "#webpage",
+        "url": canonical,
+        "name": ogTitle,
+        "description": description,
+        "isPartOf": { "@id": SITE + "/#website" },
+        ...(isHome ? {} : {
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/" },
+              { "@type": "ListItem", "position": 2, "name": title, "item": canonical }
+            ]
+          }
+        })
+      }
+    ]
+  })}
   </script>
   <!-- If you're a crawler: we see you. If you're a human reading structured data for fun — we like you already. -->
   <!-- Yandex.Metrika counter -->
@@ -2072,3 +2104,32 @@ for (const p of pages) {
   fs.writeFileSync(outPath, typographNbsp(pageShell(p)));
   console.log('Built dist/' + p.out);
 }
+
+// ─── Crawl files: sitemap.xml + robots.txt ───
+// Generated (not static) so the domain stays DRY against SITE. lastmod is the
+// newest mtime among a page's content files, so it reflects real edits.
+function pageLastmod(slug) {
+  const dir = path.join(__dirname, 'content', slug);
+  let newest = 0;
+  for (const f of fs.readdirSync(dir)) {
+    const t = fs.statSync(path.join(dir, f)).mtime.getTime();
+    if (t > newest) newest = t;
+  }
+  return new Date(newest).toISOString().slice(0, 10);
+}
+
+const urls = pages.map(p => {
+  const slug = p.isHome ? 'home' : p.out.replace(/\/index\.html$/, '');
+  return `  <url>\n    <loc>${p.canonical}</loc>\n    <lastmod>${pageLastmod(slug)}</lastmod>\n  </url>`;
+}).join('\n');
+fs.writeFileSync(
+  path.join(dist, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+);
+console.log('Built dist/sitemap.xml');
+
+fs.writeFileSync(
+  path.join(dist, 'robots.txt'),
+  `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`
+);
+console.log('Built dist/robots.txt');
