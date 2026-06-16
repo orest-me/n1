@@ -206,7 +206,7 @@ const pastMilestones = {
   1969: 'First Human on the Moon 🌕',
   1973: 'Recombinant DNA Technology 🔬',
   1978: 'First IVF Baby 👶',
-  1980: 'Discovery of Cosmic Inflation 🌌',
+  1981: 'Inflationary Universe Theory 🌌',
   1983: 'GNU Project 💿', // also WarGames: "The only winning move is not to play." We disagree.
   1987: 'Black Monday Crash 📉',
   1989: 'World Wide Web 🌐',
@@ -229,7 +229,7 @@ const pastMilestones = {
   2021: 'James Webb Space Telescope 🔭',
   2022: 'ChatGPT 💬',
   2023: 'Repeated Fusion Ignition ☀️',
-  2024: 'First Complete Brain Connectome 🪰',
+  2024: 'First Complex Brain Connectome 🪰',
   2025: 'Humanoid Robots at Scale 🦿',
 };
 

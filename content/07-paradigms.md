@@ -29,7 +29,7 @@ The map of the territory we're betting on.
 
 ### Privacy
 
-- **Privacy is a superposition.** People hide to stay undefined, every option still open. Radical openness collapses the wavefunction — it forces one clear, niched position. The cost is the part of the audience you turn away; the gain is the trust of everyone who stays.
+- **Privacy is a superposition.** People hide to stay undefined, every option still open. Radical openness collapses the wavefunction — it forces one clear, narrow position. The cost is the part of the audience you turn away; the gain is the trust of everyone who stays.
 
 :::callout
 To understand the universe is clever. To find it funny is wisdom — only the free can laugh at what they cannot escape.
