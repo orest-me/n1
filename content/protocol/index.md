@@ -7,7 +7,7 @@ tag: raw
 A single, open protocol that makes a person's integrity cheap to verify — so trust stops being a gamble and win-win becomes the default move.
 
 :::callout
-**Concept only.** The Trust Protocol is a concept — a design, not a shipping product. Nothing described here is live or usable today; everything below explains how it *would* work.
+**Concept only.** The Trust Protocol is now a concept — a design, not a shipping product.
 :::
 
 :::callout
