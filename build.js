@@ -472,7 +472,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
 
       --bg:          color-mix(in oklab, #04060c,             #ffffff             var(--m));
       --fg:          color-mix(in oklab, #eef1f8,             #0a0e1a             var(--m));
-      --muted:       color-mix(in oklab, rgba(238,241,248,0.62), rgba(10,14,26,0.60) var(--m));
+      --muted:       color-mix(in oklab, rgba(238,241,248,0.72), rgba(10,14,26,0.60) var(--m));
       --panel:       color-mix(in oklab, rgba(10,14,26,0.52),  rgba(245,247,252,0.72) var(--m));
       --panel-solid: color-mix(in oklab, #0c1018,             #f2f4f9             var(--m));
       --line:        color-mix(in oklab, rgba(238,241,248,0.22), rgba(10,14,26,0.20) var(--m));
@@ -545,7 +545,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       overflow-wrap: break-word;
       /* dark text needs a light halo; light text a dark one — transition both */
       text-shadow:
-        0 1px 3px color-mix(in srgb, rgba(0,0,0,0.55), rgba(255,255,255,0.85) var(--m)),
+        0 1px 3px color-mix(in srgb, rgba(0,0,0,0.66), rgba(255,255,255,0.85) var(--m)),
         0 0 18px color-mix(in srgb, rgba(0,0,0,0.25), rgba(255,255,255,0.55) var(--m));
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -1287,6 +1287,25 @@ ${article}
 
     vec3 composite(vec3 sceneRad, vec3 star, float starMask) {
       vec3 base  = grade(tonemap(sceneRad));
+
+      // ── Dark-theme readability ceiling ─────────────────────────────────
+      // Light body text (~0.88 WCAG L) overlays this wash. Softly cap the
+      // planet/atmosphere BRIGHTNESS so the lit limb can't climb into the
+      // text's luminance band. Uniform RGB scale => hue & saturation are
+      // untouched, only lightness drops. Exponential knee keeps the limb
+      // glowing (asymptotic, never hard-clipped). Fades out as uLight->1 so
+      // the white "heaven" stays bright. uHealth adds a little headroom.
+      {
+        float Lb   = luma(base);
+        float cap  = mix(0.45, 1.0, uLight);     // display-luma ceiling, dark->heaven
+        cap       += uHealth * 0.04;             // healthy planet may glow a touch more
+        float knee = 0.70 * cap;                 // identity below the knee
+        float Ln   = (Lb <= knee)
+                   ? Lb
+                   : knee + (cap - knee) * (1.0 - exp(-(Lb - knee) / (cap - knee)));
+        base *= (Ln + 1e-5) / (Lb + 1e-5);       // uniform scale: lightness only
+      }
+
       vec3 lightScene = mix(vec3(1.0), base, min(luma(base), 0.85));
 
       // DARK theme: the original night sky with additive colored star glow.
