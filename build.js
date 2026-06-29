@@ -1472,15 +1472,14 @@ ${article}
     });
 
     // ── Random colour personality, fresh each reload ──────────────────────────
-    //   Pick one random base hue; the plane sweeps an ANALOGOUS arc from it (a
-    //   harmonious ~58° span), so the grade is always a vivid, well-matched
-    //   colour — never gray, no matter where the plane sits. Reloading reshuffles
-    //   the whole palette.
-    (function () {
-      var h = Math.random();
-      gl.uniform1f(U.uHueA, h);
-      gl.uniform1f(U.uHueB, h + 0.16);
-    })();
+    //   Pick one random base hue; SCROLLING rotates it continuously around the
+    //   colour wheel — an endless loop (fract() in the shader wraps it, so it
+    //   cycles whichever way you scroll). On top of that, the plane sweeps an
+    //   ANALOGOUS arc (uHueB = uHueA + 0.16, a harmonious ~58° span), so the
+    //   grade is always a vivid, well-matched colour. uHueA/uHueB are uploaded
+    //   per-frame in the render loop (they move with scroll). Reloading reshuffles
+    //   the starting point.
+    var hue0 = Math.random();
 
     var Rp = 6371000.0;
     // mobile-first render scale: the heavy raymarch runs below native resolution
@@ -1556,7 +1555,7 @@ ${article}
     var benefit = 0.30, healthTarget = 0.2;
     var px = 0.0, py = 0.0;                       // parallax target
     var lightTarget = 0.0;                        // theme target: 0 dark, 1 light
-    var cur = { health: 0.15, alt: 0.0, haze: 1.0, city: 0.0, px: 0.0, py: 0.0, light: 0.0, mood: 0.15 };
+    var cur = { health: 0.15, alt: 0.0, haze: 1.0, city: 0.0, px: 0.0, py: 0.0, light: 0.0, mood: 0.15, hue: 0.0 };
 
     function recompute() {
       benefit = (coopX + openX + wwY) / 3.0;
@@ -1615,6 +1614,12 @@ ${article}
       // Stretched so the playable range sweeps the full warm→cool palette.
       var moodTarget = Math.max(0, Math.min(1, (healthTarget - 0.18) / 0.62));
       cur.mood   = lerp(cur.mood, moodTarget, 0.10);
+      // Scroll rotates the base hue around the wheel — a continuous colour loop.
+      // HUE_CYCLES full rotations across the page; fract() in the shader wraps it
+      // so it reads as an endless cycle whichever way you scroll. Eased so the
+      // colour glides rather than jumps with the scroll position.
+      var HUE_CYCLES = 3.0;
+      cur.hue    = lerp(cur.hue, scrollP * HUE_CYCLES, 0.08);
 
       // Sun: low and raking so one side of the limb is lit (day) while the other
       // curves into shadow (night) — the day/night terminator sweeps visibly
@@ -1644,6 +1649,8 @@ ${article}
       gl.uniform1f(U.uHealth, cur.health);
       gl.uniform1f(U.uLight, cur.light);
       gl.uniform1f(U.uMood, cur.mood);
+      gl.uniform1f(U.uHueA, hue0 + cur.hue);
+      gl.uniform1f(U.uHueB, hue0 + cur.hue + 0.16);
 
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       rafId = requestAnimationFrame(frame);
