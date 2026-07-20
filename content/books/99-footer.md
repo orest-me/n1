@@ -1,0 +1,6 @@
+---
+tag: footer
+---
+
+:::books-footer
+:::

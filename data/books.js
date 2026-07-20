@@ -1,0 +1,151 @@
+'use strict';
+
+const bookLanguageOptions = [
+  { code: 'en', flag: '🇺🇸', label: 'Английский' },
+  { code: 'ru', flag: '🇷🇺', label: 'Русский' },
+];
+
+const books = [
+  {
+    title: 'The 7 Habits of Highly Effective People',
+    author: 'Stephen R. Covey',
+    description: 'A principle-based framework for becoming proactive, setting priorities, and building effective relationships.',
+    languages: ['en', 'ru'],
+    hue: 38,
+  },
+  {
+    title: 'Sapiens',
+    author: 'Yuval Noah Harari',
+    description: 'A sweeping history of how shared stories, institutions, and cooperation shaped Homo sapiens.',
+    languages: ['en', 'ru'],
+    hue: 205,
+  },
+  {
+    title: 'The Speed of Trust',
+    author: 'Stephen M. R. Covey',
+    description: 'A practical case for trust as an economic advantage that reduces friction and accelerates work.',
+    languages: ['en', 'ru'],
+    hue: 162,
+  },
+  {
+    title: 'Humankind',
+    author: 'Rutger Bregman',
+    description: 'A case for the idea that people are fundamentally cooperative, and for institutions designed around that trust.',
+    languages: ['en', 'ru'],
+    hue: 135,
+  },
+  {
+    title: 'Homo Deus',
+    author: 'Yuval Noah Harari',
+    description: 'An exploration of the ambitions, technologies, and risks that may shape humanity’s next chapter.',
+    languages: ['en', 'ru'],
+    hue: 12,
+  },
+  {
+    title: 'Principle-Centered Leadership',
+    author: 'Stephen R. Covey',
+    description: 'A guide to leading organizations and relationships through durable principles rather than short-term control.',
+    languages: ['en', 'ru'],
+    hue: 55,
+  },
+  {
+    title: 'Meditations',
+    author: 'Marcus Aurelius',
+    description: 'Private Stoic reflections on discipline, judgment, responsibility, and living according to reason.',
+    languages: ['en', 'ru'],
+    hue: 248,
+  },
+  {
+    title: 'Thinking, Fast and Slow',
+    author: 'Daniel Kahneman',
+    description: 'A tour of intuitive and deliberate thinking, and the biases that distort judgment.',
+    languages: ['en', 'ru'],
+    hue: 285,
+  },
+  {
+    title: 'The Lean Startup',
+    author: 'Eric Ries',
+    description: 'A method for testing ideas quickly, learning from evidence, and building only what creates value.',
+    languages: ['en', 'ru'],
+    hue: 150,
+  },
+  {
+    title: 'Antifragile',
+    author: 'Nassim Nicholas Taleb',
+    description: 'An argument for systems that do more than survive volatility: they improve because of it.',
+    languages: ['en', 'ru'],
+    hue: 355,
+  },
+  {
+    title: 'The Power of Habit',
+    author: 'Charles Duhigg',
+    description: 'An explanation of how habits form and how changing their cues and rewards can change behavior.',
+    languages: ['en', 'ru'],
+    hue: 28,
+  },
+  {
+    title: 'Skin in the Game',
+    author: 'Nassim Nicholas Taleb',
+    description: 'A critique of decisions made without exposure to their consequences, centered on responsibility and symmetry.',
+    languages: ['en', 'ru'],
+    hue: 330,
+  },
+  {
+    title: 'Nexus',
+    author: 'Yuval Noah Harari',
+    description: 'A history of information networks and how their design shapes power, truth, and collective decisions.',
+    languages: ['en', 'ru'],
+    hue: 208,
+  },
+  {
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    description: 'A practical system for improving behavior through small changes, better environments, and consistent repetition.',
+    languages: ['en', 'ru'],
+    hue: 102,
+  },
+  {
+    title: '21 Lessons for the 21st Century',
+    author: 'Yuval Noah Harari',
+    description: 'A clear-eyed guide to the political, technological, and social challenges of the present.',
+    languages: ['en', 'ru'],
+    hue: 270,
+  },
+  {
+    title: 'The 80/20 Principle',
+    author: 'Richard Koch',
+    description: 'A strategy for finding the small share of efforts that creates most of the value.',
+    languages: ['en', 'ru'],
+    hue: 42,
+  },
+  {
+    title: 'The Art of Community',
+    author: 'Jono Bacon',
+    description: 'A practical guide to building, growing, and leading communities through shared purpose and participation.',
+    languages: ['en'],
+    hue: 175,
+  },
+  {
+    title: 'People Powered',
+    author: 'Jono Bacon',
+    description: 'A playbook for creating communities that turn customers, contributors, and members into active participants.',
+    languages: ['en', 'ru'],
+    hue: 305,
+  },
+  {
+    title: 'Innovators',
+    author: 'Walter Isaacson',
+    description: 'A history of the teams and collaborations behind the computer and internet revolutions.',
+    languages: ['en', 'ru'],
+    hue: 45,
+  },
+  {
+    title: 'Quiet',
+    author: 'Susan Cain',
+    description: 'An exploration of introversion and the strengths quiet people bring to work, leadership, and relationships.',
+    languages: ['en', 'ru'],
+    hue: 255,
+  },
+];
+
+module.exports = { bookLanguageOptions, books };

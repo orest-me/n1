@@ -4,6 +4,8 @@ const Typograf = require('typograf');
 const MarkdownIt = require('markdown-it');
 const mdContainer = require('markdown-it-container');
 const matter = require('gray-matter');
+const { bookLanguageOptions, books } = require('./data/books');
+const { pastMilestones, futureEvents } = require('./data/home');
 
 
 // ─── Golden Ratio Constants ───
@@ -22,6 +24,11 @@ const iP3 = r(1 / phi / phi / phi); // 0.236
 
 const DESC = "We build products that make trust cheaper and fraud more expensive. A community driven by the understanding that win-win isn't idealism — it's a superior strategy.";
 const OG_TITLE = 'n1.community — Weekly fixes for humanity';
+const SITE = 'https://n1.community';
+const CONTACT_URL = 'https://t.me/Oresty';
+const GOOGLE_FONT_STYLESHEETS = {
+  ru: 'https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=PT+Serif+Caption:ital@0;1&display=swap',
+};
 
 // ─── DRY Functions ───
 
@@ -103,6 +110,21 @@ function meta(key, val) {
   return `<meta ${attr}="${key}" content="${val}">`;
 }
 
+function googleFontLinks(lang) {
+  const stylesheet = GOOGLE_FONT_STYLESHEETS[lang];
+  if (!stylesheet) return '';
+  return `<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="${stylesheet.replace(/&/g, '&amp;')}">`;
+}
+
+function inlineScriptJson(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 function ensureDir(dirPath) {
   if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 }
@@ -167,71 +189,143 @@ function logotype(className = 'hero-logotype') {
     </div>`;
 }
 
+// ─── n1.books Components ───
+//
+// The collection is deliberately static. One data source feeds every visible
+// row, accessible label and request URL, so adding a title cannot leave a
+// second copy out of sync.
+
+function booksHeroButton() {
+  return `<a href="#books" class="btn-scroll">Выбрать книгу</a>`;
+}
+
+function telegramContactUrl(message) {
+  return message ? `${CONTACT_URL}?text=${encodeURIComponent(message)}` : CONTACT_URL;
+}
+
+function languagesForBook(book) {
+  if (!Array.isArray(book.languages) || book.languages.length === 0) {
+    throw new Error(`Missing languages for ${book.title}`);
+  }
+  return book.languages;
+}
+
+function bookLanguageChips(book) {
+  const chips = languagesForBook(book).map(code => {
+    const language = bookLanguageOptions.find(option => option.code === code);
+    if (!language) throw new Error(`Unknown book language "${code}" for ${book.title}`);
+    return `<span class="book-language-chip" lang="ru">${language.flag} ${language.label}</span>`;
+  }).join('');
+
+  return `<span class="book-language-chips" aria-label="Доступные языки">${chips}</span>`;
+}
+
+function bookLanguageFilter() {
+  const buttons = bookLanguageOptions.map(language => {
+    const count = books.filter(book => languagesForBook(book).includes(language.code)).length;
+    return `<button class="book-language-toggle" type="button" data-book-language-toggle="${language.code}" aria-pressed="true" aria-controls="book-catalogue">
+      <span>${language.flag} ${language.label}</span>
+      <span class="book-language-toggle-count" aria-hidden="true">${count}</span>
+    </button>`;
+  }).join('\n');
+
+  return `<div class="book-language-filter" data-book-language-filter>
+    <div class="book-language-filter-heading">
+      <span>Язык книги</span>
+      <output class="book-language-filter-status" data-book-language-status aria-live="polite">${books.length} книг</output>
+    </div>
+    <div class="book-language-filter-controls" role="group" aria-label="Фильтр книг по языку">
+      ${buttons}
+    </div>
+  </div>`;
+}
+
+function bookCatalogue() {
+  const rows = books.map((book, index) => {
+    const title = md.utils.escapeHtml(book.title);
+    const author = md.utils.escapeHtml(book.author);
+    const description = md.utils.escapeHtml(book.description);
+    const languages = languagesForBook(book);
+    const number = String(index + 1).padStart(2, '0');
+    const requestUrl = telegramContactUrl(`Здравствуйте! Хочу запросить книгу ${book.title} в n1.books.`);
+    return `<li style="--book-hue:${book.hue}" data-book-languages="${languages.join(' ')}">
+      <a class="book-list-link" href="${requestUrl}" target="_blank" rel="noopener noreferrer" aria-label="Запросить книгу ${title}, автор ${author}, через Telegram">
+        <div class="book-list-cover" role="img" aria-label="Обложка книги ${title}, автор ${author}">
+          <span class="book-cover-series">n1.books · ${number}</span>
+          <span class="book-cover-title">${title}</span>
+          <span class="book-cover-author">${author}</span>
+        </div>
+        <span class="book-list-copy">
+          <strong>${title}</strong>
+          <span class="book-list-author">— ${author}</span>
+          ${bookLanguageChips(book)}
+          <span class="book-list-description">${description}</span>
+        </span>
+      </a>
+    </li>`;
+  }).join('\n');
+
+  return `<ul class="book-list" id="book-catalogue" aria-label="Каталог n1.books">
+    ${rows}
+  </ul>`;
+}
+
+function contactButton(label) {
+  const text = md.utils.escapeHtml(label || 'Написать нам');
+  return `<a class="btn-scroll" href="${CONTACT_URL}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+}
+
+function booksFooter() {
+  return `<div class="books-footer-inner">
+    <a class="books-footer-mark" href="/" aria-label="Перейти на n1.community">${logotype('books-footer-logotype')}</a>
+    <nav class="books-footer-links" aria-label="Навигация в подвале">
+      <a href="/#mission">Ценности n1.community</a>
+      <a href="${CONTACT_URL}" target="_blank" rel="noopener noreferrer">Связаться</a>
+    </nav>
+    <p class="books-footer-place">Москва</p>
+  </div>`;
+}
+
 
 // ─── Typography ───
 
-const tp = new Typograf({locale: ['en-US']});
-// Only enable nbsp rules — no quote/dash/other changes
-Typograf.getRules().forEach(r => tp.disableRule(r.name));
-Typograf.getRules()
-  .filter(r => r.name.startsWith('common/nbsp/'))
-  .forEach(r => tp.enableRule(r.name));
-
 const NBSP = '&' + 'nbsp;';
+const TYPOGRAF_LOCALES = {
+  en: ['en-US'],
+  ru: ['ru', 'en-US'],
+};
+const typografCache = new Map();
 
-function typographNbsp(html) {
+function typografConfig(lang) {
+  const locales = TYPOGRAF_LOCALES[lang] || TYPOGRAF_LOCALES.en;
+  const prefixes = ['common', ...locales].map(locale => `${locale}/nbsp/`);
+  const rules = Typograf.getRules()
+    .map(rule => rule.name)
+    .filter(name => prefixes.some(prefix => name.startsWith(prefix)));
+  return { locales, rules };
+}
+
+function typografFor(lang) {
+  if (typografCache.has(lang)) return typografCache.get(lang);
+
+  const config = typografConfig(lang);
+  const instance = new Typograf({ locale: config.locales });
+  Typograf.getRules().forEach(rule => instance.disableRule(rule.name));
+  config.rules.forEach(rule => instance.enableRule(rule));
+  typografCache.set(lang, instance);
+  return instance;
+}
+
+function typographNbsp(html, lang) {
+  const typograf = typografFor(lang);
   const parts = html.split(/(<script[\s\S]*?<\/script>)/gi);
   return parts.map((part, i) => {
     if (i % 2 === 1) return part; // script block — leave untouched
 
-    let result = tp.execute(part);
+    let result = typograf.execute(part);
     return result.replace(/\u00a0/g, NBSP);
   }).join('');
 }
-
-// ─── Milestones Data ───
-
-const pastMilestones = {
-  1543: 'Heliocentric Model ☀️',
-  1712: 'Atmospheric Steam Engine 🔥',
-  1776: 'Declaration of Independence 📜',
-  1876: 'Telephone 📞',
-  1914: 'World War I ⚔️',
-  1939: 'World War II ⚔️',
-  1945: 'Nuclear Fission Weapon ☢️',
-  1953: 'Double Helix Structure of DNA 🧬',
-  1957: 'Sputnik 1 Launch 🛰️',
-  1961: 'First Human in Space 🧑‍🚀',
-  1965: 'First Spacewalk 🧑‍🚀',
-  1969: 'First Human on the Moon 🌕',
-  1973: 'Recombinant DNA Technology 🔬',
-  1978: 'First IVF Baby 👶',
-  1981: 'Inflationary Universe Theory 🌌',
-  1983: 'GNU Project 💿', // also WarGames: "The only winning move is not to play." We disagree.
-  1987: 'Black Monday Crash 📉',
-  1989: 'World Wide Web 🌐',
-  1991: 'Linux Kernel Released 🐧',
-  1995: 'First Exoplanet Around a Sun-like Star 🪐',
-  1997: 'Deep Blue vs. Kasparov ♟️',
-  2001: 'Human Genome Sequence 🧪',
-  2004: 'Mars Rovers Land 🤖',
-  2007: 'iPhone 📱',
-  2009: 'Bitcoin 🪙',
-  2010: 'First Synthetic Cell Created 🧫',
-  2012: 'CRISPR/Cas9 ✂️',
-  2013: 'NSA Revelations 👀',
-  2015: 'SpaceX Falcon 9 Landing 🚀',
-  2016: 'AlphaGo vs. Lee Sedol 🎲',
-  2017: 'Transformer Architecture 🤖',
-  2018: 'CRISPR Human Embryo Editing 🧬',
-  2019: 'COVID-19 🦠',
-  2020: 'AlphaFold 🧪',
-  2021: 'James Webb Space Telescope 🔭',
-  2022: 'ChatGPT 💬',
-  2023: 'Repeated Fusion Ignition ☀️',
-  2024: 'First Complex Brain Connectome 🪰',
-  2025: 'Humanoid Robots at Scale 🦿',
-};
 
 // ─── Markdown → HTML ───
 //
@@ -284,6 +378,11 @@ function shortcode(name, fn) {
   });
 }
 shortcode('logotype', (arg) => arg === 'section' ? logotype('section-logotype') : logotype());
+shortcode('books-hero-button', () => booksHeroButton());
+shortcode('book-language-filter', () => bookLanguageFilter());
+shortcode('book-catalogue', () => bookCatalogue());
+shortcode('contact-button', (arg) => contactButton(arg));
+shortcode('books-footer', () => booksFooter());
 shortcode('timeline', () =>
   dots(1543, 2025, pastMilestones, 12) +
   `\n<p class="milestone">· 2026 — <span class='tooltip' data-tip='The universe is 13.8 billion years old and you got here just in time.'>What will you do?</span></p>`
@@ -325,10 +424,8 @@ md.use(mdContainer, 'card', {
 // page body — each wrapped per its `tag` frontmatter (section | header | raw |
 // cta; default section). A `_page.md` (underscore = not rendered) carries
 // page-level metadata (title/description/og…); everything it omits falls back to
-// the site defaults below. Output + canonical URL derive from the slug, with the
-// `home` page mapping to the site root.
-
-const SITE = 'https://n1.community';
+// the site defaults below. Output + canonical URL derive from the slug (or an
+// optional nested `route`), with the `home` page mapping to the site root.
 
 // Render every body file in a page dir (sorted; `_`-prefixed files are partials).
 function renderBody(dir) {
@@ -341,6 +438,7 @@ function renderBody(dir) {
       if (tag === 'cta') return ctaBox(data.message, data.linkText, data.href);
       const body = md.render(content);
       if (tag === 'header') return `<header>\n${body}</header>`;
+      if (tag === 'footer') return `<footer>\n${body}</footer>`;
       if (tag === 'raw') return body;
       return section(data.id, data.title, body);
     })
@@ -359,16 +457,31 @@ function discoverPages() {
       const metaFile = path.join(dir, '_page.md');
       const m = fs.existsSync(metaFile) ? matter(fs.readFileSync(metaFile, 'utf8')).data : {};
       const isHome = slug === 'home';
-      const url = m.canonical || (isHome ? SITE + '/' : `${SITE}/${slug}/`);
+      const route = isHome ? '' : String(m.route || slug).replace(/^\/+|\/+$/g, '');
+      if (!isHome && !/^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(route)) {
+        throw new Error(`Invalid route "${route}" in ${metaFile}`);
+      }
+      const out = m.output
+        ? String(m.output).replace(/^\/+/, '')
+        : (isHome ? 'index.html' : `${route}/index.html`);
+      if (!/^(?:[a-z0-9-]+\/)*[a-z0-9-]+\.html$/.test(out)) {
+        throw new Error(`Invalid output "${out}" in ${metaFile}`);
+      }
+      const url = m.canonical || (isHome ? SITE + '/' : `${SITE}/${route}/`);
+      const robots = m.robots || 'index, follow, max-image-preview:large';
       return {
-        out: isHome ? 'index.html' : `${slug}/index.html`,
+        out,
+        slug,
+        lang: m.lang || 'en',
         article: renderBody(dir),
         title: m.title || OG_TITLE,
         description: m.description || DESC,
         canonical: url,
         ogTitle: m.ogTitle || m.title || OG_TITLE,
         ogUrl: m.ogUrl || url,
-        ogType: isHome ? 'website' : 'article',
+        ogType: m.ogType || (isHome ? 'website' : 'article'),
+        robots,
+        includeInSitemap: m.sitemap !== false && !/\bnoindex\b/i.test(robots),
         isHome,
       };
     });
@@ -381,9 +494,10 @@ function discoverPages() {
 // only per-page inputs are the rendered `article` body and the head metadata
 // (title/description/canonical/og), so a "page" is just that pair.
 
-function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHome, article }) {
+function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, robots, isHome, slug, lang, article }) {
+  const runtimeTypograf = typografConfig(lang);
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -391,7 +505,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
   ${meta('description', description)}
   ${meta('keywords', 'n1, community, cooperation, win-win, coordination, humanity, mission-driven')}
   ${meta('author', 'n1.community')}
-  ${meta('robots', 'index, follow, max-image-preview:large')}
+  ${meta('robots', robots)}
   <link rel="canonical" href="${canonical}">
 
   <!-- Open Graph -->
@@ -401,7 +515,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
   ${meta('og:description', description)}
   ${meta('og:image', 'https://n1.community/web-app-manifest-512x512.png')}
   ${meta('og:site_name', 'n1.community')}
-  ${meta('og:locale', 'en_US')}
+  ${meta('og:locale', lang === 'ru' ? 'ru_RU' : 'en_US')}
 
   <!-- Twitter Card -->
   ${meta('twitter:card', 'summary')}
@@ -417,6 +531,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
   <meta name="theme-color" content="#04060c">
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="stylesheet" href="/static/style.css">
+  ${googleFontLinks(lang)}
   <style>
     @font-face {
       font-family: 'Playfair';
@@ -453,7 +568,6 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       font-style: normal;
       font-display: swap;
     }
-
     /* ─── Theme: a journey from deep space to heaven ─── */
     /* One scalar — --lp (light progress, 0..1) — drives the whole palette. It
        starts at 0 (the original deep-space dark) and is eased to 1 by scroll
@@ -469,6 +583,16 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
     :root {
       --lp: 0;                         /* set by JS on scroll (smoothed in rAF) */
       --m: calc(var(--lp) * 100%);     /* the mix amount, reused everywhere */
+      --font-body: 'Playfair', serif;
+      --font-display: 'Playfair Display', serif;
+      --font-sans: 'Space Grotesk', sans-serif;
+      --font-size-hero: ${P2}rem;
+      --font-size-heading: ${P}rem;
+      --font-size-subheading: ${SP}rem;
+      --font-size-body: 1rem;
+      --font-size-small: ${iSP}rem;
+      --font-size-caption: ${iP}rem;
+      --font-size-micro: ${iP2}rem;
 
       --bg:          color-mix(in oklab, #04060c,             #ffffff             var(--m));
       --fg:          color-mix(in oklab, #eef1f8,             #0a0e1a             var(--m));
@@ -538,7 +662,8 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
 
     /* ─── Base ─── */
     body {
-      font-family: 'Playfair', serif;
+      font-family: var(--font-body);
+      font-size: var(--font-size-body);
       color: var(--fg);
       background: transparent;
       line-height: ${P};
@@ -554,23 +679,23 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
 
     /* ─── Typography ─── */
     h1, h2, h3, h4, h5, h6, .subtitle, .callout, .card-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       line-height: 1.2;
       text-wrap: balance;
       text-rendering: optimizeLegibility;
     }
     h1 {
-      font-size: ${P2}rem;
+      font-size: var(--font-size-hero);
       line-height: 1.1;
       letter-spacing: -0.02em;
       margin-bottom: ${P}rem;
     }
     h2 {
-      font-size: ${P}rem;
+      font-size: var(--font-size-heading);
       margin-bottom: ${P}rem;
     }
     h3 {
-      font-size: ${SP}rem;
+      font-size: var(--font-size-subheading);
       margin-top: ${P2}rem;
       margin-bottom: ${iP}rem;
     }
@@ -579,15 +704,15 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       margin-bottom: ${iP2}rem;
     }
     .subtitle {
-      font-size: ${P}rem;
+      font-size: var(--font-size-heading);
       margin-bottom: ${P}rem;
     }
     .callout {
-      font-size: ${SP}rem;
+      font-size: var(--font-size-subheading);
       margin-bottom: ${P}rem;
     }
     .text-sm {
-      font-size: ${iSP}rem;
+      font-size: var(--font-size-small);
     }
     .tooltip {
       position: relative;
@@ -660,9 +785,9 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       gap: ${iP3}rem;
     }
     .logo-n1 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-sans);
       font-weight: 700;
-      font-size: ${SP}rem;
+      font-size: var(--font-size-subheading);
       line-height: 1;
       letter-spacing: -0.02em;
     }
@@ -700,9 +825,9 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       animation: breathe ${P3}s ease-in-out infinite;
     }
     .logo-community {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-sans);
       font-weight: 700;
-      font-size: ${SP}rem;
+      font-size: var(--font-size-subheading);
       line-height: 1;
       display: block;
       margin-top: ${iP3}rem;
@@ -713,7 +838,8 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
     section {
       margin-top: ${P3}rem;
     }
-    .two-col {
+    .two-col,
+    .page-books #how-it-works > ol {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
       gap: ${P}rem;
@@ -754,7 +880,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
     /* Tailwind Preflight gives monospace but no surface; give inline code a quiet
        chip and fenced blocks a scrollable panel so long lines never overflow. */
     article :not(pre) > code {
-      font-family: 'Space Grotesk', ui-monospace, monospace;
+      font-family: var(--font-sans);
       font-size: ${iSP}rem;
       padding: 0.1em 0.35em;
       border: 1px solid var(--line);
@@ -772,7 +898,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       overflow-x: auto;
     }
     article pre code {
-      font-family: 'Space Grotesk', ui-monospace, monospace;
+      font-family: var(--font-sans);
       border: 0;
       padding: 0;
       background: none;
@@ -853,7 +979,8 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
     }
 
     /* ─── Components ─── */
-    .card, .box, .cta-box {
+    .card, .box, .cta-box,
+    .page-books #how-it-works > ol > li {
       border: 1px solid var(--outline);
       padding: ${P}rem;
       background: transparent;
@@ -981,7 +1108,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       text-align: center;
       text-decoration: none;
       color: var(--fg);
-      font-size: ${P}rem;
+      font-size: var(--font-size-heading);
       line-height: 1.2;
       background: transparent;
       border-radius: 0.25rem;
@@ -1002,6 +1129,291 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
       opacity: 0.8;
     }
 
+    /* ─── n1.books ─── */
+    /* The books page uses the same type, borders, spacing and living backdrop as
+       the rest of the site. Its few color accents belong to the covers — the
+       content and controls continue to use the shared theme tokens above. */
+    .page-books {
+      --font-body: 'PT Serif', serif;
+      --font-display: 'PT Serif', serif;
+      --font-sans: 'PT Serif Caption', serif;
+    }
+    .page-books section {
+      scroll-margin-top: ${P}rem;
+    }
+    .page-books #how-it-works > ol {
+      margin-top: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: books-step;
+    }
+    .page-books #how-it-works > ol > li {
+      position: relative;
+      margin: 0;
+      counter-increment: books-step;
+    }
+    .page-books #how-it-works > ol > li::before {
+      content: counter(books-step, decimal-leading-zero);
+      display: block;
+      margin-bottom: ${P}rem;
+      font-family: var(--font-sans);
+      font-size: var(--font-size-caption);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--fg);
+    }
+    .book-list {
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--outline);
+      list-style: none;
+    }
+    .page-books .book-list-link {
+      display: grid;
+      grid-template-columns: clamp(6rem, 12vw, 8rem) minmax(0, 1fr);
+      align-items: center;
+      gap: ${P}rem;
+      padding: ${P}rem 0;
+      color: var(--fg);
+      font-size: var(--font-size-body);
+      line-height: 1.45;
+      text-decoration: none;
+    }
+    .page-books .book-list-link:hover {
+      opacity: 1;
+    }
+    .page-books .book-list-link:focus-visible {
+      outline: 1px solid var(--fg);
+      outline-offset: ${iP3}rem;
+    }
+    .book-language-filter {
+      margin: ${P}rem 0;
+      padding: ${P}rem 0;
+      text-shadow: none;
+    }
+    .book-language-filter-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: ${iP}rem;
+      margin-bottom: ${iP}rem;
+      color: var(--fg);
+      font-size: var(--font-size-small);
+      line-height: 1.3;
+    }
+    .book-language-filter-status {
+      color: inherit;
+      font: inherit;
+      white-space: nowrap;
+    }
+    .book-language-filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: ${iP2}rem;
+    }
+    .book-language-toggle,
+    .book-language-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: ${iP2}rem;
+      border: 1px solid var(--outline);
+      border-radius: 0.25rem;
+      font-family: var(--font-sans);
+      line-height: 1.2;
+      text-shadow: none;
+      white-space: nowrap;
+    }
+    .book-language-toggle {
+      appearance: none;
+      min-height: 2.6rem;
+      padding: ${iP2}rem ${iP}rem;
+      background: transparent;
+      color: var(--fg);
+      font-size: var(--font-size-small);
+      cursor: pointer;
+      opacity: 0.45;
+    }
+    .book-language-toggle:hover {
+      border-color: var(--fg);
+    }
+    .book-language-toggle[aria-pressed='true'] {
+      opacity: 1;
+    }
+    .book-language-toggle:focus-visible {
+      outline: 1px solid var(--fg);
+      outline-offset: ${iP3}rem;
+    }
+    .book-language-toggle-count {
+      min-width: 1.6em;
+      padding: 0.12em 0.4em;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      font-size: var(--font-size-caption);
+      line-height: 1;
+    }
+    .book-language-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: ${iP2}rem;
+      margin-top: ${iP}rem;
+    }
+    .book-language-chip {
+      min-height: 2rem;
+      padding: ${iP3}rem ${iP2}rem;
+      color: var(--fg);
+      background: transparent;
+      font-size: var(--font-size-caption);
+    }
+    .book-list > li[hidden] {
+      display: none;
+    }
+    .book-list-cover {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      padding: ${iP2}rem;
+      border: 1px solid var(--outline);
+      border-radius: 0.18rem;
+      color: #f8f9ff;
+      background: radial-gradient(
+        circle at 84% 18%,
+        hsl(var(--book-hue) 84% 68%) 0%,
+        hsl(var(--book-hue) 55% 31%) 32%,
+        hsl(calc(var(--book-hue) + 28) 42% 9%) 100%
+      );
+      overflow: hidden;
+      isolation: isolate;
+      text-shadow: none;
+    }
+    .book-list-cover::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      right: -30%;
+      width: 78%;
+      aspect-ratio: 1;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      z-index: -1;
+    }
+    .book-cover-series,
+    .book-cover-title,
+    .book-cover-author { position: relative; z-index: 1; }
+    .book-cover-series {
+      font-family: var(--font-sans);
+      font-size: var(--font-size-micro);
+      font-weight: 520;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .book-cover-title {
+      margin: auto 0;
+      font-family: var(--font-display);
+      font-size: clamp(0.56rem, 1vw, var(--font-size-small));
+      font-weight: 680;
+      letter-spacing: -0.025em;
+      line-height: 1.04;
+      text-wrap: balance;
+    }
+    .book-cover-author {
+      font-family: var(--font-sans);
+      font-size: clamp(0.45rem, 0.75vw, var(--font-size-caption));
+      line-height: 1.2;
+    }
+    .book-list-copy { min-width: 0; }
+    .book-list-author {
+      display: block;
+      margin-top: ${iP3}rem;
+      color: var(--fg);
+    }
+    .book-list-description {
+      display: block;
+      margin-top: ${iP}rem;
+      font-size: var(--font-size-body);
+      line-height: ${P};
+    }
+
+    .page-books #suggest-a-book > ul {
+      margin: 0 0 ${P}rem;
+      padding: 0;
+      border-top: 1px solid var(--outline);
+      list-style: none;
+    }
+    .book-list > li,
+    .page-books #suggest-a-book > ul > li {
+      margin: 0;
+      border-bottom: 1px solid var(--outline);
+    }
+    .page-books #suggest-a-book > ul > li {
+      padding: ${iP}rem 0;
+      font-size: var(--font-size-body);
+      line-height: 1.45;
+    }
+    .book-list-link strong,
+    .page-books #suggest-a-book > ul strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--font-size-subheading);
+      line-height: 1.18;
+    }
+
+    .page-books footer {
+      margin-top: ${P3}rem;
+      padding: ${P2}rem 0 0;
+      border-top: 1px solid var(--outline);
+    }
+    .books-footer-inner {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr auto;
+      align-items: start;
+      gap: ${P2}rem;
+    }
+    .page-books .books-footer-mark {
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .books-footer-logotype {
+      --font-sans: 'Space Grotesk', sans-serif;
+      display: inline-block;
+    }
+    .books-footer-links {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: ${iP2}rem;
+      font-size: var(--font-size-small);
+    }
+    .books-footer-place {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: var(--font-size-small);
+      color: var(--fg);
+    }
+
+    /* ─── 404 ─── */
+    .page-404 main {
+      display: grid;
+      min-height: 100vh;
+      min-height: 100svh;
+      align-items: center;
+    }
+    .page-404 article { width: 100%; }
+    .page-404 .hero-logotype {
+      margin-top: ${P}rem;
+      margin-bottom: ${P2}rem;
+    }
+    .page-404 .cta-box { margin-top: ${P2}rem; }
+
+    @media (max-width: 38rem) {
+      .books-footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .books-footer-place { grid-column: auto; }
+    }
     /* ─── Responsive ─── */
     @media (max-width: 600px) {
       html { font-size: 20px; }
@@ -1107,7 +1519,7 @@ function pageShell({ title, description, canonical, ogTitle, ogUrl, ogType, isHo
     gtag('config', 'G-FM6ZVZ3Y22');
   </script>
 </head>
-<body>
+<body class="page-${slug}">
   <!-- You're reading the source. That's either professional curiosity or existential procrastination. Either way, welcome. -->
   <div id="sky-wrap" aria-hidden="true"><canvas id="sky-bg"></canvas></div>
   <a href="#content" class="skip-link">Skip to main content</a>
@@ -1743,59 +2155,62 @@ ${article}
         el.setAttribute('aria-describedby', ttId);
       });
 
+      // ── Book language filter ──
+      // The catalogue keeps language data on each row. The same two-letter
+      // codes drive these controls and the visible chips generated above.
+      (function () {
+        var filter = document.querySelector('[data-book-language-filter]');
+        if (!filter) return;
+
+        var buttons = Array.from(filter.querySelectorAll('[data-book-language-toggle]'));
+        var rows = Array.from(document.querySelectorAll('.book-list > li[data-book-languages]'));
+        var status = filter.querySelector('[data-book-language-status]');
+
+        function bookCountLabel(count) {
+          var mod10 = count % 10;
+          var mod100 = count % 100;
+          if (mod10 === 1 && mod100 !== 11) return 'книга';
+          if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'книги';
+          return 'книг';
+        }
+
+        function updateBooks() {
+          var activeLanguages = buttons
+            .filter(function (button) { return button.getAttribute('aria-pressed') === 'true'; })
+            .map(function (button) { return button.getAttribute('data-book-language-toggle'); });
+          var visibleCount = 0;
+
+          rows.forEach(function (row) {
+            var languages = (row.getAttribute('data-book-languages') || '').split(/\\s+/);
+            var isVisible = activeLanguages.some(function (language) {
+              return languages.indexOf(language) !== -1;
+            });
+            row.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+          });
+
+          if (status) status.textContent = visibleCount + ' ' + bookCountLabel(visibleCount);
+        }
+
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var isPressed = button.getAttribute('aria-pressed') === 'true';
+            button.setAttribute('aria-pressed', String(!isPressed));
+            updateBooks();
+          });
+        });
+
+        updateBooks();
+      })();
+
       // ── Event Definitions ──
-      // Each event has separate coopWeight/decepWeight controlling how each
-      // slider influences its timing, plus separate minCoop/minDecep/maxCoop/maxDecep
-      // thresholds controlling whether it appears at all.
-      var futureEvents = [
-        // ── TECHNOLOGY: driven by momentum, coop accelerates (shared research) ──
-        { label: 'BCI at Scale \\u{1F9E0}', category: 'tech',
-          yearRange: [2027, 2030], cW: 0.2, dW: 0.1 },
-        { label: 'AGI-Level Systems \\u26A1', category: 'tech',
-          yearRange: [2027, 2033], cW: 0.4, dW: 0.1 },
-        { label: 'Quantum-AI Drug Discovery \\u{1F48A}', category: 'tech',
-          yearRange: [2029, 2038], cW: 0.5, dW: 0.1 },
-        { label: 'AI-Driven Scientific Revolution \\u{1F52C}', category: 'tech',
-          yearRange: [2030, 2045], cW: 0.6, dW: 0.1 },
-        { label: 'The Singularity \\u{1F573}\\uFE0F', category: 'tech',
-          yearRange: [2040, 2070], cW: 0.4, dW: 0.2 },
-
-        // ── BENEFICIAL: need cooperation and/or accountability to materialize ──
-        // minCoop: event won't happen without enough cooperation
-        // minDecep: event won't happen without enough accountability
-        { label: 'Longevity Escape Velocity \\u267E\\uFE0F', category: 'beneficial',
-          yearRange: [2035, 2080], cW: 0.7, dW: 0.2, minCoop: 0.25 },
-        { label: 'Aligned Superintelligence \\u{1F310}', category: 'beneficial',
-          yearRange: [2040, 2075], cW: 0.5, dW: 0.4, minCoop: 0.40, minDecep: 0.30 },
-        { label: 'Biological Age Reversal \\u{1F9EC}', category: 'beneficial',
-          yearRange: [2045, 2090], cW: 0.6, dW: 0.2, minCoop: 0.35 },
-        { label: 'Brain-Cloud Interface \\u2601\\uFE0F', category: 'beneficial',
-          yearRange: [2050, 2100], cW: 0.4, dW: 0.5, minCoop: 0.40, minDecep: 0.35 },
-        { label: 'Post-Scarcity Economics \\u{1F3DB}\\uFE0F', category: 'beneficial',
-          yearRange: [2060, 2150], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.45 },
-        { label: 'A-Mortality (Death Optional) \\u{1F52E}', category: 'beneficial',
-          yearRange: [2070, 2200], cW: 0.5, dW: 0.4, minCoop: 0.55, minDecep: 0.50 },
-        { label: 'Flourishing Civilization \\u{1F30C}', category: 'beneficial',
-          yearRange: [2100, 2300], cW: 0.5, dW: 0.5, minCoop: 0.65, minDecep: 0.60 },
-
-        // ── DYSTOPIAN: appear when specific slider is too low ──
-        // maxCoop: disappears when cooperation is high enough (sharing prevents it)
-        // maxDecep: disappears when deception costs are high enough (accountability prevents it)
-        { label: 'The Useless Class \\u{1F4C9}', category: 'dystopian',
-          yearRange: [2028, 2045], cW: 0.6, dW: 0.2, maxCoop: 0.55 },
-        { label: 'Total Surveillance State \\u{1F441}\\uFE0F', category: 'dystopian',
-          yearRange: [2028, 2050], cW: 0.2, dW: 0.8, maxDecep: 0.50 },
-        { label: 'Biological Castes \\u{1F9EA}', category: 'dystopian',
-          yearRange: [2035, 2070], cW: 0.6, dW: 0.3, maxCoop: 0.50 },
-        { label: 'Species Divergence \\u{1F9EC}', category: 'dystopian',
-          yearRange: [2045, 2090], cW: 0.5, dW: 0.4, maxCoop: 0.45 },
-      ];
+      // Page data is maintained in data/home.js and serialized safely here.
+      var futureEvents = ${inlineScriptJson(futureEvents)};
 
       // ── Typography (runtime) ──
-      var tp = new Typograf({locale: ['en-US']});
+      var tp = new Typograf({locale: ${JSON.stringify(runtimeTypograf.locales)}});
       Typograf.getRules().forEach(function(r) { tp.disableRule(r.name); });
-      Typograf.getRules().filter(function(r) { return r.name.indexOf('common/nbsp/') === 0; })
-        .forEach(function(r) { tp.enableRule(r.name); });
+      ${JSON.stringify(runtimeTypograf.rules)}.forEach(function(rule) { tp.enableRule(rule); });
 
       function typografRuntime(text) {
         return tp.execute(text);
@@ -2109,6 +2524,29 @@ ${article}
 // ─── Pages ───
 
 const pages = discoverPages();
+const redirects = [
+  { out: 'books/index.html', target: '/books/ru/', lang: 'ru' },
+];
+
+function redirectShell({ target, lang }) {
+  const safeTarget = md.utils.escapeHtml(target);
+  const canonical = md.utils.escapeHtml(new URL(target, SITE).href);
+  return `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <meta http-equiv="refresh" content="0; url=${safeTarget}">
+  <link rel="canonical" href="${canonical}">
+  <title>Переходим к книгам — n1.community</title>
+  <script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script>
+</head>
+<body>
+  <a href="${safeTarget}">Перейти к книгам</a>
+</body>
+</html>`;
+}
 
 // ─── Write Output ───
 
@@ -2127,8 +2565,14 @@ if (fs.existsSync(pub)) {
 for (const p of pages) {
   const outPath = path.join(dist, p.out);
   ensureDir(path.dirname(outPath));
-  fs.writeFileSync(outPath, typographNbsp(pageShell(p)));
+  fs.writeFileSync(outPath, typographNbsp(pageShell(p), p.lang));
   console.log('Built dist/' + p.out);
+}
+for (const redirect of redirects) {
+  const outPath = path.join(dist, redirect.out);
+  ensureDir(path.dirname(outPath));
+  fs.writeFileSync(outPath, redirectShell(redirect));
+  console.log(`Built dist/${redirect.out} → ${redirect.target}`);
 }
 
 // ─── Crawl files: sitemap.xml + robots.txt ───
@@ -2144,9 +2588,8 @@ function pageLastmod(slug) {
   return new Date(newest).toISOString().slice(0, 10);
 }
 
-const urls = pages.map(p => {
-  const slug = p.isHome ? 'home' : p.out.replace(/\/index\.html$/, '');
-  return `  <url>\n    <loc>${p.canonical}</loc>\n    <lastmod>${pageLastmod(slug)}</lastmod>\n  </url>`;
+const urls = pages.filter(p => p.includeInSitemap).map(p => {
+  return `  <url>\n    <loc>${p.canonical}</loc>\n    <lastmod>${pageLastmod(p.slug)}</lastmod>\n  </url>`;
 }).join('\n');
 fs.writeFileSync(
   path.join(dist, 'sitemap.xml'),
