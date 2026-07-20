@@ -247,7 +247,7 @@ function bookCatalogue() {
     const description = md.utils.escapeHtml(book.description);
     const languages = languagesForBook(book);
     const number = String(index + 1).padStart(2, '0');
-    const requestUrl = telegramContactUrl(`Здравствуйте! Хочу запросить книгу ${book.title} в n1.books.`);
+    const requestUrl = telegramContactUrl(`Привет! Хочу запросить книгу ${book.title} в n1.books`);
     return `<li style="--book-hue:${book.hue}" data-book-languages="${languages.join(' ')}">
       <a class="book-list-link" href="${requestUrl}" target="_blank" rel="noopener noreferrer" aria-label="Запросить книгу ${title}, автор ${author}, через Telegram">
         <div class="book-list-cover" role="img" aria-label="Обложка книги ${title}, автор ${author}">
