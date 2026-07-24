@@ -1,4 +1,3 @@
-```js
 'use strict';
 
 const bookLanguageOptions = [
@@ -171,4 +170,3 @@ const books = [
 ];
 
 module.exports = { bookLanguageOptions, books };
-```
