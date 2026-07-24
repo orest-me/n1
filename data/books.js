@@ -1,3 +1,4 @@
+```js
 'use strict';
 
 const bookLanguageOptions = [
@@ -14,13 +15,6 @@ const books = [
     hue: 38,
   },
   {
-    title: 'Sapiens',
-    author: 'Yuval Noah Harari',
-    description: 'A sweeping history of how shared stories, institutions, and cooperation shaped Homo sapiens.',
-    languages: ['en', 'ru'],
-    hue: 205,
-  },
-  {
     title: 'The Speed of Trust',
     author: 'Stephen M. R. Covey',
     description: 'A practical case for trust as an economic advantage that reduces friction and accelerates work.',
@@ -35,32 +29,18 @@ const books = [
     hue: 135,
   },
   {
-    title: 'Homo Deus',
+    title: 'Sapiens',
     author: 'Yuval Noah Harari',
-    description: 'An exploration of the ambitions, technologies, and risks that may shape humanity’s next chapter.',
+    description: 'A sweeping history of how shared stories, institutions, and cooperation shaped Homo sapiens.',
     languages: ['en', 'ru'],
-    hue: 12,
+    hue: 205,
   },
   {
-    title: 'Principle-Centered Leadership',
-    author: 'Stephen R. Covey',
-    description: 'A guide to leading organizations and relationships through durable principles rather than short-term control.',
-    languages: ['en', 'ru'],
-    hue: 55,
-  },
-  {
-    title: 'Meditations',
+    title: 'The Meditations',
     author: 'Marcus Aurelius',
     description: 'Private Stoic reflections on discipline, judgment, responsibility, and living according to reason.',
     languages: ['en', 'ru'],
     hue: 248,
-  },
-  {
-    title: 'Thinking, Fast and Slow',
-    author: 'Daniel Kahneman',
-    description: 'A tour of intuitive and deliberate thinking, and the biases that distort judgment.',
-    languages: ['en', 'ru'],
-    hue: 285,
   },
   {
     title: 'The Lean Startup',
@@ -77,13 +57,6 @@ const books = [
     hue: 355,
   },
   {
-    title: 'The Power of Habit',
-    author: 'Charles Duhigg',
-    description: 'An explanation of how habits form and how changing their cues and rewards can change behavior.',
-    languages: ['en', 'ru'],
-    hue: 28,
-  },
-  {
     title: 'Skin in the Game',
     author: 'Nassim Nicholas Taleb',
     description: 'A critique of decisions made without exposure to their consequences, centered on responsibility and symmetry.',
@@ -91,18 +64,46 @@ const books = [
     hue: 330,
   },
   {
-    title: 'Nexus',
-    author: 'Yuval Noah Harari',
-    description: 'A history of information networks and how their design shapes power, truth, and collective decisions.',
+    title: 'The Power of Habit',
+    author: 'Charles Duhigg',
+    description: 'An explanation of how habits form and how changing their cues and rewards can change behavior.',
     languages: ['en', 'ru'],
-    hue: 208,
+    hue: 28,
   },
   {
-    title: 'Atomic Habits',
-    author: 'James Clear',
-    description: 'A practical system for improving behavior through small changes, better environments, and consistent repetition.',
+    title: 'The 80/20 Principle',
+    author: 'Richard Koch',
+    description: 'A strategy for finding the small share of efforts that creates most of the value.',
     languages: ['en', 'ru'],
-    hue: 102,
+    hue: 42,
+  },
+  {
+    title: 'Principle-Centered Leadership',
+    author: 'Stephen R. Covey',
+    description: 'A guide to leading organizations and relationships through durable principles rather than short-term control.',
+    languages: ['en', 'ru'],
+    hue: 55,
+  },
+  {
+    title: 'The 8th Habit',
+    author: 'Stephen R. Covey',
+    description: 'A framework for finding your voice and helping others find theirs, extending effectiveness into contribution and leadership.',
+    languages: ['en', 'ru'],
+    hue: 82,
+  },
+  {
+    title: 'First Things First',
+    author: 'Stephen R. Covey',
+    description: 'A principle-centered approach to time and life management that prioritizes importance over urgency.',
+    languages: ['en', 'ru'],
+    hue: 68,
+  },
+  {
+    title: 'Homo Deus',
+    author: 'Yuval Noah Harari',
+    description: 'An exploration of the ambitions, technologies, and risks that may shape humanity’s next chapter.',
+    languages: ['en', 'ru'],
+    hue: 12,
   },
   {
     title: '21 Lessons for the 21st Century',
@@ -112,11 +113,11 @@ const books = [
     hue: 270,
   },
   {
-    title: 'The 80/20 Principle',
-    author: 'Richard Koch',
-    description: 'A strategy for finding the small share of efforts that creates most of the value.',
+    title: 'Thinking, Fast and Slow',
+    author: 'Daniel Kahneman',
+    description: 'A tour of intuitive and deliberate thinking, and the biases that distort judgment.',
     languages: ['en', 'ru'],
-    hue: 42,
+    hue: 285,
   },
   {
     title: 'The Art of Community',
@@ -129,8 +130,29 @@ const books = [
     title: 'People Powered',
     author: 'Jono Bacon',
     description: 'A playbook for creating communities that turn customers, contributors, and members into active participants.',
-    languages: ['en', 'ru'],
+    languages: ['en'],
     hue: 305,
+  },
+  {
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    description: 'A practical system for improving behavior through small changes, better environments, and consistent repetition.',
+    languages: ['en', 'ru'],
+    hue: 102,
+  },
+  {
+    title: 'Nexus',
+    author: 'Yuval Noah Harari',
+    description: 'A history of information networks and how their design shapes power, truth, and collective decisions.',
+    languages: ['en', 'ru'],
+    hue: 208,
+  },
+  {
+    title: 'Quiet',
+    author: 'Susan Cain',
+    description: 'An exploration of introversion and the strengths quiet people bring to work, leadership, and relationships.',
+    languages: ['en', 'ru'],
+    hue: 255,
   },
   {
     title: 'Innovators',
@@ -140,12 +162,13 @@ const books = [
     hue: 45,
   },
   {
-    title: 'Quiet',
-    author: 'Susan Cain',
-    description: 'An exploration of introversion and the strengths quiet people bring to work, leadership, and relationships.',
-    languages: ['en', 'ru'],
-    hue: 255,
+    title: 'The Development of the Modern State',
+    author: 'Gianfranco Poggi',
+    description: 'A sociological account of how feudal, absolutist, and constitutional forms evolved into the modern state.',
+    languages: ['en'],
+    hue: 220,
   },
 ];
 
 module.exports = { bookLanguageOptions, books };
+```
